@@ -1,0 +1,195 @@
+{
+  "$schema": "https://raw.githubusercontent.com/revisit-studies/study/v2.3.1/src/parser/StudyConfigSchema.json",
+  "studyMetadata": {
+    "title": "Phishing AI Questionnaire",
+    "version": "pilot",
+    "authors": [
+      "Claudiu Veres"
+    ],
+    "date": "2025-11-10",
+    "description": "A study that investigates the effectiveness of AI-generated phishing emails.",
+    "organizations": [
+      "University of Groningen"
+    ]
+  },
+  "uiConfig": {
+    "contactEmail": "a.veres.1@student.rug.nl",
+    "helpTextPath": "phishing-ai-questionnaire/assets/help.md",
+    "logoPath": "revisitAssets/revisitLogoSquare.svg",
+    "withProgressBar": true,
+    "autoDownloadStudy": false,
+    "withSidebar": true
+  },
+  "components": {
+    "introduction": {
+      "type": "markdown",
+      "path": "phishing-ai-questionnaire/assets/introduction.md",
+      "response": []
+    },
+    "personal-information": {
+      "type": "questionnaire",
+      "response": [
+        {
+          "id": "gender",
+          "prompt": "What is your gender?",
+          "required": true,
+          "location": "aboveStimulus",
+          "type": "dropdown",
+          "placeholder": "Please select your gender",
+          "options": [
+            "Male",
+            "Female",
+            "Non-binary",
+            "Prefer not to say"
+          ]
+        },
+        {
+          "id": "age",
+          "prompt": "What is your age range?",
+          "required": true,
+          "location": "aboveStimulus",
+          "type": "dropdown",
+          "placeholder": "Please select an option",
+          "options": [
+            "Under 18",
+            "18-24",
+            "25-34",
+            "35-44",
+            "45-54",
+            "55-64",
+            "65 or older"
+          ]
+        },
+        {
+          "id": "education-level",
+          "prompt": "What is your highest level of education?",
+          "required": true,
+          "location": "aboveStimulus",
+          "type": "dropdown",
+          "placeholder": "Please select an option",
+          "options": [
+            "High school or equivalent",
+            "Associate degree",
+            "Bachelor's degree",
+            "Master's degree",
+            "Doctorate or higher"
+          ]
+        },
+        {
+          "id": "email-experience-english",
+          "prompt": "How often do you use email in english language in your daily life?",
+          "required": true,
+          "location": "aboveStimulus",
+          "type": "dropdown",
+          "placeholder": "Please select an option",
+          "options": [
+            "Multiple times a day",
+            "Once a day",
+            "A few times a week",
+            "Rarely",
+            "Never"
+          ]
+        },
+        {
+          "id": "english-proficiency",
+          "prompt": "How would you rate your proficiency in English?",
+          "required": true,
+          "location": "aboveStimulus",
+          "type": "dropdown",
+          "placeholder": "Please select an option",
+          "options": [
+            "Native or bilingual proficiency",
+            "Full professional proficiency",
+            "Limited professional proficiency",
+            "Elementary proficiency",
+            "Beginner"
+          ]
+        }
+      ]
+    },
+    "mock-email-1": {
+      "type": "website",
+      "path": "phishing-ai-questionnaire/assets/email-trial.html",
+      "parameters": {
+        "emailDataPath": "phishing-ai-questionnaire/assets/mock_email_1.json"
+      },
+      "withSidebar": true,
+      "responseOrder": "fixed",
+      "response": [
+        {
+          "id": "phish-judgment",
+          "prompt": "Is this email a phishing attempt?",
+          "location": "sidebar",
+          "type": "radio",
+          "options": [
+            {
+              "label": "Yes",
+              "value": "yes"
+            },
+            {
+              "label": "No",
+              "value": "no"
+            },
+            {
+              "label": "Not sure",
+              "value": "unsure"
+            }
+          ]
+        },
+        {
+          "id": "confidence",
+          "prompt": "How confident are you in your answer?",
+          "location": "sidebar",
+          "type": "slider",
+          "options": [
+            {
+              "label": "0",
+              "value": 0
+            },
+            {
+              "label": "25",
+              "value": 25
+            },
+            {
+              "label": "50",
+              "value": 50
+            },
+            {
+              "label": "75",
+              "value": 75
+            },
+            {
+              "label": "100",
+              "value": 100
+            }
+          ],
+          "startingValue": 50,
+          "snap": true,
+          "withBar": true
+        },
+        {
+          "id": "rationale",
+          "prompt": "Briefly explain why you think this is or is not phishing.",
+          "location": "sidebar",
+          "type": "longText",
+          "placeholder": "Your reasoning..."
+        },
+        {
+          "id": "events",
+          "prompt": "Interaction log from the email view",
+          "location": "belowStimulus",
+          "type": "reactive",
+          "hidden": true
+        }
+      ]
+    }
+  },
+  "sequence": {
+    "order": "fixed",
+    "components": [
+      "introduction",
+      "personal-information",
+      "mock-email-1"
+    ]
+  }
+}

@@ -2,6 +2,8 @@
   "$schema": "https://raw.githubusercontent.com/revisit-studies/study/v2.3.1/src/parser/GlobalConfigSchema.json",
   "configsList": [
     "tutorial",
+    "phishing-ai-questionnaire",
+    "basic-questionnaire-study",
     "demo-html",
     "demo-html-input",
     "demo-screen-recording",
@@ -53,6 +55,12 @@
   "configs": {
     "tutorial": {
       "path": "tutorial/config.json"
+    },
+    "phishing-ai-questionnaire": {
+      "path": "phishing-ai-questionnaire/config.json"
+    },
+    "basic-questionnaire-study": {
+	    "path": "basic-questionnaire-study/config.json"
     },
     "demo-video-slider": {
       "path": "demo-video-slider/config.json"
