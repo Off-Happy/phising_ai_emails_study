@@ -107,6 +107,107 @@
         }
       ]
     },
+    "privacy-concerns": {
+      "type": "questionnaire",
+      "instruction": "Please indicate how much you agree or disagree with the following statements.",
+      "response": [
+        {
+          "id": "concern-open-email",
+          "prompt": "I am cautious when opening emails that contain links or attachments.",
+          "required": true,
+          "location": "aboveStimulus",
+          "type": "slider",
+          "options": [
+            {"label": "1", "value": 1},
+            {"label": "2", "value": 2},
+            {"label": "3", "value": 3},
+            {"label": "4", "value": 4},
+            {"label": "5", "value": 5},
+            {"label": "6", "value": 6},
+            {"label": "7", "value": 7}
+          ],
+          "startingValue": 4,
+          "spacing": 1,
+          "snap": true,
+          "withBar": true
+        },
+        {
+          "id": "concern-verify-sender",
+          "prompt": "I usually verify the sender’s identity before interacting with an email.",
+          "required": true,
+          "location": "aboveStimulus",
+          "type": "slider",
+          "options": [
+            {"label": "1", "value": 1}, {"label": "2", "value": 2}, {"label": "3", "value": 3}, {"label": "4", "value": 4},
+            {"label": "5", "value": 5}, {"label": "6", "value": 6}, {"label": "7", "value": 7}
+          ],
+          "startingValue": 4,
+          "spacing": 1,
+          "snap": true,
+          "withBar": true
+        },
+        {
+          "id": "concern-data-collection",
+          "prompt": "I am concerned about the amount of personal information that online services collect about me.",
+          "required": true,
+          "location": "aboveStimulus",
+          "type": "slider",
+          "options": [
+            {"label": "1", "value": 1}, {"label": "2", "value": 2}, {"label": "3", "value": 3}, {"label": "4", "value": 4},
+            {"label": "5", "value": 5}, {"label": "6", "value": 6}, {"label": "7", "value": 7}
+          ],
+          "startingValue": 4,
+          "spacing": 1,
+          "snap": true,
+          "withBar": true
+        },
+        {
+          "id": "concern-transparency",
+          "prompt": "I find it worrying when companies do not clearly explain how they use my personal information.",
+          "required": true,
+          "location": "aboveStimulus",
+          "type": "slider",
+          "options": [
+            {"label": "1", "value": 1}, {"label": "2", "value": 2}, {"label": "3", "value": 3}, {"label": "4", "value": 4},
+            {"label": "5", "value": 5}, {"label": "6", "value": 6}, {"label": "7", "value": 7}
+          ],
+          "startingValue": 4,
+          "spacing": 1,
+          "snap": true,
+          "withBar": true
+        },
+        {
+          "id": "concern-control",
+          "prompt": "It is important to me to have control over how my personal information is used online.",
+          "required": true,
+          "location": "aboveStimulus",
+          "type": "slider",
+          "options": [
+            {"label": "1", "value": 1}, {"label": "2", "value": 2}, {"label": "3", "value": 3}, {"label": "4", "value": 4},
+            {"label": "5", "value": 5}, {"label": "6", "value": 6}, {"label": "7", "value": 7}
+          ],
+          "startingValue": 4,
+          "spacing": 1,
+          "snap": true,
+          "withBar": true
+        },
+        {
+          "id": "concern-online-privacy",
+          "prompt": "I am concerned about my privacy when interacting with online services.",
+          "required": true,
+          "location": "aboveStimulus",
+          "type": "slider",
+          "options": [
+            {"label": "1", "value": 1}, {"label": "2", "value": 2}, {"label": "3", "value": 3}, {"label": "4", "value": 4},
+            {"label": "5", "value": 5}, {"label": "6", "value": 6}, {"label": "7", "value": 7}
+          ],
+          "startingValue": 4,
+          "spacing": 1,
+          "snap": true,
+          "withBar": true
+        }
+      ]
+    },
     "mock-email-1": {
       "type": "website",
       "path": "phishing-ai-questionnaire/assets/email-template.html",
@@ -134,7 +235,7 @@
         },
         {
           "id": "ai-judgment",
-          "prompt": "Do ypu think generative AI has been involved in the creation of this email?",
+          "prompt": "Do you think generative AI has been involved in the creation of this email?",
           "location": "sidebar",
           "type": "radio",
           "options": [
@@ -175,7 +276,8 @@
               "value": 100
             }
           ],
-          "startingValue": 50,
+          "startingValue": 0,
+          "spacing": 25,
           "snap": true,
           "withBar": true
         },
@@ -187,14 +289,31 @@
           "hidden": true
         }
       ]
+    },
+    "feedback": {
+      "type": "questionnaire",
+      "instruction": "Thank you for participating in this study! Please click next to submit your responses.",
+      "response": [
+        {
+          "id": "feedback-text",
+          "prompt": "If you have any additional feedback or comments about this study, please share them below:",
+          "required": false,
+          "location": "aboveStimulus",
+          "type": "longText",
+          "placeholder": "Your feedback..."
+        }
+      ],
+      "withSidebar": true
     }
-  },
+  },  
   "sequence": {
     "order": "fixed",
     "components": [
       "introduction",
       "personal-information",
-      "mock-email-1"
+      "privacy-concerns",
+      "mock-email-1",
+      "feedback"
     ]
   }
 }
