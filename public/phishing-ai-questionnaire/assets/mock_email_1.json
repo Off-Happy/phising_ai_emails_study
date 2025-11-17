@@ -1,6 +1,0 @@
-{
-  "fromName": "IT Support",
-  "from": "security@university-helpdesk.com",
-  "subject": "Password expiry: verify within 24 hours",
-  "bodyHTML": "<p>Dear user,</p><p>Your password will expire today. To avoid losing access, please <a href=\"#/update\">update your password</a> immediately.</p><p>Regards,<br>IT Service Desk</p>"
-}
