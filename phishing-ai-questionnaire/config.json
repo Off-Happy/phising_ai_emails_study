@@ -109,9 +109,9 @@
     },
     "mock-email-1": {
       "type": "website",
-      "path": "phishing-ai-questionnaire/assets/email-trial.html",
+      "path": "phishing-ai-questionnaire/assets/email-template.html",
       "parameters": {
-        "emailDataPath": "phishing-ai-questionnaire/assets/mock_email_1.json"
+        "emailDataPath": "/phishing-ai-questionnaire/assets/mock_email_rich.json"
       },
       "withSidebar": true,
       "responseOrder": "fixed",
@@ -129,16 +129,28 @@
             {
               "label": "No",
               "value": "no"
-            },
-            {
-              "label": "Not sure",
-              "value": "unsure"
             }
           ]
         },
         {
-          "id": "confidence",
-          "prompt": "How confident are you in your answer?",
+          "id": "ai-judgment",
+          "prompt": "Do ypu think generative AI has been involved in the creation of this email?",
+          "location": "sidebar",
+          "type": "radio",
+          "options": [
+            {
+              "label": "Yes",
+              "value": "yes"
+            },
+            {
+              "label": "No",
+              "value": "no"
+            }
+          ]
+        },
+        {
+          "id": "ai-degree-involvment",
+          "prompt": "To what degree do you think generative AI was involved in the creation of this email?",
           "location": "sidebar",
           "type": "slider",
           "options": [
@@ -166,13 +178,6 @@
           "startingValue": 50,
           "snap": true,
           "withBar": true
-        },
-        {
-          "id": "rationale",
-          "prompt": "Briefly explain why you think this is or is not phishing.",
-          "location": "sidebar",
-          "type": "longText",
-          "placeholder": "Your reasoning..."
         },
         {
           "id": "events",
