@@ -3,14 +3,10 @@
   "studyMetadata": {
     "title": "Phishing AI Questionnaire",
     "version": "pilot",
-    "authors": [
-      "Claudiu Veres"
-    ],
+    "authors": ["Claudiu Veres"],
     "date": "2025-11-10",
     "description": "A study that investigates the effectiveness of AI-generated phishing emails.",
-    "organizations": [
-      "University of Groningen"
-    ]
+    "organizations": ["University of Groningen"]
   },
   "uiConfig": {
     "contactEmail": "a.veres.1@student.rug.nl",
@@ -36,12 +32,7 @@
           "location": "aboveStimulus",
           "type": "dropdown",
           "placeholder": "Please select your gender",
-          "options": [
-            "Male",
-            "Female",
-            "Non-binary",
-            "Prefer not to say"
-          ]
+          "options": ["Male", "Female", "Non-binary", "Prefer not to say"]
         },
         {
           "id": "age",
@@ -118,13 +109,13 @@
           "location": "aboveStimulus",
           "type": "slider",
           "options": [
-            {"label": "1", "value": 1},
-            {"label": "2", "value": 2},
-            {"label": "3", "value": 3},
-            {"label": "4", "value": 4},
-            {"label": "5", "value": 5},
-            {"label": "6", "value": 6},
-            {"label": "7", "value": 7}
+            { "label": "1", "value": 1 },
+            { "label": "2", "value": 2 },
+            { "label": "3", "value": 3 },
+            { "label": "4", "value": 4 },
+            { "label": "5", "value": 5 },
+            { "label": "6", "value": 6 },
+            { "label": "7", "value": 7 }
           ],
           "startingValue": 4,
           "spacing": 1,
@@ -138,8 +129,13 @@
           "location": "aboveStimulus",
           "type": "slider",
           "options": [
-            {"label": "1", "value": 1}, {"label": "2", "value": 2}, {"label": "3", "value": 3}, {"label": "4", "value": 4},
-            {"label": "5", "value": 5}, {"label": "6", "value": 6}, {"label": "7", "value": 7}
+            { "label": "1", "value": 1 },
+            { "label": "2", "value": 2 },
+            { "label": "3", "value": 3 },
+            { "label": "4", "value": 4 },
+            { "label": "5", "value": 5 },
+            { "label": "6", "value": 6 },
+            { "label": "7", "value": 7 }
           ],
           "startingValue": 4,
           "spacing": 1,
@@ -153,8 +149,13 @@
           "location": "aboveStimulus",
           "type": "slider",
           "options": [
-            {"label": "1", "value": 1}, {"label": "2", "value": 2}, {"label": "3", "value": 3}, {"label": "4", "value": 4},
-            {"label": "5", "value": 5}, {"label": "6", "value": 6}, {"label": "7", "value": 7}
+            { "label": "1", "value": 1 },
+            { "label": "2", "value": 2 },
+            { "label": "3", "value": 3 },
+            { "label": "4", "value": 4 },
+            { "label": "5", "value": 5 },
+            { "label": "6", "value": 6 },
+            { "label": "7", "value": 7 }
           ],
           "startingValue": 4,
           "spacing": 1,
@@ -168,8 +169,13 @@
           "location": "aboveStimulus",
           "type": "slider",
           "options": [
-            {"label": "1", "value": 1}, {"label": "2", "value": 2}, {"label": "3", "value": 3}, {"label": "4", "value": 4},
-            {"label": "5", "value": 5}, {"label": "6", "value": 6}, {"label": "7", "value": 7}
+            { "label": "1", "value": 1 },
+            { "label": "2", "value": 2 },
+            { "label": "3", "value": 3 },
+            { "label": "4", "value": 4 },
+            { "label": "5", "value": 5 },
+            { "label": "6", "value": 6 },
+            { "label": "7", "value": 7 }
           ],
           "startingValue": 4,
           "spacing": 1,
@@ -183,8 +189,13 @@
           "location": "aboveStimulus",
           "type": "slider",
           "options": [
-            {"label": "1", "value": 1}, {"label": "2", "value": 2}, {"label": "3", "value": 3}, {"label": "4", "value": 4},
-            {"label": "5", "value": 5}, {"label": "6", "value": 6}, {"label": "7", "value": 7}
+            { "label": "1", "value": 1 },
+            { "label": "2", "value": 2 },
+            { "label": "3", "value": 3 },
+            { "label": "4", "value": 4 },
+            { "label": "5", "value": 5 },
+            { "label": "6", "value": 6 },
+            { "label": "7", "value": 7 }
           ],
           "startingValue": 4,
           "spacing": 1,
@@ -198,8 +209,13 @@
           "location": "aboveStimulus",
           "type": "slider",
           "options": [
-            {"label": "1", "value": 1}, {"label": "2", "value": 2}, {"label": "3", "value": 3}, {"label": "4", "value": 4},
-            {"label": "5", "value": 5}, {"label": "6", "value": 6}, {"label": "7", "value": 7}
+            { "label": "1", "value": 1 },
+            { "label": "2", "value": 2 },
+            { "label": "3", "value": 3 },
+            { "label": "4", "value": 4 },
+            { "label": "5", "value": 5 },
+            { "label": "6", "value": 6 },
+            { "label": "7", "value": 7 }
           ],
           "startingValue": 4,
           "spacing": 1,
@@ -208,11 +224,11 @@
         }
       ]
     },
-    "mock-email-1": {
+    "phishing-human-finance-1": {
       "type": "website",
       "path": "phishing-ai-questionnaire/assets/email-template.html",
       "parameters": {
-        "emailDataPath": "/phishing-ai-questionnaire/assets/mock_email_rich.json"
+        "emailDataPath": "/phishing-ai-questionnaire/assets/phishing-human-finance-1.json"
       },
       "withSidebar": true,
       "responseOrder": "fixed",
@@ -290,6 +306,61 @@
         }
       ]
     },
+    "phishing-human-finance-2": {
+      "type": "website",
+      "path": "phishing-ai-questionnaire/assets/email-template.html",
+      "parameters": {
+        "emailDataPath": "/phishing-ai-questionnaire/assets/phishing-human-finance-2.json"
+      },
+      "withSidebar": true,
+      "responseOrder": "fixed",
+      "response": [
+        {
+          "id": "phish-judgment-2",
+          "prompt": "Is this email a phishing attempt?",
+          "location": "sidebar",
+          "type": "radio",
+          "options": [
+            { "label": "Yes", "value": "yes" },
+            { "label": "No", "value": "no" }
+          ]
+        },
+        {
+          "id": "ai-judgment-2",
+          "prompt": "Do you think generative AI has been involved in the creation of this email?",
+          "location": "sidebar",
+          "type": "radio",
+          "options": [
+            { "label": "Yes", "value": "yes" },
+            { "label": "No", "value": "no" }
+          ]
+        },
+        {
+          "id": "ai-degree-involvment-2",
+          "prompt": "To what degree do you think generative AI was involved in the creation of this email?",
+          "location": "sidebar",
+          "type": "slider",
+          "options": [
+            { "label": "0", "value": 0 },
+            { "label": "25", "value": 25 },
+            { "label": "50", "value": 50 },
+            { "label": "75", "value": 75 },
+            { "label": "100", "value": 100 }
+          ],
+          "startingValue": 0,
+          "spacing": 25,
+          "snap": true,
+          "withBar": true
+        },
+        {
+          "id": "events-2",
+          "prompt": "Interaction log from the email view",
+          "location": "belowStimulus",
+          "type": "reactive",
+          "hidden": true
+        }
+      ]
+    },
     "feedback": {
       "type": "questionnaire",
       "instruction": "Thank you for participating in this study! Please click next to submit your responses.",
@@ -305,14 +376,15 @@
       ],
       "withSidebar": true
     }
-  },  
+  },
   "sequence": {
     "order": "fixed",
     "components": [
       "introduction",
       "personal-information",
       "privacy-concerns",
-      "mock-email-1",
+      "phishing-human-finance-1",
+      "phishing-human-finance-2",
       "feedback"
     ]
   }
