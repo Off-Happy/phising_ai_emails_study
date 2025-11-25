@@ -136,26 +136,25 @@
           const toAbs = (url) => {
             try {
               if (typeof url !== 'string' || !url) return url;
-              // external or special schemes
-              if (/^(https?:|data:|mailto:|tel:)/i.test(url)) return url;
+              if (/^(https?:|data:|mailto:|tel:)/i.test(url)) return url; // external or special schemes
 
               const parts = location.pathname.split('/').filter(Boolean);
-              const repoBase = parts.length > 0 ? `/${parts[0]}/` : '/';
-              const origin = location.origin;
-              const trimSlash = (s) => s.replace(/^\/+/, '');
+              const repoBase = parts.length > 0 ? `/${parts[0]}` : '';
+              const origin = location.origin; // e.g. https://user.github.io or http://localhost:5173
 
-              // Absolute path (starts with '/') -> origin + repoBase + trimmed
-              if (url.startsWith('/')) return origin + repoBase + trimSlash(url);
-
-              // Repo-root relative like 'phishing-ai-questionnaire/...'
-              // Avoid duplicating the repo segment (repoBase already includes it)
-              if (url.startsWith('phishing-ai-questionnaire/')) {
-                return origin + '/' + url;
+              // Leading slash: treat as repo-root relative
+              if (url.startsWith('/')) {
+                const trimmed = url.replace(/^\/+/, '');
+                return `${origin}${repoBase}/${trimmed}`;
               }
 
-              // Plain relative -> origin + current directory resolution
-              // Use URL with origin to avoid malformed baseURIs
-              return new URL(url, origin + repoBase).toString();
+              // Already starts with repoBase (without leading slash) -> don't duplicate
+              if (repoBase && url.startsWith(repoBase.slice(1) + '/')) {
+                return `${origin}/${url}`;
+              }
+
+              // Plain relative path -> prepend repo base
+              return `${origin}${repoBase}/${url.replace(/^\/+/, '')}`;
             } catch (e) {
               console.warn('[email-template] toAbs failed for', url, e);
               return url;
@@ -344,6 +343,7 @@
               try {
                 if (typeof spec === 'string') {
                   const url = toAbs(spec);
+                  console.debug('[email-template] fetch (ReVISit path):', { original: spec, resolved: url });
                   const res = await fetch(url);
                   if (!res.ok) throw new Error(`HTTP ${res.status}`);
                   spec = await res.json();
@@ -381,6 +381,7 @@
                 if (candidate) {
                   try {
                     const url = toAbs(candidate);
+                    console.debug('[email-template] fetch (query path):', { original: candidate, resolved: url });
                     const res = await fetch(url);
                     if (!res.ok) throw new Error(`HTTP ${res.status}`);
                     const spec = await res.json();
