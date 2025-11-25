@@ -55,25 +55,25 @@
           // external or special schemes
           if (/^(https?:|data:|mailto:|tel:)/i.test(url)) return url;
 
-          const getRepoBase = () => {
-            const parts = location.pathname.split('/').filter(Boolean);
-            return parts.length > 0 ? `/${parts[0]}/` : '/`';
-          };
-
-          const basePath = getRepoBase();
+          const parts = location.pathname.split('/').filter(Boolean);
+          const repoBase = parts.length > 0 ? `/${parts[0]}/` : '/';
+          const origin = location.origin;
           const trimSlash = (s) => s.replace(/^\/+/, '');
 
-          // If path starts with '/', make it repo-base absolute (GitHub Pages friendly)
-          if (url.startsWith('/')) return basePath + trimSlash(url);
+          // Absolute path (starts with '/') -> origin + repoBase + trimmed
+          if (url.startsWith('/')) return origin + repoBase + trimSlash(url);
 
-          // If path looks repo-root relative (e.g., 'phishing-ai-questionnaire/...'), also anchor to repo base
-          if (/^[^./].+/.test(url) && url.startsWith('phishing-ai-questionnaire/')) {
-            return basePath + trimSlash(url);
+          // Repo-root relative like 'phishing-ai-questionnaire/...'
+          // Avoid duplicating the repo segment (repoBase already includes it)
+          if (url.startsWith('phishing-ai-questionnaire/')) {
+            return origin + '/' + url;
           }
 
-          // Otherwise, resolve relative to current document
-          return new URL(url, document.baseURI).toString();
-        } catch {
+          // Plain relative -> origin + current directory resolution
+          // Use URL with origin to avoid malformed baseURIs
+          return new URL(url, origin + repoBase).toString();
+        } catch (e) {
+          console.warn('[email-template] toAbs failed for', url, e);
           return url;
         }
       };
@@ -244,6 +244,7 @@
   // Data intake (from Revisit or explicit URL)
   // ==========================================
   Revisit.onDataReceive(async (payload) => {
+  console.debug('[email-template] onDataReceive payload:', payload);
         // Accept payload.parameters.email (object or URL), direct payload.email,
         // legacy emailDataPath, or the entire object if it looks like an email spec.
         const params = (payload && typeof payload === 'object' && 'parameters' in payload)
@@ -263,13 +264,15 @@
           spec = params;
         }
 
-        if (typeof spec === 'string') {
+    if (typeof spec === 'string') {
           try {
-            const res = await fetch(toAbs(spec));
+      const resolved = toAbs(spec);
+      console.debug('[email-template] fetching email JSON from:', resolved);
+      const res = await fetch(resolved);
             if (!res.ok) throw new Error(`HTTP ${res.status}`);
             spec = await res.json();
           } catch (err) {
-            renderError(`Failed to load email JSON from URL: ${spec}. ${err}`);
+      renderError(`Failed to load email JSON from URL: ${spec}. ${err}`);
             throw err;
           }
         }
@@ -297,7 +300,9 @@
           const urlParam = new URLSearchParams(location.search).get('email');
           if (urlParam) {
             try {
-              const res = await fetch(toAbs(urlParam));
+              const resolved = toAbs(urlParam);
+              console.debug('[email-template] fetching email via ?email= from:', resolved);
+              const res = await fetch(resolved);
               if (!res.ok) throw new Error(`HTTP ${res.status}`);
               const spec = await res.json();
               state.t0 = performance.now();

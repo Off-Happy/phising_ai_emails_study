@@ -224,11 +224,11 @@
         }
       ]
     },
-  "phishing-human-finance-1": {
+    "phishing-human-finance": {
       "type": "website",
       "path": "phishing-ai-questionnaire/assets/email-template.html",
       "parameters": {
-    "emailDataPath": "phishing-ai-questionnaire/assets/phishing-human-finance-1.json"
+        "emailDataPath": "phishing-ai-questionnaire/assets/phishing-human-finance.json"
       },
       "withSidebar": true,
       "responseOrder": "fixed",
@@ -306,17 +306,17 @@
         }
       ]
     },
-  "phishing-human-finance-2": {
+    "phishing-human-shipping": {
       "type": "website",
       "path": "phishing-ai-questionnaire/assets/email-template.html",
       "parameters": {
-    "emailDataPath": "phishing-ai-questionnaire/assets/phishing-human-finance-2.json"
+        "emailDataPath": "phishing-ai-questionnaire/assets/phishing-human-shipping.json"
       },
       "withSidebar": true,
       "responseOrder": "fixed",
       "response": [
         {
-          "id": "phish-judgment-2",
+          "id": "phish-judgment-shipping",
           "prompt": "Is this email a phishing attempt?",
           "location": "sidebar",
           "type": "radio",
@@ -326,7 +326,7 @@
           ]
         },
         {
-          "id": "ai-judgment-2",
+          "id": "ai-judgment-shipping",
           "prompt": "Do you think generative AI has been involved in the creation of this email?",
           "location": "sidebar",
           "type": "radio",
@@ -336,7 +336,7 @@
           ]
         },
         {
-          "id": "ai-degree-involvment-2",
+          "id": "ai-degree-involvment-shipping",
           "prompt": "To what degree do you think generative AI was involved in the creation of this email?",
           "location": "sidebar",
           "type": "slider",
@@ -353,7 +353,62 @@
           "withBar": true
         },
         {
-          "id": "events-2",
+          "id": "events-shipping",
+          "prompt": "Interaction log from the email view",
+          "location": "belowStimulus",
+          "type": "reactive",
+          "hidden": true
+        }
+      ]
+    },
+    "phishing-human-prizes": {
+      "type": "website",
+      "path": "phishing-ai-questionnaire/assets/email-template.html",
+      "parameters": {
+        "emailDataPath": "phishing-ai-questionnaire/assets/phishing-human-prizes.json"
+      },
+      "withSidebar": true,
+      "responseOrder": "fixed",
+      "response": [
+        {
+          "id": "phish-judgment-prizes",
+          "prompt": "Is this email a phishing attempt?",
+          "location": "sidebar",
+          "type": "radio",
+          "options": [
+            { "label": "Yes", "value": "yes" },
+            { "label": "No", "value": "no" }
+          ]
+        },
+        {
+          "id": "ai-judgment-prizes",
+          "prompt": "Do you think generative AI has been involved in the creation of this email?",
+          "location": "sidebar",
+          "type": "radio",
+          "options": [
+            { "label": "Yes", "value": "yes" },
+            { "label": "No", "value": "no" }
+          ]
+        },
+        {
+          "id": "ai-degree-involvment-prizes",
+          "prompt": "To what degree do you think generative AI was involved in the creation of this email?",
+          "location": "sidebar",
+          "type": "slider",
+          "options": [
+            { "label": "0", "value": 0 },
+            { "label": "25", "value": 25 },
+            { "label": "50", "value": 50 },
+            { "label": "75", "value": 75 },
+            { "label": "100", "value": 100 }
+          ],
+          "startingValue": 0,
+          "spacing": 25,
+          "snap": true,
+          "withBar": true
+        },
+        {
+          "id": "events-prizes",
           "prompt": "Interaction log from the email view",
           "location": "belowStimulus",
           "type": "reactive",
@@ -383,8 +438,9 @@
       "introduction",
       "personal-information",
       "privacy-concerns",
-      "phishing-human-finance-1",
-      "phishing-human-finance-2",
+      "phishing-human-finance",
+      "phishing-human-shipping",
+      "phishing-human-prizes",
       "feedback"
     ]
   }
