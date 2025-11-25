@@ -224,11 +224,11 @@
         }
       ]
     },
-    "phishing-human-finance-1": {
+  "phishing-human-finance-1": {
       "type": "website",
       "path": "phishing-ai-questionnaire/assets/email-template.html",
       "parameters": {
-        "emailDataPath": "/phishing-ai-questionnaire/assets/phishing-human-finance-1.json"
+    "emailDataPath": "phishing-ai-questionnaire/assets/phishing-human-finance-1.json"
       },
       "withSidebar": true,
       "responseOrder": "fixed",
@@ -306,11 +306,11 @@
         }
       ]
     },
-    "phishing-human-finance-2": {
+  "phishing-human-finance-2": {
       "type": "website",
       "path": "phishing-ai-questionnaire/assets/email-template.html",
       "parameters": {
-        "emailDataPath": "/phishing-ai-questionnaire/assets/phishing-human-finance-2.json"
+    "emailDataPath": "phishing-ai-questionnaire/assets/phishing-human-finance-2.json"
       },
       "withSidebar": true,
       "responseOrder": "fixed",
