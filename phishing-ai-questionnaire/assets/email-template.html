@@ -52,10 +52,30 @@
       const toAbs = (url) => {
         try {
           if (typeof url !== 'string' || !url) return url;
-          if (/^https?:\/\//i.test(url)) return url;
-          if (url.startsWith('/')) return url;
-          return '/' + url.replace(/^\/+/, '');
-        } catch { return url; }
+          // external or special schemes
+          if (/^(https?:|data:|mailto:|tel:)/i.test(url)) return url;
+
+          const getRepoBase = () => {
+            const parts = location.pathname.split('/').filter(Boolean);
+            return parts.length > 0 ? `/${parts[0]}/` : '/`';
+          };
+
+          const basePath = getRepoBase();
+          const trimSlash = (s) => s.replace(/^\/+/, '');
+
+          // If path starts with '/', make it repo-base absolute (GitHub Pages friendly)
+          if (url.startsWith('/')) return basePath + trimSlash(url);
+
+          // If path looks repo-root relative (e.g., 'phishing-ai-questionnaire/...'), also anchor to repo base
+          if (/^[^./].+/.test(url) && url.startsWith('phishing-ai-questionnaire/')) {
+            return basePath + trimSlash(url);
+          }
+
+          // Otherwise, resolve relative to current document
+          return new URL(url, document.baseURI).toString();
+        } catch {
+          return url;
+        }
       };
       const hostOf = (url) => { try { return new URL(url, 'https://x.invalid').hostname.toLowerCase(); } catch { return ''; } };
       const fmtDate = (d) => {
