@@ -1,348 +1,428 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en" data-theme="light">
-<head>
-  <meta charset="utf-8" />
-  <title>Email Stimulus</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <!-- reVISit bridge -->
-  <script src="../../revisitUtilities/revisit-communicate.js"></script>
-  <style>
-    /*
+  <head>
+    <meta charset="utf-8" />
+    <title>Email Stimulus</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- reVISit bridge -->
+    <script src="../../revisitUtilities/revisit-communicate.js"></script>
+    <style>
+      /*
       Gmail-like light theme
       Keep styles simple and readable; focus on email content.
     */
-    html, body { background: #f1f3f4; color: #1f2937; }
-    body { font: 14px/1.5 system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; margin: 0; padding: 24px; }
-    .container { max-width: 860px; margin: 0 auto; }
-    .mail { background: #ffffff; border: 1px solid #e5e7eb; border-radius: 8px; box-shadow: 0 1px 2px rgba(0,0,0,0.05); overflow: hidden; }
-    .subject { padding: 16px 20px; border-bottom: 1px solid #eef2f7; font-size: 18px; font-weight: 600; }
-  .header { padding: 12px 20px; border-bottom: 1px solid #eef2f7; }
-  .meta-inline { display:flex; align-items:center; gap:12px; font-size:13px; color:#374151; }
-  .meta-inline .from-block { font-weight:600; }
-  .meta-inline .date-block { margin-left:auto; color:#6b7280; font-size:12px; }
-    .hline { display: flex; gap: 8px; margin: 6px 0; align-items: baseline; }
-    .hlabel { color: #6b7280; min-width: 64px; font-weight: 600; }
-    .hvalue { color: #111827; }
-    .actions { margin-left: auto; }
-    .btn { font: inherit; font-size: 12px; padding: 4px 8px; border: 1px solid #d1d5db; border-radius: 4px; background: #fff; cursor: pointer; }
-    .details { font: 12px/1.5 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; background:#f9fafb; padding:10px 12px; border:1px dashed #cbd5e1; border-radius:6px; margin-top:10px; color:#111827; }
-    .body { padding: 16px 20px; line-height: 1.6; color: #1f2937; }
-    .body a { color: #1a73e8; text-decoration: underline; }
-    .attachments { padding: 0 20px 16px; }
-    .imgs { display:flex; gap:12px; flex-wrap:wrap; }
-    .imgs img { max-width: 100%; height: auto; border-radius:4px; border:1px solid #e5e7eb; }
-  </style>
+      html,
+      body {
+        background: #f1f3f4;
+        color: #1f2937;
+      }
+      body {
+        font: 14px/1.5 system-ui, -apple-system, Segoe UI, Roboto, Arial,
+          sans-serif;
+        margin: 0;
+        padding: 24px;
+      }
+      .container {
+        max-width: 860px;
+        margin: 0 auto;
+      }
+      .mail {
+        background: #ffffff;
+        border: 1px solid #e5e7eb;
+        border-radius: 8px;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+        overflow: hidden;
+      }
+      .subject {
+        padding: 16px 20px;
+        border-bottom: 1px solid #eef2f7;
+        font-size: 18px;
+        font-weight: 600;
+      }
+      .header {
+        padding: 12px 20px;
+        border-bottom: 1px solid #eef2f7;
+      }
+      .meta-inline {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-size: 13px;
+        color: #374151;
+      }
+      .meta-inline .from-block {
+        font-weight: 600;
+      }
+      .meta-inline .date-block {
+        margin-left: auto;
+        color: #6b7280;
+        font-size: 12px;
+      }
+      .hline {
+        display: flex;
+        gap: 8px;
+        margin: 6px 0;
+        align-items: baseline;
+      }
+      .hlabel {
+        color: #6b7280;
+        min-width: 64px;
+        font-weight: 600;
+      }
+      .hvalue {
+        color: #111827;
+      }
+      .actions {
+        margin-left: auto;
+      }
+      .btn {
+        font: inherit;
+        font-size: 12px;
+        padding: 4px 8px;
+        border: 1px solid #d1d5db;
+        border-radius: 4px;
+        background: #fff;
+        cursor: pointer;
+      }
+      .details {
+        font: 12px/1.5 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+        background: #f9fafb;
+        padding: 10px 12px;
+        border: 1px dashed #cbd5e1;
+        border-radius: 6px;
+        margin-top: 10px;
+        color: #111827;
+      }
+      .body {
+        padding: 16px 20px;
+        line-height: 1.6;
+        color: #1f2937;
+      }
+      .body a {
+        color: #1a73e8;
+        text-decoration: underline;
+      }
+      .attachments {
+        padding: 0 20px 16px;
+      }
+      .imgs {
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+      }
+      .imgs img {
+        max-width: 100%;
+        height: auto;
+        border-radius: 4px;
+        border: 1px solid #e5e7eb;
+      }
+    </style>
   <script>
-    (function(){
-      // ---------- Revisit shim (for standalone preview) ----------
-      const Revisit = (function () {
-        if (window.Revisit) return window.Revisit;
-        const shim = {
-          _onData: null,
-          onDataReceive(fn) { this._onData = fn; },
-          postAnswers(payload) { console.debug('[Revisit shim] postAnswers', payload); },
-          postReady() { console.debug('[Revisit shim] postReady'); }
-        };
-        window.Revisit = shim;
-        return shim;
-      })();
-  // ==========================================
-  // Utilities
-  // ==========================================
-      const toAbs = (url) => {
-        try {
-          if (typeof url !== 'string' || !url) return url;
-          // external or special schemes
-          if (/^(https?:|data:|mailto:|tel:)/i.test(url)) return url;
-
-          const parts = location.pathname.split('/').filter(Boolean);
-          const repoBase = parts.length > 0 ? `/${parts[0]}/` : '/';
-          const origin = location.origin;
-          const trimSlash = (s) => s.replace(/^\/+/, '');
-
-          // Absolute path (starts with '/') -> origin + repoBase + trimmed
-          if (url.startsWith('/')) return origin + repoBase + trimSlash(url);
-
-          // Repo-root relative like 'phishing-ai-questionnaire/...'
-          // Avoid duplicating the repo segment (repoBase already includes it)
-          if (url.startsWith('phishing-ai-questionnaire/')) {
-            return origin + '/' + url;
-          }
-
-          // Plain relative -> origin + current directory resolution
-          // Use URL with origin to avoid malformed baseURIs
-          return new URL(url, origin + repoBase).toString();
-        } catch (e) {
-          console.warn('[email-template] toAbs failed for', url, e);
-          return url;
-        }
-      };
-      const hostOf = (url) => { try { return new URL(url, 'https://x.invalid').hostname.toLowerCase(); } catch { return ''; } };
-      const fmtDate = (d) => {
-        if (!d) return '';
-        const dt = new Date(d);
-        return isNaN(dt.getTime()) ? String(d) : dt.toLocaleString();
-      };
-      const debounce = (fn, ms=150) => { let h; return (...a)=>{ clearTimeout(h); h=setTimeout(()=>fn(...a), ms); }; };
-
-  // ==========================================
-  // State & Revisit wiring
-  // ==========================================
-      const state = {
-        events: [], t0: 0,
-        hdrHoverStart: null, hdrHoverMs: 0,
-        hdrVisibleStart: null, hdrVisibleMs: 0,
-        gotData: false
-      };
-      const now = () => Math.round(performance.now() - state.t0);
-      const log = (e) => state.events.push({ t: now(), ...e });
-      const postAnswersNow = () => {
-        Revisit.postAnswers({
-          events: state.events,
-          metrics: {
-            hdrHoverMs: Math.round(state.hdrHoverMs),
-            hdrVisibleMs: Math.round(state.hdrVisibleMs)
-          }
-        });
-      };
-      const postAnswersSoon = debounce(postAnswersNow, 120);
-      const postReadySoon = debounce(()=> Revisit.postReady(), 60);
-
+          // ---------- Revisit shim (for standalone preview) ----------
+          const Revisit = (function () {
+            if (window.Revisit) return window.Revisit;
+            const shim = {
+              _onData: null,
+              onDataReceive(fn) { this._onData = fn; },
+              postAnswers(payload) { console.debug('[Revisit shim] postAnswers', payload); },
+              postReady() { console.debug('[Revisit shim] postReady'); }
+            };
+            window.Revisit = shim;
+            return shim;
+          })();
       // ==========================================
-      // Rendering helpers
+      // Utilities
       // ==========================================
-
-      function renderError(message) {
-        const subject = document.getElementById('subject');
-        const bodyEl = document.getElementById('body');
-        if (subject) subject.textContent = 'Error loading email';
-        if (bodyEl) bodyEl.innerHTML = `<p style="color:#b91c1c"><strong>Error:</strong> ${message}</p>`;
-        console.error('[email-template]', message);
-      }
-
-      function renderEmail(p) {
-        // Accept synonyms
-        const fromName = p.fromName ?? p.senderName ?? '';
-        const from = p.from ?? p.fromEmail ?? '';
-        const to = p.to ?? p.recipient ?? '';
-        const cc = p.cc ?? '';
-        const date = fmtDate(p.date ?? '');
-        const subject = p.subject ?? '';
-        const bodyHTML = p.bodyHTML ?? p.bodyHtml ?? '';
-        const headerMeta = p.headerMeta ?? {};
-        const images = Array.isArray(p.images) ? p.images : [];
-
-        // Subject
-        document.getElementById('subject').textContent = subject;
-        document.getElementById('fromInline').textContent = `${fromName} <${from}>`;
-        document.getElementById('dateInline').textContent = date;
-
-        // Body
-        const bodyEl = document.getElementById('body');
-        if (bodyHTML) bodyEl.innerHTML = bodyHTML; // sanitize upstream when external
-
-        // Details
-        const details = document.getElementById('details');
-        details.innerHTML = '';
-        const lines = [
-          ['From', `${fromName} <${from}>`],
-          ['Reply-To', headerMeta.replyTo ?? from],
-          ['To', to],
-          ['Date', date],
-          ['Subject', subject]
-        ];
-        for (const [k, v] of lines) {
-          if (!v) continue;
-          const div = document.createElement('div');
-          const b = document.createElement('b'); b.textContent = k + ':'; div.appendChild(b);
-          div.append(' ', v);
-          details.appendChild(div);
-        }
-
-        // Images
-        const imgs = document.getElementById('imgs');
-        imgs.innerHTML = '';
-        for (const im of images) {
-          const img = document.createElement('img');
-          img.src = toAbs(im.src);
-          if (im.alt) img.alt = im.alt;
-          if (im.width) img.width = im.width;
-          if (im.height) img.height = im.height;
-          img.addEventListener('load', postReadySoon);
-          img.addEventListener('error', () => {
-            log({ type: 'imageError', src: img.src });
-            postReadySoon();
-          });
-          imgs.appendChild(img);
-        }
-
-        postReadySoon();
-      }
-
-      // ==========================================
-      // Interaction wiring
-      // ==========================================
-      function wireInteractions() {
-        const hdr = document.getElementById('hdr');
-  const toggle = document.getElementById('toggleDetails');
-        const details = document.getElementById('details');
-        const bodyEl = document.getElementById('body');
-
-        // Link interception
-        bodyEl.addEventListener('click', (e) => {
-          const a = e.target.closest('a'); if (!a) return;
-          e.preventDefault();
-          const href = a.getAttribute('href') || '';
-          log({ type: 'linkAttempt', kind: href.startsWith('mailto:') ? 'mailto' : href.startsWith('tel:') ? 'tel' : 'url', shown: (a.textContent||'').trim(), href, host: hostOf(href) });
-          postAnswersSoon();
-        }, true);
-
-        // Header hover
-  hdr.addEventListener('mouseenter', () => { state.hdrHoverStart = performance.now(); log({ type: 'hdrHoverEnter' }); postAnswersSoon(); });
-        hdr.addEventListener('mouseleave', () => {
-          if (state.hdrHoverStart) state.hdrHoverMs += performance.now() - state.hdrHoverStart;
-          state.hdrHoverStart = null; log({ type: 'hdrHoverLeave', hoverMs: Math.round(state.hdrHoverMs) }); postAnswersSoon();
-        });
-
-        // Header visibility (>=60%)
-        const io = new IntersectionObserver(([entry]) => {
-          if (entry.intersectionRatio >= 0.6 && state.hdrVisibleStart == null) {
-            state.hdrVisibleStart = performance.now(); log({ type: 'hdrVisibleEnter' }); postAnswersSoon();
-          } else if (entry.intersectionRatio < 0.6 && state.hdrVisibleStart != null) {
-            state.hdrVisibleMs += performance.now() - state.hdrVisibleStart;
-            state.hdrVisibleStart = null; log({ type: 'hdrVisibleLeave', visibleMs: Math.round(state.hdrVisibleMs) }); postAnswersSoon();
-          }
-        }, { threshold: [0, 0.6, 1] });
-        io.observe(hdr);
-
-        // Details toggle
-        toggle.setAttribute('aria-expanded', 'false');
-        toggle.addEventListener('click', () => {
-          const open = details.hidden;
-          details.hidden = !open;
-          toggle.textContent = open ? 'Hide details' : 'Show more';
-          toggle.setAttribute('aria-expanded', String(open));
-          log({ type: 'hdrDetailsToggle', opened: open });
-          postAnswersSoon();
-          postReadySoon();
-        });
-
-        // Recompute size on window resize
-        window.addEventListener('resize', postReadySoon);
-
-        // Flush on exit
-        window.addEventListener('visibilitychange', () => {
-          if (document.visibilityState === 'hidden') {
-            if (state.hdrHoverStart) { state.hdrHoverMs += performance.now() - state.hdrHoverStart; state.hdrHoverStart = null; }
-            if (state.hdrVisibleStart) { state.hdrVisibleMs += performance.now() - state.hdrVisibleStart; state.hdrVisibleStart = null; }
-            postAnswersNow();
-          }
-        });
-      }
-
-  // ==========================================
-  // Data intake (from Revisit or explicit URL)
-  // ==========================================
-  Revisit.onDataReceive(async (payload) => {
-  console.debug('[email-template] onDataReceive payload:', payload);
-        // Accept payload.parameters.email (object or URL), direct payload.email,
-        // legacy emailDataPath, or the entire object if it looks like an email spec.
-        const params = (payload && typeof payload === 'object' && 'parameters' in payload)
-          ? payload.parameters
-          : payload;
-
-        const looksLikeEmailObj = (obj) => !!obj && typeof obj === 'object' && (
-          'from' in obj || 'fromName' in obj || 'subject' in obj || 'bodyHTML' in obj || 'bodyHtml' in obj
-        );
-
-        let spec = null;
-        if (params && typeof params === 'object') {
-          if ('email' in params) spec = params.email;
-          else if ('emailDataPath' in params) spec = params.emailDataPath;
-          else if (looksLikeEmailObj(params)) spec = params;
-        } else if (typeof params === 'string') {
-          spec = params;
-        }
-
-    if (typeof spec === 'string') {
-          try {
-      const resolved = toAbs(spec);
-      console.debug('[email-template] fetching email JSON from:', resolved);
-      const res = await fetch(resolved);
-            if (!res.ok) throw new Error(`HTTP ${res.status}`);
-            spec = await res.json();
-          } catch (err) {
-      renderError(`Failed to load email JSON from URL: ${spec}. ${err}`);
-            throw err;
-          }
-        }
-
-  state.t0 = performance.now();
-  state.gotData = true;
-        if (spec && typeof spec === 'object') {
-          renderEmail(spec);
-          const linkCount = (document.getElementById('body').querySelectorAll('a') || []).length;
-          const imgCount = (document.getElementById('imgs').querySelectorAll('img') || []).length;
-          log({ type: 'trialStart', linkCount, imgCount });
-          postReadySoon();
-          postAnswersSoon();
-        } else {
-          renderError('No email data provided to the template.');
-          throw new Error('No email data provided to the template.');
-        }
-      });
-
-      window.addEventListener('DOMContentLoaded', () => {
-        wireInteractions();
-        // Standalone mode: allow explicit ?email=URL param. If absent, error instead of loading defaults.
-        setTimeout(async () => {
-          if (state.gotData) return; // Revisit delivered data
-          const urlParam = new URLSearchParams(location.search).get('email');
-          if (urlParam) {
+          const toAbs = (url) => {
             try {
-              const resolved = toAbs(urlParam);
-              console.debug('[email-template] fetching email via ?email= from:', resolved);
-              const res = await fetch(resolved);
-              if (!res.ok) throw new Error(`HTTP ${res.status}`);
-              const spec = await res.json();
-              state.t0 = performance.now();
-              renderEmail(spec);
-              const linkCount = (document.getElementById('body').querySelectorAll('a') || []).length;
-              const imgCount = (document.getElementById('imgs').querySelectorAll('img') || []).length;
-              log({ type: 'trialStart', linkCount, imgCount });
-              postReadySoon();
-              postAnswersSoon();
-              return;
-            } catch (err) {
-              renderError(`Failed to load email from query parameter: ${urlParam}. ${err}`);
-              throw err;
+              if (typeof url !== 'string' || !url) return url;
+              // external or special schemes
+              if (/^(https?:|data:|mailto:|tel:)/i.test(url)) return url;
+
+              const parts = location.pathname.split('/').filter(Boolean);
+              const repoBase = parts.length > 0 ? `/${parts[0]}/` : '/';
+              const origin = location.origin;
+              const trimSlash = (s) => s.replace(/^\/+/, '');
+
+              // Absolute path (starts with '/') -> origin + repoBase + trimmed
+              if (url.startsWith('/')) return origin + repoBase + trimSlash(url);
+
+              // Repo-root relative like 'phishing-ai-questionnaire/...'
+              // Avoid duplicating the repo segment (repoBase already includes it)
+              if (url.startsWith('phishing-ai-questionnaire/')) {
+                return origin + '/' + url;
+              }
+
+              // Plain relative -> origin + current directory resolution
+              // Use URL with origin to avoid malformed baseURIs
+              return new URL(url, origin + repoBase).toString();
+            } catch (e) {
+              console.warn('[email-template] toAbs failed for', url, e);
+              return url;
             }
+          };
+          const hostOf = (url) => { try { return new URL(url, 'https://x.invalid').hostname.toLowerCase(); } catch { return ''; } };
+          const fmtDate = (d) => {
+            if (!d) return '';
+            const dt = new Date(d);
+            return isNaN(dt.getTime()) ? String(d) : dt.toLocaleString();
+          };
+          const debounce = (fn, ms=150) => { let h; return (...a)=>{ clearTimeout(h); h=setTimeout(()=>fn(...a), ms); }; };
+
+      // ==========================================
+      // State & Revisit wiring
+      // ==========================================
+          const state = {
+            events: [], t0: 0,
+            hdrHoverStart: null, hdrHoverMs: 0,
+            hdrVisibleStart: null, hdrVisibleMs: 0,
+            gotData: false
+          };
+          const now = () => Math.round(performance.now() - state.t0);
+          const log = (e) => state.events.push({ t: now(), ...e });
+          const postAnswersNow = () => {
+            Revisit.postAnswers({
+              events: state.events,
+              metrics: {
+                hdrHoverMs: Math.round(state.hdrHoverMs),
+                hdrVisibleMs: Math.round(state.hdrVisibleMs)
+              }
+            });
+          };
+          const postAnswersSoon = debounce(postAnswersNow, 120);
+          const postReadySoon = debounce(()=> Revisit.postReady(), 60);
+
+          // ==========================================
+          // Rendering helpers
+          // ==========================================
+
+          function renderError(message) {
+            const subject = document.getElementById('subject');
+            const bodyEl = document.getElementById('body');
+            if (subject) subject.textContent = 'Error loading email';
+            if (bodyEl) bodyEl.innerHTML = `<p style="color:#b91c1c"><strong>Error:</strong> ${message}</p>`;
+            console.error('[email-template]', message);
           }
-          // No data via Revisit and no explicit ?email= param
-          renderError('No email provided. Pass parameters.email / emailDataPath (Revisit) or use ?email=URL in the address bar.');
-          throw new Error('Email template missing input');
-        }, 300);
-      });
-    })();
-  </script>
-</head>
-<body>
-  <div class="container">
-    <div class="mail" id="emailCard">
-      <div class="subject" id="subject">Subject line</div>
-      <div class="header" id="hdr">
-        <div class="meta-inline">
-          <span class="from-block" id="fromInline">Sender &lt;sender@example.com&gt;</span>
-          <span class="date-block" id="dateInline"></span>
-          <span class="actions"><button id="toggleDetails" class="btn" type="button">Show more</button></span>
+
+          function renderEmail(p) {
+            // Accept synonyms
+            const fromName = p.fromName ?? p.senderName ?? '';
+            const from = p.from ?? p.fromEmail ?? '';
+            const to = p.to ?? p.recipient ?? '';
+            const cc = p.cc ?? '';
+            const date = fmtDate(p.date ?? '');
+            const subject = p.subject ?? '';
+            const bodyHTML = p.bodyHTML ?? p.bodyHtml ?? '';
+            const headerMeta = p.headerMeta ?? {};
+            const images = Array.isArray(p.images) ? p.images : [];
+
+            // Subject
+            document.getElementById('subject').textContent = subject;
+            document.getElementById('fromInline').textContent = `${fromName} <${from}>`;
+            document.getElementById('dateInline').textContent = date;
+
+            // Body
+            const bodyEl = document.getElementById('body');
+            if (bodyHTML) bodyEl.innerHTML = bodyHTML; // sanitize upstream when external
+
+            // Details
+            const details = document.getElementById('details');
+            details.innerHTML = '';
+            const lines = [
+              ['From', `${fromName} <${from}>`],
+              ['Reply-To', headerMeta.replyTo ?? from],
+              ['To', to],
+              ['Date', date],
+              ['Subject', subject]
+            ];
+            for (const [k, v] of lines) {
+              if (!v) continue;
+              const div = document.createElement('div');
+              const b = document.createElement('b'); b.textContent = k + ':'; div.appendChild(b);
+              div.append(' ', v);
+              details.appendChild(div);
+            }
+
+            // Images
+            const imgs = document.getElementById('imgs');
+            imgs.innerHTML = '';
+            for (const im of images) {
+              const img = document.createElement('img');
+              img.src = toAbs(im.src);
+              if (im.alt) img.alt = im.alt;
+              if (im.width) img.width = im.width;
+              if (im.height) img.height = im.height;
+              img.addEventListener('load', postReadySoon);
+              img.addEventListener('error', () => {
+                log({ type: 'imageError', src: img.src });
+                postReadySoon();
+              });
+              imgs.appendChild(img);
+            }
+
+            postReadySoon();
+          }
+
+          // ==========================================
+          // Interaction wiring
+          // ==========================================
+          function wireInteractions() {
+            const hdr = document.getElementById('hdr');
+      const toggle = document.getElementById('toggleDetails');
+            const details = document.getElementById('details');
+            const bodyEl = document.getElementById('body');
+
+            // Link interception
+            bodyEl.addEventListener('click', (e) => {
+              const a = e.target.closest('a'); if (!a) return;
+              e.preventDefault();
+              const href = a.getAttribute('href') || '';
+              log({ type: 'linkAttempt', kind: href.startsWith('mailto:') ? 'mailto' : href.startsWith('tel:') ? 'tel' : 'url', shown: (a.textContent||'').trim(), href, host: hostOf(href) });
+              postAnswersSoon();
+            }, true);
+
+            // Header hover
+      hdr.addEventListener('mouseenter', () => { state.hdrHoverStart = performance.now(); log({ type: 'hdrHoverEnter' }); postAnswersSoon(); });
+            hdr.addEventListener('mouseleave', () => {
+              if (state.hdrHoverStart) state.hdrHoverMs += performance.now() - state.hdrHoverStart;
+              state.hdrHoverStart = null; log({ type: 'hdrHoverLeave', hoverMs: Math.round(state.hdrHoverMs) }); postAnswersSoon();
+            });
+
+            // Header visibility (>=60%)
+            const io = new IntersectionObserver(([entry]) => {
+              if (entry.intersectionRatio >= 0.6 && state.hdrVisibleStart == null) {
+                state.hdrVisibleStart = performance.now(); log({ type: 'hdrVisibleEnter' }); postAnswersSoon();
+              } else if (entry.intersectionRatio < 0.6 && state.hdrVisibleStart != null) {
+                state.hdrVisibleMs += performance.now() - state.hdrVisibleStart;
+                state.hdrVisibleStart = null; log({ type: 'hdrVisibleLeave', visibleMs: Math.round(state.hdrVisibleMs) }); postAnswersSoon();
+              }
+            }, { threshold: [0, 0.6, 1] });
+            io.observe(hdr);
+
+            // Details toggle
+            toggle.setAttribute('aria-expanded', 'false');
+            toggle.addEventListener('click', () => {
+              const open = details.hidden;
+              details.hidden = !open;
+              toggle.textContent = open ? 'Hide details' : 'Show more';
+              toggle.setAttribute('aria-expanded', String(open));
+              log({ type: 'hdrDetailsToggle', opened: open });
+              postAnswersSoon();
+              postReadySoon();
+            });
+
+            // Window events
+            window.addEventListener('resize', postReadySoon);
+            window.addEventListener('visibilitychange', () => {
+              if (document.visibilityState === 'hidden') {
+                if (state.hdrHoverStart) { state.hdrHoverMs += performance.now() - state.hdrHoverStart; state.hdrHoverStart = null; }
+                if (state.hdrVisibleStart) { state.hdrVisibleMs += performance.now() - state.hdrVisibleStart; state.hdrVisibleStart = null; }
+                Revisit.postAnswers({ events: state.events });
+              }
+            });
+          }
+
+            // Data intake (ReVISit or query params)
+            Revisit.onDataReceive(async (payload) => {
+              const params = (payload && typeof payload === 'object' && 'parameters' in payload)
+                ? payload.parameters
+                : payload;
+
+              const looksLikeEmailObj = (obj) => !!obj && typeof obj === 'object' && (
+                'from' in obj || 'fromName' in obj || 'subject' in obj || 'bodyHTML' in obj || 'bodyHtml' in obj
+              );
+
+              let spec = null;
+              if (params && typeof params === 'object') {
+                if ('email' in params) spec = params.email; // object or URL
+                else if ('emailDataPath' in params) spec = params.emailDataPath; // URL
+                else if (looksLikeEmailObj(params)) spec = params; // direct object
+              } else if (typeof params === 'string') {
+                spec = params;
+              }
+
+              try {
+                if (typeof spec === 'string') {
+                  const url = toAbs(spec);
+                  const res = await fetch(url);
+                  if (!res.ok) throw new Error(`HTTP ${res.status}`);
+                  spec = await res.json();
+                }
+              } catch (err) {
+                renderError(`Failed to load email JSON from URL: ${spec}. ${err}`);
+                throw err;
+              }
+
+              state.t0 = performance.now();
+              state.gotData = true;
+              if (spec && typeof spec === 'object') {
+                renderEmail(spec);
+                const linkCount = document.getElementById('body').querySelectorAll('a').length;
+                const imgCount = document.getElementById('imgs').querySelectorAll('img').length;
+                log({ type: 'trialStart', linkCount, imgCount });
+                postReadySoon();
+                postAnswersSoon();
+              } else {
+                renderError('No email data provided to the template.');
+                throw new Error('No email data provided to the template.');
+              }
+            });
+
+            window.addEventListener('DOMContentLoaded', () => {
+              wireInteractions();
+
+              // Standalone/Pages fallback: allow both ?email=URL and ?emailDataPath=URL
+              setTimeout(async () => {
+                if (state.gotData) return; // ReVISit delivered
+
+                const sp = new URLSearchParams(location.search);
+                const candidate = sp.get('email') || sp.get('emailDataPath');
+
+                if (candidate) {
+                  try {
+                    const url = toAbs(candidate);
+                    const res = await fetch(url);
+                    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+                    const spec = await res.json();
+                    state.t0 = performance.now();
+                    renderEmail(spec);
+                    const linkCount = document.getElementById('body').querySelectorAll('a').length;
+                    const imgCount = document.getElementById('imgs').querySelectorAll('img').length;
+                    log({ type: 'trialStart', linkCount, imgCount });
+                    postReadySoon();
+                    postAnswersSoon();
+                    return;
+                  } catch (err) {
+                    renderError(`Failed to load email from query parameter: ${candidate}. ${err}`);
+                    return; // do not throw to avoid masking ReVISit errors
+                  }
+                }
+
+                const hint = 'Pass parameters.email / emailDataPath (from ReVISit) or use ?email=URL / ?emailDataPath=URL in the address bar.';
+                renderError(`No email provided. ${hint}`);
+              }, 300);
+  });
+    </script>
+  </head>
+  <body>
+    <div class="container">
+      <div class="mail">
+        <div id="subject" class="subject">Loading…</div>
+        <div id="hdr" class="header">
+          <div class="meta-inline">
+            <div id="fromInline" class="from-block">—</div>
+            <div id="dateInline" class="date-block">—</div>
+            <div class="actions">
+              <button id="toggleDetails" class="btn" type="button">Show more</button>
+            </div>
+          </div>
+          <div id="details" class="details" hidden></div>
         </div>
-        <div id="details" class="details" hidden></div>
-      </div>
-  <div class="body" id="body"></div>
-      <div class="attachments">
-        <div class="imgs" id="imgs"></div>
+        <div id="body" class="body"></div>
+        <div class="attachments">
+          <div id="imgs" class="imgs"></div>
+        </div>
       </div>
     </div>
-  </div>
-</body>
+  </body>
 </html>

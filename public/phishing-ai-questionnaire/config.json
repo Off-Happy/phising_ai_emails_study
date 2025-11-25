@@ -416,6 +416,61 @@
         }
       ]
     },
+    "benign-finance": {
+      "type": "website",
+      "path": "phishing-ai-questionnaire/assets/email-template.html",
+      "parameters": {
+        "emailDataPath": "phishing-ai-questionnaire/assets/benign-finance.json"
+      },
+      "withSidebar": true,
+      "responseOrder": "fixed",
+      "response": [
+        {
+          "id": "phish-judgment-benign-finance",
+          "prompt": "Is this email a phishing attempt?",
+          "location": "sidebar",
+          "type": "radio",
+          "options": [
+            { "label": "Yes", "value": "yes" },
+            { "label": "No", "value": "no" }
+          ]
+        },
+        {
+          "id": "ai-judgment-benign-finance",
+          "prompt": "Do you think generative AI has been involved in the creation of this email?",
+          "location": "sidebar",
+          "type": "radio",
+          "options": [
+            { "label": "Yes", "value": "yes" },
+            { "label": "No", "value": "no" }
+          ]
+        },
+        {
+          "id": "ai-degree-involvment-benign-finance",
+          "prompt": "To what degree do you think generative AI was involved in the creation of this email?",
+          "location": "sidebar",
+          "type": "slider",
+          "options": [
+            { "label": "0", "value": 0 },
+            { "label": "25", "value": 25 },
+            { "label": "50", "value": 50 },
+            { "label": "75", "value": 75 },
+            { "label": "100", "value": 100 }
+          ],
+          "startingValue": 0,
+          "spacing": 25,
+          "snap": true,
+          "withBar": true
+        },
+        {
+          "id": "events-benign-finance",
+          "prompt": "Interaction log from the email view",
+          "location": "belowStimulus",
+          "type": "reactive",
+          "hidden": true
+        }
+      ]
+    },
     "feedback": {
       "type": "questionnaire",
       "instruction": "Thank you for participating in this study! Please click next to submit your responses.",
@@ -441,6 +496,7 @@
       "phishing-human-finance",
       "phishing-human-shipping",
       "phishing-human-prizes",
+      "benign-finance",
       "feedback"
     ]
   }
