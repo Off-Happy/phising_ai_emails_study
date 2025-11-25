@@ -1,0 +1,35 @@
+{
+  "fromName": "REPLACE: Sender display name",
+  "from": "sender@example.com",
+  "to": "recipient@example.com",
+  "cc": "optional.cc@example.com",
+  "date": "2025-11-25T15:30:00Z",
+  "subject": "REPLACE: Subject line",
+  "bodyHTML": "<p>REPLACE: Email HTML body goes here.</p><p><a href=\"https://example.com\">Example link</a></p>",
+  "headerMeta": {
+    "returnPath": "bounce@example.com",
+    "replyTo": "noreply@example.com",
+    "mailedBy": "mailer.example.com",
+    "signedBy": "example.com",
+    "dkim": "pass",
+    "spf": "pass"
+  },
+  "images": [
+    {
+      "src": "phishing-ai-questionnaire/assets/images/logo.png",
+      "alt": "Company Logo",
+      "width": 120,
+      "height": 40
+    }
+  ],
+  "notes": {
+    "aliasesAcceptedByTemplate": {
+      "fromName": ["senderName"],
+      "from": ["fromEmail"],
+      "to": ["recipient"],
+      "bodyHTML": ["bodyHtml"]
+    },
+    "about": "This file is an example schema for future emails. It is not loaded by the study unless referenced via parameters.email or parameters.emailDataPath.",
+    "howToUse": "In your component, set parameters.email to this path or parameters.emailDataPath to fetch it."
+  }
+}

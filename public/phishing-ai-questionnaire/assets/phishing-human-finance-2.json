@@ -1,0 +1,13 @@
+{
+	"fromName": "Help Center",
+	"from": "info.help-center.co.za_info.help-center.co.za_info.help-center.co.za177005@em5269.xfund02.ml",
+	"to": "jose@monkey.org",
+	"cc": "",
+	"date": "2022-12-20 23:00:27",
+	"subject": "Netflix : We're having some trouble with your current billing information",
+	"bodyHTML": "<p>HELLO,</p><p>Please note that, your monthly payment has been failed. Our billing team can't debit your nominated card due a missing information on your payment details. Please verify your details again to avoid any delay on your service.</p><p><a href=\"https://netflix.com/update/account/info\">https://netflix.com/update/account/info</a></p><p>We appreciate the opportunity to do business with you and ask for your understanding. <br/>Netflix support</p>",
+	"headerMeta": {
+		"replyTo": "info.help-center.co.za_info.help-center.co.za_info.help-center.co.za177005@em5269.xfund02.ml"
+	},
+	"images": []
+}

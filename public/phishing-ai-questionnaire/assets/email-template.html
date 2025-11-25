@@ -7,13 +7,19 @@
   <!-- reVISit bridge -->
   <script src="../../revisitUtilities/revisit-communicate.js"></script>
   <style>
-    /* Force a Gmail-like light theme */
+    /*
+      Gmail-like light theme
+      Keep styles simple and readable; focus on email content.
+    */
     html, body { background: #f1f3f4; color: #1f2937; }
     body { font: 14px/1.5 system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; margin: 0; padding: 24px; }
     .container { max-width: 860px; margin: 0 auto; }
     .mail { background: #ffffff; border: 1px solid #e5e7eb; border-radius: 8px; box-shadow: 0 1px 2px rgba(0,0,0,0.05); overflow: hidden; }
     .subject { padding: 16px 20px; border-bottom: 1px solid #eef2f7; font-size: 18px; font-weight: 600; }
-    .header { padding: 12px 20px; border-bottom: 1px solid #eef2f7; }
+  .header { padding: 12px 20px; border-bottom: 1px solid #eef2f7; }
+  .meta-inline { display:flex; align-items:center; gap:12px; font-size:13px; color:#374151; }
+  .meta-inline .from-block { font-weight:600; }
+  .meta-inline .date-block { margin-left:auto; color:#6b7280; font-size:12px; }
     .hline { display: flex; gap: 8px; margin: 6px 0; align-items: baseline; }
     .hlabel { color: #6b7280; min-width: 64px; font-weight: 600; }
     .hvalue { color: #111827; }
@@ -28,7 +34,21 @@
   </style>
   <script>
     (function(){
-      // ---------- Utilities ----------
+      // ---------- Revisit shim (for standalone preview) ----------
+      const Revisit = (function () {
+        if (window.Revisit) return window.Revisit;
+        const shim = {
+          _onData: null,
+          onDataReceive(fn) { this._onData = fn; },
+          postAnswers(payload) { console.debug('[Revisit shim] postAnswers', payload); },
+          postReady() { console.debug('[Revisit shim] postReady'); }
+        };
+        window.Revisit = shim;
+        return shim;
+      })();
+  // ==========================================
+  // Utilities
+  // ==========================================
       const toAbs = (url) => {
         try {
           if (typeof url !== 'string' || !url) return url;
@@ -45,11 +65,14 @@
       };
       const debounce = (fn, ms=150) => { let h; return (...a)=>{ clearTimeout(h); h=setTimeout(()=>fn(...a), ms); }; };
 
-      // ---------- State ----------
+  // ==========================================
+  // State & Revisit wiring
+  // ==========================================
       const state = {
         events: [], t0: 0,
         hdrHoverStart: null, hdrHoverMs: 0,
         hdrVisibleStart: null, hdrVisibleMs: 0,
+        gotData: false
       };
       const now = () => Math.round(performance.now() - state.t0);
       const log = (e) => state.events.push({ t: now(), ...e });
@@ -65,8 +88,19 @@
       const postAnswersSoon = debounce(postAnswersNow, 120);
       const postReadySoon = debounce(()=> Revisit.postReady(), 60);
 
-      // ---------- Rendering ----------
-      function applyParams(p) {
+      // ==========================================
+      // Rendering helpers
+      // ==========================================
+
+      function renderError(message) {
+        const subject = document.getElementById('subject');
+        const bodyEl = document.getElementById('body');
+        if (subject) subject.textContent = 'Error loading email';
+        if (bodyEl) bodyEl.innerHTML = `<p style="color:#b91c1c"><strong>Error:</strong> ${message}</p>`;
+        console.error('[email-template]', message);
+      }
+
+      function renderEmail(p) {
         // Accept synonyms
         const fromName = p.fromName ?? p.senderName ?? '';
         const from = p.from ?? p.fromEmail ?? '';
@@ -80,13 +114,8 @@
 
         // Subject
         document.getElementById('subject').textContent = subject;
-
-        // Header rows
-        document.getElementById('fromName').textContent = fromName;
-        document.getElementById('fromAddr').textContent = from;
-        document.getElementById('toAddr').textContent = to;
-        document.getElementById('ccAddr').textContent = cc;
-        document.getElementById('dateVal').textContent = date;
+        document.getElementById('fromInline').textContent = `${fromName} <${from}>`;
+        document.getElementById('dateInline').textContent = date;
 
         // Body
         const bodyEl = document.getElementById('body');
@@ -96,12 +125,11 @@
         const details = document.getElementById('details');
         details.innerHTML = '';
         const lines = [
-          ['Return-Path', headerMeta.returnPath ?? from],
+          ['From', `${fromName} <${from}>`],
           ['Reply-To', headerMeta.replyTo ?? from],
-          ['Mailed-By', headerMeta.mailedBy ?? ''],
-          ['Signed-By', headerMeta.signedBy ?? ''],
-          ['DKIM', headerMeta.dkim ?? ''],
-          ['SPF', headerMeta.spf ?? ''],
+          ['To', to],
+          ['Date', date],
+          ['Subject', subject]
         ];
         for (const [k, v] of lines) {
           if (!v) continue;
@@ -131,10 +159,12 @@
         postReadySoon();
       }
 
-      // ---------- Interaction wiring ----------
+      // ==========================================
+      // Interaction wiring
+      // ==========================================
       function wireInteractions() {
         const hdr = document.getElementById('hdr');
-        const toggle = document.getElementById('toggleDetails');
+  const toggle = document.getElementById('toggleDetails');
         const details = document.getElementById('details');
         const bodyEl = document.getElementById('body');
 
@@ -170,7 +200,7 @@
         toggle.addEventListener('click', () => {
           const open = details.hidden;
           details.hidden = !open;
-          toggle.textContent = open ? 'Hide details' : 'Show details';
+          toggle.textContent = open ? 'Hide details' : 'Show more';
           toggle.setAttribute('aria-expanded', String(open));
           log({ type: 'hdrDetailsToggle', opened: open });
           postAnswersSoon();
@@ -190,8 +220,10 @@
         });
       }
 
-      // ---------- Data intake ----------
-      Revisit.onDataReceive(async (payload) => {
+  // ==========================================
+  // Data intake (from Revisit or explicit URL)
+  // ==========================================
+  Revisit.onDataReceive(async (payload) => {
         // Accept payload.parameters.email (object or URL), direct payload.email,
         // legacy emailDataPath, or the entire object if it looks like an email spec.
         const params = (payload && typeof payload === 'object' && 'parameters' in payload)
@@ -217,32 +249,54 @@
             if (!res.ok) throw new Error(`HTTP ${res.status}`);
             spec = await res.json();
           } catch (err) {
-            console.error('[email-template] Failed to load email JSON:', spec, err);
-            spec = null;
+            renderError(`Failed to load email JSON from URL: ${spec}. ${err}`);
+            throw err;
           }
         }
 
-        state.t0 = performance.now();
+  state.t0 = performance.now();
+  state.gotData = true;
         if (spec && typeof spec === 'object') {
-          applyParams(spec);
+          renderEmail(spec);
+          const linkCount = (document.getElementById('body').querySelectorAll('a') || []).length;
+          const imgCount = (document.getElementById('imgs').querySelectorAll('img') || []).length;
+          log({ type: 'trialStart', linkCount, imgCount });
+          postReadySoon();
+          postAnswersSoon();
         } else {
-          console.warn('[email-template] No email spec received; showing placeholder. Payload was:', payload);
-          const subj = document.getElementById('subject');
-          const bodyEl = document.getElementById('body');
-          if (subj) subj.textContent = 'No email data received';
-          if (bodyEl) bodyEl.innerHTML = '<p>The study did not pass an email spec to this HTML stimulus.</p>' +
-            '<p>Debug keys: <code>' + (payload && typeof payload === 'object' ? Object.keys(payload).join(', ') : String(payload)) + '</code></p>';
+          renderError('No email data provided to the template.');
+          throw new Error('No email data provided to the template.');
         }
-
-        const linkCount = (document.getElementById('body').querySelectorAll('a') || []).length;
-        const imgCount = (document.getElementById('imgs').querySelectorAll('img') || []).length;
-  log({ type: 'trialStart', linkCount, imgCount });
-  postReadySoon();
-  postAnswersSoon();
       });
 
       window.addEventListener('DOMContentLoaded', () => {
         wireInteractions();
+        // Standalone mode: allow explicit ?email=URL param. If absent, error instead of loading defaults.
+        setTimeout(async () => {
+          if (state.gotData) return; // Revisit delivered data
+          const urlParam = new URLSearchParams(location.search).get('email');
+          if (urlParam) {
+            try {
+              const res = await fetch(toAbs(urlParam));
+              if (!res.ok) throw new Error(`HTTP ${res.status}`);
+              const spec = await res.json();
+              state.t0 = performance.now();
+              renderEmail(spec);
+              const linkCount = (document.getElementById('body').querySelectorAll('a') || []).length;
+              const imgCount = (document.getElementById('imgs').querySelectorAll('img') || []).length;
+              log({ type: 'trialStart', linkCount, imgCount });
+              postReadySoon();
+              postAnswersSoon();
+              return;
+            } catch (err) {
+              renderError(`Failed to load email from query parameter: ${urlParam}. ${err}`);
+              throw err;
+            }
+          }
+          // No data via Revisit and no explicit ?email= param
+          renderError('No email provided. Pass parameters.email / emailDataPath (Revisit) or use ?email=URL in the address bar.');
+          throw new Error('Email template missing input');
+        }, 300);
       });
     })();
   </script>
@@ -252,17 +306,14 @@
     <div class="mail" id="emailCard">
       <div class="subject" id="subject">Subject line</div>
       <div class="header" id="hdr">
-        <div class="hline"><span class="hlabel">From</span><span class="hvalue"><span id="fromName">Sender</span> &lt;<span id="fromAddr">sender@example.com</span>&gt;</span><span class="actions"><button id="toggleDetails" class="btn" type="button">Show details</button></span></div>
-        <div class="hline"><span class="hlabel">To</span><span class="hvalue" id="toAddr">recipient@example.com</span></div>
-        <div class="hline"><span class="hlabel">Cc</span><span class="hvalue" id="ccAddr"></span></div>
-        <div class="hline"><span class="hlabel">Date</span><span class="hvalue" id="dateVal"></span></div>
+        <div class="meta-inline">
+          <span class="from-block" id="fromInline">Sender &lt;sender@example.com&gt;</span>
+          <span class="date-block" id="dateInline"></span>
+          <span class="actions"><button id="toggleDetails" class="btn" type="button">Show more</button></span>
+        </div>
         <div id="details" class="details" hidden></div>
       </div>
-      <div class="body" id="body">
-        <p>Dear user,</p>
-        <p>This is a placeholder email. Links are disabled and will be logged when clicked.</p>
-        <p>Regards,<br>Team</p>
-      </div>
+  <div class="body" id="body"></div>
       <div class="attachments">
         <div class="imgs" id="imgs"></div>
       </div>
