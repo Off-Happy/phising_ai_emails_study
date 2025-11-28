@@ -20,10 +20,20 @@
     "introduction": {
       "type": "markdown",
       "path": "phishing-ai-questionnaire/assets/introduction.md",
-      "response": []
+      "response": [
+        {
+          "id": "consent",
+          "prompt": "Please consent to storing and processing your responses.",
+          "required": true,
+          "location": "belowStimulus",
+          "type": "checkbox",
+          "options": [{ "label": "I consent", "value": "agree" }]
+        }
+      ]
     },
     "personal-information": {
       "type": "questionnaire",
+      "instruction": "Please answer each question: for dropdowns, choose the most appropriate option; for sliders, use 1–7 (agreement statements: 1=Strongly disagree, 7=Strongly agree; frequency: 1=Never, 7=Very often).",
       "response": [
         {
           "id": "gender",
@@ -52,8 +62,24 @@
           ]
         },
         {
+          "id": "continent",
+          "prompt": "On which continent do you live?",
+          "required": true,
+          "location": "aboveStimulus",
+          "type": "dropdown",
+          "placeholder": "Please select an option",
+          "options": [
+            "Europe",
+            "North America",
+            "South America",
+            "Asia",
+            "Africa",
+            "Australia/Oceania"
+          ]
+        },
+        {
           "id": "education-level",
-          "prompt": "What is your highest level of education?",
+          "prompt": "What is your highest level of education achieved?",
           "required": true,
           "location": "aboveStimulus",
           "type": "dropdown",
@@ -64,21 +90,6 @@
             "Bachelor's degree",
             "Master's degree",
             "Doctorate or higher"
-          ]
-        },
-        {
-          "id": "email-experience-english",
-          "prompt": "How often do you use email in english language in your daily life?",
-          "required": true,
-          "location": "aboveStimulus",
-          "type": "dropdown",
-          "placeholder": "Please select an option",
-          "options": [
-            "Multiple times a day",
-            "Once a day",
-            "A few times a week",
-            "Rarely",
-            "Never"
           ]
         },
         {
@@ -95,16 +106,10 @@
             "Elementary proficiency",
             "Beginner"
           ]
-        }
-      ]
-    },
-    "privacy-concerns": {
-      "type": "questionnaire",
-      "instruction": "Please indicate how much you agree or disagree with the following statements.",
-      "response": [
+        },
         {
-          "id": "concern-open-email",
-          "prompt": "I am cautious when opening emails that contain links or attachments.",
+          "id": "email-experience-english",
+          "prompt": "How often do you use email in English?",
           "required": true,
           "location": "aboveStimulus",
           "type": "slider",
@@ -123,8 +128,48 @@
           "withBar": true
         },
         {
-          "id": "concern-verify-sender",
-          "prompt": "I usually verify the sender’s identity before interacting with an email.",
+          "id": "email-sender",
+          "prompt": "I always verify the sender's email address before interacting with an email.",
+          "required": true,
+          "location": "aboveStimulus",
+          "type": "slider",
+          "options": [
+            { "label": "1", "value": 1 },
+            { "label": "2", "value": 2 },
+            { "label": "3", "value": 3 },
+            { "label": "4", "value": 4 },
+            { "label": "5", "value": 5 },
+            { "label": "6", "value": 6 },
+            { "label": "7", "value": 7 }
+          ],
+          "startingValue": 4,
+          "spacing": 1,
+          "snap": true,
+          "withBar": true
+        },
+        {
+          "id": "email-links",
+          "prompt": "I always verify links in an email before clicking on them.",
+          "required": true,
+          "location": "aboveStimulus",
+          "type": "slider",
+          "options": [
+            { "label": "1", "value": 1 },
+            { "label": "2", "value": 2 },
+            { "label": "3", "value": 3 },
+            { "label": "4", "value": 4 },
+            { "label": "5", "value": 5 },
+            { "label": "6", "value": 6 },
+            { "label": "7", "value": 7 }
+          ],
+          "startingValue": 4,
+          "spacing": 1,
+          "snap": true,
+          "withBar": true
+        },
+        {
+          "id": "email-attachments",
+          "prompt": "I always verify email attachments before opening them.",
           "required": true,
           "location": "aboveStimulus",
           "type": "slider",
@@ -161,66 +206,6 @@
           "spacing": 1,
           "snap": true,
           "withBar": true
-        },
-        {
-          "id": "concern-transparency",
-          "prompt": "I find it worrying when companies do not clearly explain how they use my personal information.",
-          "required": true,
-          "location": "aboveStimulus",
-          "type": "slider",
-          "options": [
-            { "label": "1", "value": 1 },
-            { "label": "2", "value": 2 },
-            { "label": "3", "value": 3 },
-            { "label": "4", "value": 4 },
-            { "label": "5", "value": 5 },
-            { "label": "6", "value": 6 },
-            { "label": "7", "value": 7 }
-          ],
-          "startingValue": 4,
-          "spacing": 1,
-          "snap": true,
-          "withBar": true
-        },
-        {
-          "id": "concern-control",
-          "prompt": "It is important to me to have control over how my personal information is used online.",
-          "required": true,
-          "location": "aboveStimulus",
-          "type": "slider",
-          "options": [
-            { "label": "1", "value": 1 },
-            { "label": "2", "value": 2 },
-            { "label": "3", "value": 3 },
-            { "label": "4", "value": 4 },
-            { "label": "5", "value": 5 },
-            { "label": "6", "value": 6 },
-            { "label": "7", "value": 7 }
-          ],
-          "startingValue": 4,
-          "spacing": 1,
-          "snap": true,
-          "withBar": true
-        },
-        {
-          "id": "concern-online-privacy",
-          "prompt": "I am concerned about my privacy when interacting with online services.",
-          "required": true,
-          "location": "aboveStimulus",
-          "type": "slider",
-          "options": [
-            { "label": "1", "value": 1 },
-            { "label": "2", "value": 2 },
-            { "label": "3", "value": 3 },
-            { "label": "4", "value": 4 },
-            { "label": "5", "value": 5 },
-            { "label": "6", "value": 6 },
-            { "label": "7", "value": 7 }
-          ],
-          "startingValue": 4,
-          "spacing": 1,
-          "snap": true,
-          "withBar": true
         }
       ]
     },
@@ -235,65 +220,39 @@
       "response": [
         {
           "id": "phish-judgment",
-          "prompt": "Is this email a phishing attempt?",
-          "location": "sidebar",
-          "type": "radio",
-          "options": [
-            {
-              "label": "Yes",
-              "value": "yes"
-            },
-            {
-              "label": "No",
-              "value": "no"
-            }
-          ]
-        },
-        {
-          "id": "ai-judgment",
-          "prompt": "Do you think generative AI has been involved in the creation of this email?",
-          "location": "sidebar",
-          "type": "radio",
-          "options": [
-            {
-              "label": "Yes",
-              "value": "yes"
-            },
-            {
-              "label": "No",
-              "value": "no"
-            }
-          ]
-        },
-        {
-          "id": "ai-degree-involvment",
-          "prompt": "To what degree do you think generative AI was involved in the creation of this email?",
+          "prompt": "To what degree do you think this email is a phishing attempt? (1=Very unlikely, 7=Very likely)",
           "location": "sidebar",
           "type": "slider",
           "options": [
-            {
-              "label": "0",
-              "value": 0
-            },
-            {
-              "label": "25",
-              "value": 25
-            },
-            {
-              "label": "50",
-              "value": 50
-            },
-            {
-              "label": "75",
-              "value": 75
-            },
-            {
-              "label": "100",
-              "value": 100
-            }
+            { "label": "1", "value": 1 },
+            { "label": "2", "value": 2 },
+            { "label": "3", "value": 3 },
+            { "label": "4", "value": 4 },
+            { "label": "5", "value": 5 },
+            { "label": "6", "value": 6 },
+            { "label": "7", "value": 7 }
           ],
-          "startingValue": 0,
-          "spacing": 25,
+          "startingValue": 4,
+          "spacing": 1,
+          "snap": true,
+          "withBar": true
+        },
+        {
+          "id": "ai-judgment",
+          "prompt": "To what degree do you think generative AI was involved in creating this email? (1=Not at all, 7=Definitely)",
+          "location": "sidebar",
+          "type": "slider",
+          "options": [
+            { "label": "1", "value": 1 },
+            { "label": "2", "value": 2 },
+            { "label": "3", "value": 3 },
+            { "label": "4", "value": 4 },
+            { "label": "5", "value": 5 },
+            { "label": "6", "value": 6 },
+            { "label": "7", "value": 7 }
+          ],
+          "startingValue": 4,
+          "spacing": 1,
           "snap": true,
           "withBar": true
         },
@@ -316,44 +275,45 @@
       "responseOrder": "fixed",
       "response": [
         {
-          "id": "phish-judgment-shipping",
-          "prompt": "Is this email a phishing attempt?",
-          "location": "sidebar",
-          "type": "radio",
-          "options": [
-            { "label": "Yes", "value": "yes" },
-            { "label": "No", "value": "no" }
-          ]
-        },
-        {
-          "id": "ai-judgment-shipping",
-          "prompt": "Do you think generative AI has been involved in the creation of this email?",
-          "location": "sidebar",
-          "type": "radio",
-          "options": [
-            { "label": "Yes", "value": "yes" },
-            { "label": "No", "value": "no" }
-          ]
-        },
-        {
-          "id": "ai-degree-involvment-shipping",
-          "prompt": "To what degree do you think generative AI was involved in the creation of this email?",
+          "id": "phish-judgment",
+          "prompt": "To what degree do you think this email is a phishing attempt? (1=Very unlikely, 7=Very likely)",
           "location": "sidebar",
           "type": "slider",
           "options": [
-            { "label": "0", "value": 0 },
-            { "label": "25", "value": 25 },
-            { "label": "50", "value": 50 },
-            { "label": "75", "value": 75 },
-            { "label": "100", "value": 100 }
+            { "label": "1", "value": 1 },
+            { "label": "2", "value": 2 },
+            { "label": "3", "value": 3 },
+            { "label": "4", "value": 4 },
+            { "label": "5", "value": 5 },
+            { "label": "6", "value": 6 },
+            { "label": "7", "value": 7 }
           ],
-          "startingValue": 0,
-          "spacing": 25,
+          "startingValue": 4,
+          "spacing": 1,
           "snap": true,
           "withBar": true
         },
         {
-          "id": "events-shipping",
+          "id": "ai-judgment",
+          "prompt": "To what degree do you think generative AI was involved in creating this email? (1=Not at all, 7=Definitely)",
+          "location": "sidebar",
+          "type": "slider",
+          "options": [
+            { "label": "1", "value": 1 },
+            { "label": "2", "value": 2 },
+            { "label": "3", "value": 3 },
+            { "label": "4", "value": 4 },
+            { "label": "5", "value": 5 },
+            { "label": "6", "value": 6 },
+            { "label": "7", "value": 7 }
+          ],
+          "startingValue": 4,
+          "spacing": 1,
+          "snap": true,
+          "withBar": true
+        },
+        {
+          "id": "events",
           "prompt": "Interaction log from the email view",
           "location": "belowStimulus",
           "type": "reactive",
@@ -371,44 +331,45 @@
       "responseOrder": "fixed",
       "response": [
         {
-          "id": "phish-judgment-prizes",
-          "prompt": "Is this email a phishing attempt?",
-          "location": "sidebar",
-          "type": "radio",
-          "options": [
-            { "label": "Yes", "value": "yes" },
-            { "label": "No", "value": "no" }
-          ]
-        },
-        {
-          "id": "ai-judgment-prizes",
-          "prompt": "Do you think generative AI has been involved in the creation of this email?",
-          "location": "sidebar",
-          "type": "radio",
-          "options": [
-            { "label": "Yes", "value": "yes" },
-            { "label": "No", "value": "no" }
-          ]
-        },
-        {
-          "id": "ai-degree-involvment-prizes",
-          "prompt": "To what degree do you think generative AI was involved in the creation of this email?",
+          "id": "phish-judgment",
+          "prompt": "To what degree do you think this email is a phishing attempt? (1=Very unlikely, 7=Very likely)",
           "location": "sidebar",
           "type": "slider",
           "options": [
-            { "label": "0", "value": 0 },
-            { "label": "25", "value": 25 },
-            { "label": "50", "value": 50 },
-            { "label": "75", "value": 75 },
-            { "label": "100", "value": 100 }
+            { "label": "1", "value": 1 },
+            { "label": "2", "value": 2 },
+            { "label": "3", "value": 3 },
+            { "label": "4", "value": 4 },
+            { "label": "5", "value": 5 },
+            { "label": "6", "value": 6 },
+            { "label": "7", "value": 7 }
           ],
-          "startingValue": 0,
-          "spacing": 25,
+          "startingValue": 4,
+          "spacing": 1,
           "snap": true,
           "withBar": true
         },
         {
-          "id": "events-prizes",
+          "id": "ai-judgment",
+          "prompt": "To what degree do you think generative AI was involved in creating this email? (1=Not at all, 7=Definitely)",
+          "location": "sidebar",
+          "type": "slider",
+          "options": [
+            { "label": "1", "value": 1 },
+            { "label": "2", "value": 2 },
+            { "label": "3", "value": 3 },
+            { "label": "4", "value": 4 },
+            { "label": "5", "value": 5 },
+            { "label": "6", "value": 6 },
+            { "label": "7", "value": 7 }
+          ],
+          "startingValue": 4,
+          "spacing": 1,
+          "snap": true,
+          "withBar": true
+        },
+        {
+          "id": "events",
           "prompt": "Interaction log from the email view",
           "location": "belowStimulus",
           "type": "reactive",
@@ -426,48 +387,183 @@
       "responseOrder": "fixed",
       "response": [
         {
-          "id": "phish-judgment-benign-finance",
-          "prompt": "Is this email a phishing attempt?",
-          "location": "sidebar",
-          "type": "radio",
-          "options": [
-            { "label": "Yes", "value": "yes" },
-            { "label": "No", "value": "no" }
-          ]
-        },
-        {
-          "id": "ai-judgment-benign-finance",
-          "prompt": "Do you think generative AI has been involved in the creation of this email?",
-          "location": "sidebar",
-          "type": "radio",
-          "options": [
-            { "label": "Yes", "value": "yes" },
-            { "label": "No", "value": "no" }
-          ]
-        },
-        {
-          "id": "ai-degree-involvment-benign-finance",
-          "prompt": "To what degree do you think generative AI was involved in the creation of this email?",
+          "id": "phish-judgment",
+          "prompt": "To what degree do you think this email is a phishing attempt? (1=Very unlikely, 7=Very likely)",
           "location": "sidebar",
           "type": "slider",
           "options": [
-            { "label": "0", "value": 0 },
-            { "label": "25", "value": 25 },
-            { "label": "50", "value": 50 },
-            { "label": "75", "value": 75 },
-            { "label": "100", "value": 100 }
+            { "label": "1", "value": 1 },
+            { "label": "2", "value": 2 },
+            { "label": "3", "value": 3 },
+            { "label": "4", "value": 4 },
+            { "label": "5", "value": 5 },
+            { "label": "6", "value": 6 },
+            { "label": "7", "value": 7 }
           ],
-          "startingValue": 0,
-          "spacing": 25,
+          "startingValue": 4,
+          "spacing": 1,
           "snap": true,
           "withBar": true
         },
         {
-          "id": "events-benign-finance",
+          "id": "ai-judgment",
+          "prompt": "To what degree do you think generative AI was involved in creating this email? (1=Not at all, 7=Definitely)",
+          "location": "sidebar",
+          "type": "slider",
+          "options": [
+            { "label": "1", "value": 1 },
+            { "label": "2", "value": 2 },
+            { "label": "3", "value": 3 },
+            { "label": "4", "value": 4 },
+            { "label": "5", "value": 5 },
+            { "label": "6", "value": 6 },
+            { "label": "7", "value": 7 }
+          ],
+          "startingValue": 4,
+          "spacing": 1,
+          "snap": true,
+          "withBar": true
+        },
+        {
+          "id": "events",
           "prompt": "Interaction log from the email view",
           "location": "belowStimulus",
           "type": "reactive",
           "hidden": true
+        }
+      ]
+    },
+    "benign-prizes": {
+      "type": "website",
+      "path": "phishing-ai-questionnaire/assets/email-template.html",
+      "parameters": {
+        "emailDataPath": "phishing-ai-questionnaire/assets/benign-prizes.json"
+      },
+      "withSidebar": true,
+      "responseOrder": "fixed",
+      "response": [
+        {
+          "id": "phish-judgment",
+          "prompt": "To what degree do you think this email is a phishing attempt? (1=Very unlikely, 7=Very likely)",
+          "location": "sidebar",
+          "type": "slider",
+          "options": [
+            { "label": "1", "value": 1 },
+            { "label": "2", "value": 2 },
+            { "label": "3", "value": 3 },
+            { "label": "4", "value": 4 },
+            { "label": "5", "value": 5 },
+            { "label": "6", "value": 6 },
+            { "label": "7", "value": 7 }
+          ],
+          "startingValue": 4,
+          "spacing": 1,
+          "snap": true,
+          "withBar": true
+        },
+        {
+          "id": "ai-judgment",
+          "prompt": "To what degree do you think generative AI was involved in creating this email? (1=Not at all, 7=Definitely)",
+          "location": "sidebar",
+          "type": "slider",
+          "options": [
+            { "label": "1", "value": 1 },
+            { "label": "2", "value": 2 },
+            { "label": "3", "value": 3 },
+            { "label": "4", "value": 4 },
+            { "label": "5", "value": 5 },
+            { "label": "6", "value": 6 },
+            { "label": "7", "value": 7 }
+          ],
+          "startingValue": 4,
+          "spacing": 1,
+          "snap": true,
+          "withBar": true
+        },
+        {
+          "id": "events",
+          "prompt": "Interaction log from the email view",
+          "location": "belowStimulus",
+          "type": "reactive",
+          "hidden": true
+        }
+      ]
+    },
+    "benign-shipping": {
+      "type": "website",
+      "path": "phishing-ai-questionnaire/assets/email-template.html",
+      "parameters": {
+        "emailDataPath": "phishing-ai-questionnaire/assets/benign-shipping.json"
+      },
+      "withSidebar": true,
+      "responseOrder": "fixed",
+      "response": [
+        {
+          "id": "phish-judgment",
+          "prompt": "To what degree do you think this email is a phishing attempt? (1=Very unlikely, 7=Very likely)",
+          "location": "sidebar",
+          "type": "slider",
+          "options": [
+            { "label": "1", "value": 1 },
+            { "label": "2", "value": 2 },
+            { "label": "3", "value": 3 },
+            { "label": "4", "value": 4 },
+            { "label": "5", "value": 5 },
+            { "label": "6", "value": 6 },
+            { "label": "7", "value": 7 }
+          ],
+          "startingValue": 4,
+          "spacing": 1,
+          "snap": true,
+          "withBar": true
+        },
+        {
+          "id": "ai-judgment",
+          "prompt": "To what degree do you think generative AI was involved in creating this email? (1=Not at all, 7=Definitely)",
+          "location": "sidebar",
+          "type": "slider",
+          "options": [
+            { "label": "1", "value": 1 },
+            { "label": "2", "value": 2 },
+            { "label": "3", "value": 3 },
+            { "label": "4", "value": 4 },
+            { "label": "5", "value": 5 },
+            { "label": "6", "value": 6 },
+            { "label": "7", "value": 7 }
+          ],
+          "startingValue": 4,
+          "spacing": 1,
+          "snap": true,
+          "withBar": true
+        },
+        {
+          "id": "events",
+          "prompt": "Interaction log from the email view",
+          "location": "belowStimulus",
+          "type": "reactive",
+          "hidden": true
+        }
+      ]
+    },
+    "email-aspects": {
+      "type": "questionnaire",
+      "response": [
+        {
+          "id": "email-aspects-response",
+          "prompt": "Please indicate which aspects of the email influenced your judgments (select all that apply):",
+          "location": "aboveStimulus",
+          "type": "checkbox",
+          "options": [
+            { "label": "Sender's email address", "value": "sender-email" },
+            { "label": "Subject line", "value": "subject-line" },
+            { "label": "Email body content", "value": "email-body" },
+            { "label": "Links within the email", "value": "email-links" },
+            { "label": "Attachments", "value": "email-attachments" },
+            {
+              "label": "Overall design and formatting",
+              "value": "design-formatting"
+            }
+          ]
         }
       ]
     },
@@ -492,11 +588,13 @@
     "components": [
       "introduction",
       "personal-information",
-      "privacy-concerns",
       "phishing-human-finance",
       "phishing-human-shipping",
       "phishing-human-prizes",
       "benign-finance",
+      "benign-prizes",
+      "benign-shipping",
+      "email-aspects",
       "feedback"
     ]
   }

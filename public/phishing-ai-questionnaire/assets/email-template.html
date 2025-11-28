@@ -117,292 +117,386 @@
         border: 1px solid #e5e7eb;
       }
     </style>
-  <script>
-          // ---------- Revisit shim (for standalone preview) ----------
-          const Revisit = (function () {
-            if (window.Revisit) return window.Revisit;
-            const shim = {
-              _onData: null,
-              onDataReceive(fn) { this._onData = fn; },
-              postAnswers(payload) { console.debug('[Revisit shim] postAnswers', payload); },
-              postReady() { console.debug('[Revisit shim] postReady'); }
-            };
-            window.Revisit = shim;
-            return shim;
-          })();
+    <script>
+      // ---------- Revisit shim (for standalone preview) ----------
+      const Revisit = (function () {
+        if (window.Revisit) return window.Revisit;
+        const shim = {
+          _onData: null,
+          onDataReceive(fn) {
+            this._onData = fn;
+          },
+          postAnswers(payload) {
+            console.debug("[Revisit shim] postAnswers", payload);
+          },
+          postReady() {
+            console.debug("[Revisit shim] postReady");
+          },
+        };
+        window.Revisit = shim;
+        return shim;
+      })();
       // ==========================================
       // Utilities
       // ==========================================
-          const toAbs = (url) => {
-            try {
-              if (typeof url !== 'string' || !url) return url;
-              if (/^(https?:|data:|mailto:|tel:)/i.test(url)) return url; // external or special schemes
+      const toAbs = (url) => {
+        try {
+          if (typeof url !== "string" || !url) return url;
+          if (/^(https?:|data:|mailto:|tel:)/i.test(url)) return url; // external or special schemes
 
-              const parts = location.pathname.split('/').filter(Boolean);
-              const repoBase = parts.length > 0 ? `/${parts[0]}` : '';
-              const origin = location.origin; // e.g. https://user.github.io or http://localhost:5173
+          const parts = location.pathname.split("/").filter(Boolean);
+          const repoBase = parts.length > 0 ? `/${parts[0]}` : "";
+          const origin = location.origin; // e.g. https://user.github.io or http://localhost:5173
 
-              // Leading slash: treat as repo-root relative
-              if (url.startsWith('/')) {
-                const trimmed = url.replace(/^\/+/, '');
-                return `${origin}${repoBase}/${trimmed}`;
-              }
+          // Leading slash: treat as repo-root relative
+          if (url.startsWith("/")) {
+            const trimmed = url.replace(/^\/+/, "");
+            return `${origin}${repoBase}/${trimmed}`;
+          }
 
-              // Already starts with repoBase (without leading slash) -> don't duplicate
-              if (repoBase && url.startsWith(repoBase.slice(1) + '/')) {
-                return `${origin}/${url}`;
-              }
+          // Already starts with repoBase (without leading slash) -> don't duplicate
+          if (repoBase && url.startsWith(repoBase.slice(1) + "/")) {
+            return `${origin}/${url}`;
+          }
 
-              // Plain relative path -> prepend repo base
-              return `${origin}${repoBase}/${url.replace(/^\/+/, '')}`;
-            } catch (e) {
-              console.warn('[email-template] toAbs failed for', url, e);
-              return url;
-            }
-          };
-          const hostOf = (url) => { try { return new URL(url, 'https://x.invalid').hostname.toLowerCase(); } catch { return ''; } };
-          const fmtDate = (d) => {
-            if (!d) return '';
-            const dt = new Date(d);
-            return isNaN(dt.getTime()) ? String(d) : dt.toLocaleString();
-          };
-          const debounce = (fn, ms=150) => { let h; return (...a)=>{ clearTimeout(h); h=setTimeout(()=>fn(...a), ms); }; };
+          // Plain relative path -> prepend repo base
+          return `${origin}${repoBase}/${url.replace(/^\/+/, "")}`;
+        } catch (e) {
+          console.warn("[email-template] toAbs failed for", url, e);
+          return url;
+        }
+      };
+      const hostOf = (url) => {
+        try {
+          return new URL(url, "https://x.invalid").hostname.toLowerCase();
+        } catch {
+          return "";
+        }
+      };
+      const fmtDate = (d) => {
+        if (!d) return "";
+        const dt = new Date(d);
+        return isNaN(dt.getTime()) ? String(d) : dt.toLocaleString();
+      };
+      const debounce = (fn, ms = 150) => {
+        let h;
+        return (...a) => {
+          clearTimeout(h);
+          h = setTimeout(() => fn(...a), ms);
+        };
+      };
 
       // ==========================================
       // State & Revisit wiring
       // ==========================================
-          const state = {
-            events: [], t0: 0,
-            hdrHoverStart: null, hdrHoverMs: 0,
-            hdrVisibleStart: null, hdrVisibleMs: 0,
-            gotData: false
-          };
-          const now = () => Math.round(performance.now() - state.t0);
-          const log = (e) => state.events.push({ t: now(), ...e });
-          const postAnswersNow = () => {
-            Revisit.postAnswers({
-              events: state.events,
-              metrics: {
-                hdrHoverMs: Math.round(state.hdrHoverMs),
-                hdrVisibleMs: Math.round(state.hdrVisibleMs)
-              }
-            });
-          };
-          const postAnswersSoon = debounce(postAnswersNow, 120);
-          const postReadySoon = debounce(()=> Revisit.postReady(), 60);
+      const state = {
+        events: [],
+        t0: 0,
+        hdrHoverStart: null,
+        hdrHoverMs: 0,
+        hdrVisibleStart: null,
+        hdrVisibleMs: 0,
+        gotData: false,
+      };
+      const now = () => Math.round(performance.now() - state.t0);
+      const log = (e) => state.events.push({ t: now(), ...e });
+      const postAnswersNow = () => {
+        Revisit.postAnswers({
+          events: state.events,
+          metrics: {
+            hdrHoverMs: Math.round(state.hdrHoverMs),
+            hdrVisibleMs: Math.round(state.hdrVisibleMs),
+          },
+        });
+      };
+      const postAnswersSoon = debounce(postAnswersNow, 120);
+      const postReadySoon = debounce(() => Revisit.postReady(), 60);
 
-          // ==========================================
-          // Rendering helpers
-          // ==========================================
+      // ==========================================
+      // Rendering helpers
+      // ==========================================
 
-          function renderError(message) {
-            const subject = document.getElementById('subject');
-            const bodyEl = document.getElementById('body');
-            if (subject) subject.textContent = 'Error loading email';
-            if (bodyEl) bodyEl.innerHTML = `<p style="color:#b91c1c"><strong>Error:</strong> ${message}</p>`;
-            console.error('[email-template]', message);
-          }
+      function renderError(message) {
+        const subject = document.getElementById("subject");
+        const bodyEl = document.getElementById("body");
+        if (subject) subject.textContent = "Error loading email";
+        if (bodyEl)
+          bodyEl.innerHTML = `<p style="color:#b91c1c"><strong>Error:</strong> ${message}</p>`;
+        console.error("[email-template]", message);
+      }
 
-          function renderEmail(p) {
-            // Accept synonyms
-            const fromName = p.fromName ?? p.senderName ?? '';
-            const from = p.from ?? p.fromEmail ?? '';
-            const to = p.to ?? p.recipient ?? '';
-            const cc = p.cc ?? '';
-            const date = fmtDate(p.date ?? '');
-            const subject = p.subject ?? '';
-            const bodyHTML = p.bodyHTML ?? p.bodyHtml ?? '';
-            const headerMeta = p.headerMeta ?? {};
-            const images = Array.isArray(p.images) ? p.images : [];
+      function renderEmail(p) {
+        // Accept synonyms
+        const fromName = p.fromName ?? p.senderName ?? "";
+        const from = p.from ?? p.fromEmail ?? "";
+        const to = p.to ?? p.recipient ?? "";
+        const cc = p.cc ?? "";
+        const date = fmtDate(p.date ?? "");
+        const subject = p.subject ?? "";
+        const bodyHTML = p.bodyHTML ?? p.bodyHtml ?? "";
+        const headerMeta = p.headerMeta ?? {};
+        const images = Array.isArray(p.images) ? p.images : [];
 
-            // Subject
-            document.getElementById('subject').textContent = subject;
-            document.getElementById('fromInline').textContent = `${fromName} <${from}>`;
-            document.getElementById('dateInline').textContent = date;
+        // Subject
+        document.getElementById("subject").textContent = subject;
+        document.getElementById(
+          "fromInline"
+        ).textContent = `${fromName} <${from}>`;
+        document.getElementById("dateInline").textContent = date;
 
-            // Body
-            const bodyEl = document.getElementById('body');
-            if (bodyHTML) bodyEl.innerHTML = bodyHTML; // sanitize upstream when external
+        // Body
+        const bodyEl = document.getElementById("body");
+        if (bodyHTML) bodyEl.innerHTML = bodyHTML; // sanitize upstream when external
 
-            // Details
-            const details = document.getElementById('details');
-            details.innerHTML = '';
-            const lines = [
-              ['From', `${fromName} <${from}>`],
-              ['Reply-To', headerMeta.replyTo ?? from],
-              ['To', to],
-              ['Date', date],
-              ['Subject', subject]
-            ];
-            for (const [k, v] of lines) {
-              if (!v) continue;
-              const div = document.createElement('div');
-              const b = document.createElement('b'); b.textContent = k + ':'; div.appendChild(b);
-              div.append(' ', v);
-              details.appendChild(div);
-            }
+        // Details
+        const details = document.getElementById("details");
+        details.innerHTML = "";
+        const lines = [
+          ["From", `${fromName} <${from}>`],
+          ["Reply-To", headerMeta.replyTo ?? from],
+          ["To", to],
+          ["Date", date],
+          ["Subject", subject],
+        ];
+        for (const [k, v] of lines) {
+          if (!v) continue;
+          const div = document.createElement("div");
+          const b = document.createElement("b");
+          b.textContent = k + ":";
+          div.appendChild(b);
+          div.append(" ", v);
+          details.appendChild(div);
+        }
 
-            // Images
-            const imgs = document.getElementById('imgs');
-            imgs.innerHTML = '';
-            for (const im of images) {
-              const img = document.createElement('img');
-              img.src = toAbs(im.src);
-              if (im.alt) img.alt = im.alt;
-              if (im.width) img.width = im.width;
-              if (im.height) img.height = im.height;
-              img.addEventListener('load', postReadySoon);
-              img.addEventListener('error', () => {
-                log({ type: 'imageError', src: img.src });
-                postReadySoon();
-              });
-              imgs.appendChild(img);
-            }
-
+        // Images
+        const imgs = document.getElementById("imgs");
+        imgs.innerHTML = "";
+        for (const im of images) {
+          const img = document.createElement("img");
+          img.src = toAbs(im.src);
+          if (im.alt) img.alt = im.alt;
+          if (im.width) img.width = im.width;
+          if (im.height) img.height = im.height;
+          img.addEventListener("load", postReadySoon);
+          img.addEventListener("error", () => {
+            log({ type: "imageError", src: img.src });
             postReadySoon();
-          }
+          });
+          imgs.appendChild(img);
+        }
 
-          // ==========================================
-          // Interaction wiring
-          // ==========================================
-          function wireInteractions() {
-            const hdr = document.getElementById('hdr');
-      const toggle = document.getElementById('toggleDetails');
-            const details = document.getElementById('details');
-            const bodyEl = document.getElementById('body');
+        postReadySoon();
+      }
 
-            // Link interception
-            bodyEl.addEventListener('click', (e) => {
-              const a = e.target.closest('a'); if (!a) return;
-              e.preventDefault();
-              const href = a.getAttribute('href') || '';
-              log({ type: 'linkAttempt', kind: href.startsWith('mailto:') ? 'mailto' : href.startsWith('tel:') ? 'tel' : 'url', shown: (a.textContent||'').trim(), href, host: hostOf(href) });
+      // ==========================================
+      // Interaction wiring
+      // ==========================================
+      function wireInteractions() {
+        const hdr = document.getElementById("hdr");
+        const toggle = document.getElementById("toggleDetails");
+        const details = document.getElementById("details");
+        const bodyEl = document.getElementById("body");
+
+        // Link interception
+        bodyEl.addEventListener(
+          "click",
+          (e) => {
+            const a = e.target.closest("a");
+            if (!a) return;
+            e.preventDefault();
+            const href = a.getAttribute("href") || "";
+            log({
+              type: "linkAttempt",
+              kind: href.startsWith("mailto:")
+                ? "mailto"
+                : href.startsWith("tel:")
+                ? "tel"
+                : "url",
+              shown: (a.textContent || "").trim(),
+              href,
+              host: hostOf(href),
+            });
+            postAnswersSoon();
+          },
+          true
+        );
+
+        // Header hover
+        hdr.addEventListener("mouseenter", () => {
+          state.hdrHoverStart = performance.now();
+          log({ type: "hdrHoverEnter" });
+          postAnswersSoon();
+        });
+        hdr.addEventListener("mouseleave", () => {
+          if (state.hdrHoverStart)
+            state.hdrHoverMs += performance.now() - state.hdrHoverStart;
+          state.hdrHoverStart = null;
+          log({ type: "hdrHoverLeave", hoverMs: Math.round(state.hdrHoverMs) });
+          postAnswersSoon();
+        });
+
+        // Header visibility (>=60%)
+        const io = new IntersectionObserver(
+          ([entry]) => {
+            if (
+              entry.intersectionRatio >= 0.6 &&
+              state.hdrVisibleStart == null
+            ) {
+              state.hdrVisibleStart = performance.now();
+              log({ type: "hdrVisibleEnter" });
               postAnswersSoon();
-            }, true);
-
-            // Header hover
-      hdr.addEventListener('mouseenter', () => { state.hdrHoverStart = performance.now(); log({ type: 'hdrHoverEnter' }); postAnswersSoon(); });
-            hdr.addEventListener('mouseleave', () => {
-              if (state.hdrHoverStart) state.hdrHoverMs += performance.now() - state.hdrHoverStart;
-              state.hdrHoverStart = null; log({ type: 'hdrHoverLeave', hoverMs: Math.round(state.hdrHoverMs) }); postAnswersSoon();
-            });
-
-            // Header visibility (>=60%)
-            const io = new IntersectionObserver(([entry]) => {
-              if (entry.intersectionRatio >= 0.6 && state.hdrVisibleStart == null) {
-                state.hdrVisibleStart = performance.now(); log({ type: 'hdrVisibleEnter' }); postAnswersSoon();
-              } else if (entry.intersectionRatio < 0.6 && state.hdrVisibleStart != null) {
-                state.hdrVisibleMs += performance.now() - state.hdrVisibleStart;
-                state.hdrVisibleStart = null; log({ type: 'hdrVisibleLeave', visibleMs: Math.round(state.hdrVisibleMs) }); postAnswersSoon();
-              }
-            }, { threshold: [0, 0.6, 1] });
-            io.observe(hdr);
-
-            // Details toggle
-            toggle.setAttribute('aria-expanded', 'false');
-            toggle.addEventListener('click', () => {
-              const open = details.hidden;
-              details.hidden = !open;
-              toggle.textContent = open ? 'Hide details' : 'Show more';
-              toggle.setAttribute('aria-expanded', String(open));
-              log({ type: 'hdrDetailsToggle', opened: open });
+            } else if (
+              entry.intersectionRatio < 0.6 &&
+              state.hdrVisibleStart != null
+            ) {
+              state.hdrVisibleMs += performance.now() - state.hdrVisibleStart;
+              state.hdrVisibleStart = null;
+              log({
+                type: "hdrVisibleLeave",
+                visibleMs: Math.round(state.hdrVisibleMs),
+              });
               postAnswersSoon();
-              postReadySoon();
-            });
+            }
+          },
+          { threshold: [0, 0.6, 1] }
+        );
+        io.observe(hdr);
 
-            // Window events
-            window.addEventListener('resize', postReadySoon);
-            window.addEventListener('visibilitychange', () => {
-              if (document.visibilityState === 'hidden') {
-                if (state.hdrHoverStart) { state.hdrHoverMs += performance.now() - state.hdrHoverStart; state.hdrHoverStart = null; }
-                if (state.hdrVisibleStart) { state.hdrVisibleMs += performance.now() - state.hdrVisibleStart; state.hdrVisibleStart = null; }
-                Revisit.postAnswers({ events: state.events });
-              }
-            });
+        // Details toggle
+        toggle.setAttribute("aria-expanded", "false");
+        toggle.addEventListener("click", () => {
+          const open = details.hidden;
+          details.hidden = !open;
+          toggle.textContent = open ? "Hide details" : "Show more";
+          toggle.setAttribute("aria-expanded", String(open));
+          log({ type: "hdrDetailsToggle", opened: open });
+          postAnswersSoon();
+          postReadySoon();
+        });
+
+        // Window events
+        window.addEventListener("resize", postReadySoon);
+        window.addEventListener("visibilitychange", () => {
+          if (document.visibilityState === "hidden") {
+            if (state.hdrHoverStart) {
+              state.hdrHoverMs += performance.now() - state.hdrHoverStart;
+              state.hdrHoverStart = null;
+            }
+            if (state.hdrVisibleStart) {
+              state.hdrVisibleMs += performance.now() - state.hdrVisibleStart;
+              state.hdrVisibleStart = null;
+            }
+            Revisit.postAnswers({ events: state.events });
           }
+        });
+      }
 
-            // Data intake (ReVISit or query params)
-            Revisit.onDataReceive(async (payload) => {
-              const params = (payload && typeof payload === 'object' && 'parameters' in payload)
-                ? payload.parameters
-                : payload;
+      // Data intake (ReVISit or query params)
+      Revisit.onDataReceive(async (payload) => {
+        const params =
+          payload && typeof payload === "object" && "parameters" in payload
+            ? payload.parameters
+            : payload;
 
-              const looksLikeEmailObj = (obj) => !!obj && typeof obj === 'object' && (
-                'from' in obj || 'fromName' in obj || 'subject' in obj || 'bodyHTML' in obj || 'bodyHtml' in obj
-              );
+        const looksLikeEmailObj = (obj) =>
+          !!obj &&
+          typeof obj === "object" &&
+          ("from" in obj ||
+            "fromName" in obj ||
+            "subject" in obj ||
+            "bodyHTML" in obj ||
+            "bodyHtml" in obj);
 
-              let spec = null;
-              if (params && typeof params === 'object') {
-                if ('email' in params) spec = params.email; // object or URL
-                else if ('emailDataPath' in params) spec = params.emailDataPath; // URL
-                else if (looksLikeEmailObj(params)) spec = params; // direct object
-              } else if (typeof params === 'string') {
-                spec = params;
-              }
+        let spec = null;
+        if (params && typeof params === "object") {
+          if ("email" in params) spec = params.email; // object or URL
+          else if ("emailDataPath" in params)
+            spec = params.emailDataPath; // URL
+          else if (looksLikeEmailObj(params)) spec = params; // direct object
+        } else if (typeof params === "string") {
+          spec = params;
+        }
 
-              try {
-                if (typeof spec === 'string') {
-                  const url = toAbs(spec);
-                  console.debug('[email-template] fetch (ReVISit path):', { original: spec, resolved: url });
-                  const res = await fetch(url);
-                  if (!res.ok) throw new Error(`HTTP ${res.status}`);
-                  spec = await res.json();
-                }
-              } catch (err) {
-                renderError(`Failed to load email JSON from URL: ${spec}. ${err}`);
-                throw err;
-              }
+        try {
+          if (typeof spec === "string") {
+            const url = toAbs(spec);
+            console.debug("[email-template] fetch (ReVISit path):", {
+              original: spec,
+              resolved: url,
+            });
+            const res = await fetch(url);
+            if (!res.ok) throw new Error(`HTTP ${res.status}`);
+            spec = await res.json();
+          }
+        } catch (err) {
+          renderError(`Failed to load email JSON from URL: ${spec}. ${err}`);
+          throw err;
+        }
 
+        state.t0 = performance.now();
+        state.gotData = true;
+        if (spec && typeof spec === "object") {
+          renderEmail(spec);
+          const linkCount = document
+            .getElementById("body")
+            .querySelectorAll("a").length;
+          const imgCount = document
+            .getElementById("imgs")
+            .querySelectorAll("img").length;
+          log({ type: "trialStart", linkCount, imgCount });
+          postReadySoon();
+          postAnswersSoon();
+        } else {
+          renderError("No email data provided to the template.");
+          throw new Error("No email data provided to the template.");
+        }
+      });
+
+      window.addEventListener("DOMContentLoaded", () => {
+        wireInteractions();
+
+        // Standalone/Pages fallback: allow both ?email=URL and ?emailDataPath=URL
+        setTimeout(async () => {
+          if (state.gotData) return; // ReVISit delivered
+
+          const sp = new URLSearchParams(location.search);
+          const candidate = sp.get("email") || sp.get("emailDataPath");
+
+          if (candidate) {
+            try {
+              const url = toAbs(candidate);
+              console.debug("[email-template] fetch (query path):", {
+                original: candidate,
+                resolved: url,
+              });
+              const res = await fetch(url);
+              if (!res.ok) throw new Error(`HTTP ${res.status}`);
+              const spec = await res.json();
               state.t0 = performance.now();
-              state.gotData = true;
-              if (spec && typeof spec === 'object') {
-                renderEmail(spec);
-                const linkCount = document.getElementById('body').querySelectorAll('a').length;
-                const imgCount = document.getElementById('imgs').querySelectorAll('img').length;
-                log({ type: 'trialStart', linkCount, imgCount });
-                postReadySoon();
-                postAnswersSoon();
-              } else {
-                renderError('No email data provided to the template.');
-                throw new Error('No email data provided to the template.');
-              }
-            });
+              renderEmail(spec);
+              const linkCount = document
+                .getElementById("body")
+                .querySelectorAll("a").length;
+              const imgCount = document
+                .getElementById("imgs")
+                .querySelectorAll("img").length;
+              log({ type: "trialStart", linkCount, imgCount });
+              postReadySoon();
+              postAnswersSoon();
+              return;
+            } catch (err) {
+              renderError(
+                `Failed to load email from query parameter: ${candidate}. ${err}`
+              );
+              return; // do not throw to avoid masking ReVISit errors
+            }
+          }
 
-            window.addEventListener('DOMContentLoaded', () => {
-              wireInteractions();
-
-              // Standalone/Pages fallback: allow both ?email=URL and ?emailDataPath=URL
-              setTimeout(async () => {
-                if (state.gotData) return; // ReVISit delivered
-
-                const sp = new URLSearchParams(location.search);
-                const candidate = sp.get('email') || sp.get('emailDataPath');
-
-                if (candidate) {
-                  try {
-                    const url = toAbs(candidate);
-                    console.debug('[email-template] fetch (query path):', { original: candidate, resolved: url });
-                    const res = await fetch(url);
-                    if (!res.ok) throw new Error(`HTTP ${res.status}`);
-                    const spec = await res.json();
-                    state.t0 = performance.now();
-                    renderEmail(spec);
-                    const linkCount = document.getElementById('body').querySelectorAll('a').length;
-                    const imgCount = document.getElementById('imgs').querySelectorAll('img').length;
-                    log({ type: 'trialStart', linkCount, imgCount });
-                    postReadySoon();
-                    postAnswersSoon();
-                    return;
-                  } catch (err) {
-                    renderError(`Failed to load email from query parameter: ${candidate}. ${err}`);
-                    return; // do not throw to avoid masking ReVISit errors
-                  }
-                }
-
-                const hint = 'Pass parameters.email / emailDataPath (from ReVISit) or use ?email=URL / ?emailDataPath=URL in the address bar.';
-                renderError(`No email provided. ${hint}`);
-              }, 300);
-  });
+          const hint =
+            "Pass parameters.email / emailDataPath (from ReVISit) or use ?email=URL / ?emailDataPath=URL in the address bar.";
+          renderError(`No email provided. ${hint}`);
+        }, 300);
+      });
     </script>
   </head>
   <body>
@@ -414,7 +508,9 @@
             <div id="fromInline" class="from-block">—</div>
             <div id="dateInline" class="date-block">—</div>
             <div class="actions">
-              <button id="toggleDetails" class="btn" type="button">Show more</button>
+              <button id="toggleDetails" class="btn" type="button">
+                Show more
+              </button>
             </div>
           </div>
           <div id="details" class="details" hidden></div>
