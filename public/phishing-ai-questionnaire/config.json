@@ -265,6 +265,62 @@
         }
       ]
     },
+    "phishing-llm-generated-finance": {
+      "type": "website",
+      "path": "phishing-ai-questionnaire/assets/email-template.html",
+      "parameters": {
+        "emailDataPath": "phishing-ai-questionnaire/assets/phishing-llm-generated-finance.json"
+      },
+      "withSidebar": true,
+      "responseOrder": "fixed",
+      "response": [
+        {
+          "id": "phish-judgment",
+          "prompt": "To what degree do you think this email is a phishing attempt? (1=Very unlikely, 7=Very likely)",
+          "location": "sidebar",
+          "type": "slider",
+          "options": [
+            { "label": "1", "value": 1 },
+            { "label": "2", "value": 2 },
+            { "label": "3", "value": 3 },
+            { "label": "4", "value": 4 },
+            { "label": "5", "value": 5 },
+            { "label": "6", "value": 6 },
+            { "label": "7", "value": 7 }
+          ],
+          "startingValue": 4,
+          "spacing": 1,
+          "snap": true,
+          "withBar": true
+        },
+        {
+          "id": "ai-judgment",
+          "prompt": "To what degree do you think generative AI was involved in creating this email? (1=Not at all, 7=Definitely)",
+          "location": "sidebar",
+          "type": "slider",
+          "options": [
+            { "label": "1", "value": 1 },
+            { "label": "2", "value": 2 },
+            { "label": "3", "value": 3 },
+            { "label": "4", "value": 4 },
+            { "label": "5", "value": 5 },
+            { "label": "6", "value": 6 },
+            { "label": "7", "value": 7 }
+          ],
+          "startingValue": 4,
+          "spacing": 1,
+          "snap": true,
+          "withBar": true
+        },
+        {
+          "id": "events",
+          "prompt": "Interaction log from the email view",
+          "location": "belowStimulus",
+          "type": "reactive",
+          "hidden": true
+        }
+      ]
+    },
     "phishing-human-shipping": {
       "type": "website",
       "path": "phishing-ai-questionnaire/assets/email-template.html",
@@ -321,11 +377,123 @@
         }
       ]
     },
+    "phishing-llm-generated-shipping": {
+      "type": "website",
+      "path": "phishing-ai-questionnaire/assets/email-template.html",
+      "parameters": {
+        "emailDataPath": "phishing-ai-questionnaire/assets/phishing-llm-generated-shipping.json"
+      },
+      "withSidebar": true,
+      "responseOrder": "fixed",
+      "response": [
+        {
+          "id": "phish-judgment",
+          "prompt": "To what degree do you think this email is a phishing attempt? (1=Very unlikely, 7=Very likely)",
+          "location": "sidebar",
+          "type": "slider",
+          "options": [
+            { "label": "1", "value": 1 },
+            { "label": "2", "value": 2 },
+            { "label": "3", "value": 3 },
+            { "label": "4", "value": 4 },
+            { "label": "5", "value": 5 },
+            { "label": "6", "value": 6 },
+            { "label": "7", "value": 7 }
+          ],
+          "startingValue": 4,
+          "spacing": 1,
+          "snap": true,
+          "withBar": true
+        },
+        {
+          "id": "ai-judgment",
+          "prompt": "To what degree do you think generative AI was involved in creating this email? (1=Not at all, 7=Definitely)",
+          "location": "sidebar",
+          "type": "slider",
+          "options": [
+            { "label": "1", "value": 1 },
+            { "label": "2", "value": 2 },
+            { "label": "3", "value": 3 },
+            { "label": "4", "value": 4 },
+            { "label": "5", "value": 5 },
+            { "label": "6", "value": 6 },
+            { "label": "7", "value": 7 }
+          ],
+          "startingValue": 4,
+          "spacing": 1,
+          "snap": true,
+          "withBar": true
+        },
+        {
+          "id": "events",
+          "prompt": "Interaction log from the email view",
+          "location": "belowStimulus",
+          "type": "reactive",
+          "hidden": true
+        }
+      ]
+    },
     "phishing-human-prizes": {
       "type": "website",
       "path": "phishing-ai-questionnaire/assets/email-template.html",
       "parameters": {
         "emailDataPath": "phishing-ai-questionnaire/assets/phishing-human-prizes.json"
+      },
+      "withSidebar": true,
+      "responseOrder": "fixed",
+      "response": [
+        {
+          "id": "phish-judgment",
+          "prompt": "To what degree do you think this email is a phishing attempt? (1=Very unlikely, 7=Very likely)",
+          "location": "sidebar",
+          "type": "slider",
+          "options": [
+            { "label": "1", "value": 1 },
+            { "label": "2", "value": 2 },
+            { "label": "3", "value": 3 },
+            { "label": "4", "value": 4 },
+            { "label": "5", "value": 5 },
+            { "label": "6", "value": 6 },
+            { "label": "7", "value": 7 }
+          ],
+          "startingValue": 4,
+          "spacing": 1,
+          "snap": true,
+          "withBar": true
+        },
+        {
+          "id": "ai-judgment",
+          "prompt": "To what degree do you think generative AI was involved in creating this email? (1=Not at all, 7=Definitely)",
+          "location": "sidebar",
+          "type": "slider",
+          "options": [
+            { "label": "1", "value": 1 },
+            { "label": "2", "value": 2 },
+            { "label": "3", "value": 3 },
+            { "label": "4", "value": 4 },
+            { "label": "5", "value": 5 },
+            { "label": "6", "value": 6 },
+            { "label": "7", "value": 7 }
+          ],
+          "startingValue": 4,
+          "spacing": 1,
+          "snap": true,
+          "withBar": true
+        },
+        {
+          "id": "events",
+          "prompt": "Interaction log from the email view",
+          "location": "belowStimulus",
+          "type": "reactive",
+          "hidden": true
+        }
+      ]
+    },
+    "phishing-llm-generated-prizes": {
+      "type": "website",
+      "path": "phishing-ai-questionnaire/assets/email-template.html",
+      "parameters": {
+        "emailDataPath": "phishing-ai-questionnaire/assets/phishing-llm-generated-prizes.json"
       },
       "withSidebar": true,
       "responseOrder": "fixed",
@@ -589,8 +757,11 @@
       "introduction",
       "personal-information",
       "phishing-human-finance",
+      "phishing-llm-generated-finance",
       "phishing-human-shipping",
+      "phishing-llm-generated-shipping",
       "phishing-human-prizes",
+      "phishing-llm-generated-prizes",
       "benign-finance",
       "benign-prizes",
       "benign-shipping",
