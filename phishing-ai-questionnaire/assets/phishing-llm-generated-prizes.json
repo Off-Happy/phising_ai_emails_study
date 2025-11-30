@@ -1,0 +1,13 @@
+{
+  "fromName": "Samantha Thompson",
+  "from": "claims@grandjackpot-prizes.com",
+  "to": "Jhon",
+  "cc": "",
+  "date": "2025-11-30T10:15:00Z",
+  "subject": "You are the jackpot winner! Claim now",
+  "bodyHTML": "<p>Dear Jhon,</p><p>Congratulations! You are the lucky winner of our gigantic jackpot prize.</p><p>To claim your life-changing reward, please click the secure claim link below:<br><a href=\"https://prize-claim-link.com\" rel=\"noopener noreferrer\">https://prize-claim-link.com</a></p><p>This is an incredible opportunity&mdash;act swiftly to secure your prize and embark on a journey of endless possibilities!</p><p>Best wishes,<br>Samantha Thompson<br>Prize Claims Team</p>",
+  "headerMeta": {
+    "replyTo": "support@grandjackpot-prizes.com"
+  },
+  "images": []
+}
