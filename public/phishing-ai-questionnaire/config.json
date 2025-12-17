@@ -756,15 +756,38 @@
     "components": [
       "introduction",
       "personal-information",
-      "phishing-human-finance",
-      "phishing-llm-generated-finance",
-      "phishing-human-shipping",
-      "phishing-llm-generated-shipping",
-      "phishing-human-prizes",
-      "phishing-llm-generated-prizes",
-      "benign-finance",
-      "benign-prizes",
-      "benign-shipping",
+      {
+        "order": "random",
+        "components": [
+          {
+            "order": "latinSquare",
+            "numSamples": 2,
+            "components": [
+              "benign-finance",
+              "benign-prizes",
+              "benign-shipping"
+            ]
+          },
+          {
+            "order": "latinSquare",
+            "numSamples": 2,
+            "components": [
+              "phishing-human-finance",
+              "phishing-human-shipping",
+              "phishing-human-prizes"
+            ]
+          },
+          {
+            "order": "latinSquare",
+            "numSamples": 2,
+            "components": [
+              "phishing-llm-generated-finance",
+              "phishing-llm-generated-shipping",
+              "phishing-llm-generated-prizes"
+            ]
+          }
+        ]
+      },
       "email-aspects",
       "feedback"
     ]
