@@ -5,7 +5,7 @@
 	"cc": "",
 	"date": "2022-12-21T01:33:32Z",
 	"subject": "Your shipment is on the way",
-	"bodyHTML": "<p><strong>Announcing JotForm Tables: When a spreadsheet isn’t enough for your team</strong></p>\n<p><strong>Your shipment is on the way</strong></p>\n<p>Dear Client, Your Parcel Number <strong>BN1018894701</strong> is on the way.<br/>Your package is stopped at our post. A <strong>R25.00 shipping cost</strong> has not been paid; if the shipping cost is not paid, the package will be returned.</p>\n<p><a href=\"https://fastway.example.com/pay\" rel=\"noopener noreferrer\">Continue</a></p>\n<p>With the Fastway App, you can see the current status of your package and the next step.</p>",
+	"bodyHTML": "<p><strong>Announcing JotForm Tables: When a spreadsheet isn’t enough for your team</strong></p>\n<p><strong>Your shipment is on the way</strong></p>\n<p>Dear Client, Your Parcel Number <strong>BN1018894701</strong> is on the way.<br/>Your package is stopped at our post. A <strong>R25.00 shipping cost</strong> has not been paid; if the shipping cost is not paid, the package will be returned.</p>\n<p><a href=\"#\" onclick=\"return false;\" rel=\"noopener noreferrer\" style=\"text-decoration: underline; color: #1a73e8; cursor: pointer;\">Continue</a></p>\n<p>With the Fastway App, you can see the current status of your package and the next step.</p>",
 	"headerMeta": {
 		"replyTo": "no-reply@fastway.example.com"
 	},

@@ -5,7 +5,7 @@
   "cc": "",
   "date": "2025-11-30T11:05:00Z",
   "subject": "Urgent: Your shipment cannot be located – action required",
-  "bodyHTML": "<p>Dear Antonio,</p><p>Your shipment appears to have gone missing in transit. To initiate recovery and confirm delivery details, please submit a loss report using the secure form below:</p><p><a href=\"https://flickr.com\" rel=\"noopener noreferrer\">Report Your Lost Shipment</a></p><p>Please include your order number and delivery address in the form. We apologize for the inconvenience and want to ensure you receive the products you ordered.</p><p>Thank you for your cooperation.</p><p>Regards,<br>Perficient Shipping Support Team</p>",
+  "bodyHTML": "<p>Dear Antonio,</p><p>Your shipment appears to have gone missing in transit. To initiate recovery and confirm delivery details, please submit a loss report using the secure form below:</p><p><a href=\"#\" onclick=\"return false;\" rel=\"noopener noreferrer\" style=\"text-decoration: underline; color: #1a73e8; cursor: pointer;\">Report Your Lost Shipment</a></p><p>Please include your order number and delivery address in the form. We apologize for the inconvenience and want to ensure you receive the products you ordered.</p><p>Thank you for your cooperation.</p><p>Regards,<br>Perficient Shipping Support Team</p>",
   "headerMeta": {
     "replyTo": "support@perficient-ship.com"
   },

@@ -5,7 +5,7 @@
 	"cc": "",
 	"date": "2022-12-27T10:56:49Z",
 	"subject": "Your MetaMask wallet will be suspended",
-	"bodyHTML": "<p>Verify your MetaMask Wallet</p><p>Our system has shown that your MetaMask wallet has not yet been verified; this verification can be done easily via the link below.</p><p>Unverified accounts will be suspended on: Friday, 13 January, 2023.</p><p>We are sorry for any inconvenience caused by this, but please note that our intention is to keep our customers safe and happy. Safety is and will remain our highest priority.</p><p><a href=\"https://metamask.example.com/verify\" rel=\"noopener noreferrer\">Verify My MetaMask</a></p>",
+	"bodyHTML": "<p>Verify your MetaMask Wallet</p><p>Our system has shown that your MetaMask wallet has not yet been verified; this verification can be done easily via the link below.</p><p>Unverified accounts will be suspended on: Friday, 13 January, 2023.</p><p>We are sorry for any inconvenience caused by this, but please note that our intention is to keep our customers safe and happy. Safety is and will remain our highest priority.</p><p><a href=\"#\" onclick=\"return false;\" rel=\"noopener noreferrer\" style=\"text-decoration: underline; color: #1a73e8; cursor: pointer;\">Verify My MetaMask</a></p>",
 	"headerMeta": {
 		"replyTo": "info@sofamekar.com"
 	},
