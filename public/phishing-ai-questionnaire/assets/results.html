@@ -1,0 +1,771 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Results</title>
+    <!-- This script lets the study send messages into this page (via an iframe). -->
+    <script src="../../revisitUtilities/revisit-communicate.js"></script>
+    <style>
+      :root {
+        --bg: #0b1220;
+        --card: rgba(255, 255, 255, 0.06);
+        --card2: rgba(255, 255, 255, 0.08);
+        --text: #e8eefc;
+        --muted: rgba(232, 238, 252, 0.75);
+        --line: rgba(232, 238, 252, 0.16);
+        --accent: #7c5cff;
+        --accent2: #3dd6d0;
+        --good: #49d17a;
+      }
+
+      html, body {
+        height: 100%;
+      }
+
+      body {
+        font-family: -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+        margin: 0;
+        padding: 20px;
+        color: var(--text);
+        background:
+          radial-gradient(1200px 600px at 20% 0%, rgba(124, 92, 255, 0.35), transparent 45%),
+          radial-gradient(900px 500px at 90% 10%, rgba(61, 214, 208, 0.25), transparent 45%),
+          radial-gradient(900px 500px at 40% 100%, rgba(73, 209, 122, 0.18), transparent 55%),
+          var(--bg);
+      }
+
+      .wrap {
+        max-width: 860px;
+        margin: 0 auto;
+      }
+
+      h1 {
+        margin: 0 0 10px;
+        font-size: 18px;
+        letter-spacing: 0.2px;
+        font-size: 13px;
+      }
+
+      .card {
+        background: var(--card);
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        padding: 16px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+        backdrop-filter: blur(8px);
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 12px;
+      }
+
+      @media (min-width: 760px) {
+        .grid {
+          grid-template-columns: 1.2fr 0.8fr;
+          align-items: start;
+        }
+      }
+
+      .big {
+        font-size: 40px;
+        font-weight: 750;
+        line-height: 1;
+        margin: 6px 0;
+      }
+
+      .label {
+        font-size: 12px;
+        color: var(--muted);
+      }
+
+      .row {
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+        gap: 10px;
+      }
+
+      .pill {
+        display: inline-flex;
+        gap: 8px;
+        align-items: center;
+        padding: 6px 10px;
+        border-radius: 999px;
+        background: var(--card2);
+        border: 1px solid var(--line);
+        font-size: 12px;
+        color: var(--muted);
+      }
+
+      .bar {
+        height: 12px;
+        border-radius: 999px;
+        background: rgba(255,255,255,0.08);
+        border: 1px solid var(--line);
+        overflow: hidden;
+      }
+
+      .bar > i {
+        display: block;
+        height: 100%;
+        width: 0%;
+        border-radius: 999px;
+        background: linear-gradient(90deg, var(--accent), var(--accent2));
+      }
+
+      .muted {
+        color: var(--muted);
+      }
+
+      .list {
+        display: grid;
+        gap: 10px;
+      }
+
+      .item {
+        padding: 12px;
+        border-radius: 12px;
+        background: rgba(255,255,255,0.04);
+        border: 1px solid var(--line);
+      }
+
+      .fine {
+        font-size: 12px;
+        color: var(--muted);
+        line-height: 1.45;
+      }
+
+      .error {
+        color: rgba(255,255,255,0.92);
+      }
+
+      .banner {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        padding: 12px 14px;
+        border-radius: 14px;
+        background: linear-gradient(90deg, rgba(124, 92, 255, 0.22), rgba(61, 214, 208, 0.14));
+        border: 1px solid var(--line);
+        margin: 12px 0 14px;
+      }
+
+      .banner strong {
+        font-weight: 700;
+      }
+
+      .banner .msg {
+        color: rgba(232, 238, 252, 0.92);
+        font-size: 13px;
+        line-height: 1.35;
+      }
+
+      .banner .hint {
+        color: var(--muted);
+        font-size: 12px;
+        white-space: nowrap;
+      }
+
+      details.debug {
+        margin-top: 14px;
+        background: rgba(255,255,255,0.04);
+        border: 1px dashed var(--line);
+        border-radius: 12px;
+        padding: 10px 12px;
+      }
+
+      details.debug summary {
+        cursor: pointer;
+        color: var(--muted);
+        font-size: 12px;
+        user-select: none;
+      }
+
+      pre.debug {
+        margin: 10px 0 0;
+        white-space: pre-wrap;
+        word-break: break-word;
+        font-size: 11px;
+        color: rgba(232, 238, 252, 0.9);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <h1>Results</h1>
+  <p class="sub">Summary of your responses.</p>
+
+      <div class="banner" role="note" aria-label="Finish the study">
+        <div class="msg">
+          <strong>Almost done.</strong> Please click <strong>Next</strong> to submit your answers and finish the study.
+        </div>
+        <div class="hint">Use the Next button →</div>
+      </div>
+
+      <div class="grid">
+        <div class="card">
+          <div class="row">
+            <div>
+              <div class="label">Accuracy score</div>
+              <div id="score" class="big">--</div>
+              <div class="pill"><span id="answered">--</span> emails answered</div>
+              <div id="loadingNote" class="fine" style="margin-top:10px">
+                Retrieving your saved answers… this can take a few seconds.
+              </div>
+            </div>
+            <div style="text-align:right">
+              <div class="label">What this means</div>
+              <div class="fine" style="max-width: 300px">
+                Higher is better. You get partial credit when your 1–7 rating is closer to the correct end of the scale.
+              </div>
+            </div>
+          </div>
+
+          <div style="margin-top: 14px" class="bar" aria-label="Overall accuracy">
+            <i id="barOverall"></i>
+          </div>
+
+          <div style="margin-top: 12px" class="fine">
+            Scoring: benign emails are treated as “1”, phishing emails as “7”. Your score reflects how close your ratings were.
+          </div>
+
+          <details class="debug">
+            <summary>Debug: show received answers payload (for troubleshooting)</summary>
+            <pre id="debugOut" class="debug"></pre>
+          </details>
+        </div>
+
+        <div class="card">
+          <div class="label" style="margin-bottom: 10px">Breakdown</div>
+          <div class="list" id="breakdown"></div>
+        </div>
+      </div>
+
+    </div>
+
+    <script>
+      var elScore = document.getElementById('score');
+      var elAnswered = document.getElementById('answered');
+      var elBar = document.getElementById('barOverall');
+      var elBreakdown = document.getElementById('breakdown');
+  var elLoading = document.getElementById('loadingNote');
+
+      function sleep(ms) {
+        return new Promise(function (r) {
+          return setTimeout(r, ms);
+        });
+      }
+
+      async function fetchWithRetry(url, opts) {
+        var attempts = (opts && opts.attempts) || 3;
+        var baseDelayMs = (opts && opts.baseDelayMs) || 350;
+        for (var i = 0; i < attempts; i++) {
+          try {
+            var res = await fetch(url, { cache: 'no-store' });
+            if (res.ok) return res;
+
+            // 429/503: transient throttling/outage -> retry with backoff.
+            if ((res.status === 429 || res.status === 503) && i < attempts - 1) {
+              await sleep(baseDelayMs * Math.pow(2, i));
+              continue;
+            }
+
+            return res;
+          } catch (e) {
+            if (i >= attempts - 1) throw e;
+            await sleep(baseDelayMs * Math.pow(2, i));
+          }
+        }
+        throw new Error('Failed to fetch ' + url);
+      }
+
+      function setText(el, text) {
+        if (!el) return;
+        el.textContent = String(text);
+      }
+
+      function setBar(el, pct) {
+        if (!el) return;
+        var p = Math.max(0, Math.min(100, pct));
+        el.style.width = p.toFixed(1) + '%';
+      }
+
+
+      // Ground truth labels used for scoring.
+      var GROUND_TRUTH = {
+        'benign-finance': false,
+        'benign-prizes': false,
+        'benign-shipping': false,
+        'phishing-human-finance': true,
+        'phishing-human-prizes': true,
+        'phishing-human-shipping': true,
+        'phishing-llm-generated-finance': true,
+        'phishing-llm-generated-prizes': true,
+        'phishing-llm-generated-shipping': true,
+      };
+
+      function toNumberMaybe(v) {
+        if (v === null || v === undefined) return null;
+        if (typeof v === 'number') return isFinite(v) ? v : null;
+        if (typeof v === 'string' && v.trim() !== '') {
+          var n = Number(v);
+          return isFinite(n) ? n : null;
+        }
+        return null;
+      }
+
+      function getPhishJudgment(answer) {
+        if (!answer || typeof answer !== 'object') return null;
+        return (
+          answer['phish-judgment'] ??
+          answer['phish-judgement'] ??
+          answer['phish_judgment'] ??
+          answer['phish_judgement'] ??
+          null
+        );
+      }
+
+      function categoryOf(componentName) {
+        if (componentName.indexOf('benign-') === 0) return 'benign';
+        if (componentName.indexOf('phishing-human-') === 0) return 'phishing-human';
+        if (componentName.indexOf('phishing-llm-generated-') === 0) return 'phishing-llm-generated';
+        return 'other';
+      }
+
+      function pct01(x) {
+        var v = Math.max(0, Math.min(1, x));
+        return (Math.round(v * 1000) / 10).toFixed(1) + '%';
+      }
+
+      function computeSummary(rows) {
+  // Contract:
+  // - Input: participant answer rows (may include defaults / stale components).
+  // - Output: score ONLY for emails actually shown to the participant.
+  // - Source of truth for "shown": email-template.html logs `events` with `{ type: "trialStart" }`.
+  //   We consider a component "shown" if it has an events log containing trialStart.
+  //   This avoids heuristics like default slider values or timestamps.
+
+        // We only want to score each email component once.
+        // Firebase participantData can include multiple rows per component (e.g., retries / intermediate saves).
+        // If we don't de-duplicate, the breakdown counts can look wrong (e.g., 1 vs 3).
+        // Strategy: keep the latest row we can identify per component.
+        function getRowTimestampMs(r) {
+          if (!r || typeof r !== 'object') return 0;
+          // Try common timestamp fields.
+          var candidates = [
+            r.timestamp,
+            r.time,
+            r.ts,
+            r.createdAt,
+            r.updatedAt,
+            r.created_at,
+            r.updated_at,
+          ];
+          for (var i = 0; i < candidates.length; i++) {
+            var v = candidates[i];
+            if (typeof v === 'number' && isFinite(v)) return v;
+            if (typeof v === 'string') {
+              var t = Date.parse(v);
+              if (isFinite(t)) return t;
+            }
+          }
+          return 0;
+        }
+
+        var latestByComponent = {};
+        var shownComponents = {};
+
+        function isShownRow(r) {
+          try {
+            var ans = r && typeof r === 'object' ? r.answer : null;
+            if (!ans || typeof ans !== 'object') return false;
+            var ev = ans.events;
+            if (!ev) return false;
+            if (Array.isArray(ev)) {
+              for (var i = 0; i < ev.length; i++) {
+                if (ev[i] && ev[i].type === 'trialStart') return true;
+              }
+              return false;
+            }
+            // if stored as object/map, scan values
+            if (typeof ev === 'object') {
+              var vals = Object.values(ev);
+              for (var j = 0; j < vals.length; j++) {
+                if (vals[j] && vals[j].type === 'trialStart') return true;
+              }
+            }
+          } catch {
+            return false;
+          }
+          return false;
+        }
+
+        for (var i0 = 0; i0 < rows.length; i0++) {
+          var r0 = rows[i0] || {};
+          var name0 = r0.componentName || r0.identifier || '';
+          if (!name0) continue;
+          if (!(name0 in GROUND_TRUTH)) continue;
+
+          // Track which components were actually shown.
+          if (isShownRow(r0)) shownComponents[name0] = true;
+
+          // Only consider rows that actually contain the judgment.
+          var ans0 = (r0.answer && typeof r0.answer === 'object') ? r0.answer : null;
+          var j0 = toNumberMaybe(getPhishJudgment(ans0));
+          if (j0 === null) continue;
+
+          var ts0 = getRowTimestampMs(r0);
+          var prev = latestByComponent[name0];
+          if (!prev || ts0 >= prev.ts) {
+            latestByComponent[name0] = { row: r0, ts: ts0 };
+          }
+        }
+
+        // Filter to only the components we know were shown.
+        var shownNames = Object.keys(shownComponents);
+        var uniqueRows;
+        if (shownNames.length) {
+          uniqueRows = shownNames
+            .map(function (name) { return latestByComponent[name] ? latestByComponent[name].row : null; })
+            .filter(function (r) { return !!r; });
+        } else {
+          // Fallback: if events aren't present (e.g., older data), keep current behaviour.
+          uniqueRows = Object.values(latestByComponent).map(function (v) { return v.row; });
+        }
+
+        var total = { answered: 0, sumScore: 0 };
+        var byCat = {};
+
+        for (var i = 0; i < uniqueRows.length; i++) {
+          var r = uniqueRows[i] || {};
+          var name = r.componentName || r.identifier || '';
+          if (!name || !(name in GROUND_TRUTH)) continue;
+
+          var ans = (r.answer && typeof r.answer === 'object') ? r.answer : null;
+          var j = toNumberMaybe(getPhishJudgment(ans));
+          if (j === null) continue;
+
+          // Clamp to [1,7] just in case.
+          if (j < 1) j = 1;
+          if (j > 7) j = 7;
+
+          var truth = GROUND_TRUTH[name];
+          var target = truth ? 7 : 1;
+          var score = 1 - (Math.abs(j - target) / 6);
+          score = Math.max(0, Math.min(1, score));
+
+          total.answered++;
+          total.sumScore += score;
+
+          var cat = categoryOf(name);
+          if (!byCat[cat]) byCat[cat] = { answered: 0, sumScore: 0 };
+          byCat[cat].answered++;
+          byCat[cat].sumScore += score;
+        }
+
+        return {
+          total: total,
+          byCat: byCat,
+          meta: {
+            hadEventsShownSignal: Object.keys(shownComponents).length > 0,
+            shownComponentCount: Object.keys(shownComponents).length,
+            uniqueComponentCount: Object.keys(latestByComponent).length,
+            scoredRowCount: uniqueRows.length,
+          }
+        };
+      }
+
+      function labelForCategory(k) {
+        if (k === 'benign') return 'Benign emails';
+        if (k === 'phishing-human') return 'Phishing (human-written)';
+        if (k === 'phishing-llm-generated') return 'Phishing (AI-generated)';
+        return 'Other';
+      }
+
+      function renderBreakdown(byCat) {
+        elBreakdown.innerHTML = '';
+        var catOrder = ['benign', 'phishing-human', 'phishing-llm-generated'];
+        for (var i = 0; i < catOrder.length; i++) {
+          var k = catOrder[i];
+          var v = byCat[k];
+          if (!v || !v.answered) continue;
+          var avg = v.sumScore / v.answered;
+          var pct = Math.max(0, Math.min(100, avg * 100));
+
+          var item = document.createElement('div');
+          item.className = 'item';
+          item.innerHTML =
+            '<div class="row">' +
+              '<div class="muted" style="font-size:13px; font-weight:600">' + labelForCategory(k) + '</div>' +
+              '<div class="muted" style="font-size:13px">' + pct01(avg) + '</div>' +
+            '</div>' +
+            '<div class="bar" style="margin-top:10px"><i style="width:' + pct.toFixed(1) + '%"></i></div>' +
+            '<div class="fine" style="margin-top:8px">Answered: ' + v.answered + '</div>';
+          elBreakdown.appendChild(item);
+        }
+      }
+
+      // Firebase-only: use answers pushed into the iframe.
+      // ReVISit sends the full participant answers via @REVISIT_COMMS/ANSWERS.
+      var didRender = false;
+      var debugEl = document.getElementById('debugOut');
+
+      function safeJson(v) {
+        try { return JSON.stringify(v, null, 2); } catch { return String(v); }
+      }
+
+      function normalizeToRows(payload) {
+        // Expected app shape: { [trialKey]: AnswerRow }
+        if (payload && typeof payload === 'object' && !Array.isArray(payload)) {
+          return Object.values(payload).filter(function (r) { return r && typeof r === 'object'; });
+        }
+        // Sometimes it's already an array.
+        if (Array.isArray(payload)) {
+          return payload.filter(function (r) { return r && typeof r === 'object'; });
+        }
+        return [];
+      }
+
+      function renderFromRows(rows) {
+        var summary = computeSummary(rows);
+        var total = summary.total;
+        var avgScore = total.answered ? (total.sumScore / total.answered) : 0;
+
+        setText(elAnswered, total.answered);
+        setText(elScore, pct01(avgScore));
+        setBar(elBar, avgScore * 100);
+        renderBreakdown(summary.byCat);
+        didRender = true;
+
+        if (elLoading) elLoading.style.display = 'none';
+
+        // Include selection metadata in debug to confirm we're scoring the intended trials.
+        if (debugEl) {
+          try {
+            var existing = debugEl.textContent ? JSON.parse(debugEl.textContent) : null;
+            // Only enrich JSON debug blocks; ignore if it's non-JSON.
+            if (existing && typeof existing === 'object') {
+              existing.scoring = Object.assign({
+                note: 'Scoring is limited to components marked shown via events.trialStart when available.'
+              }, summary.meta || {});
+              debugEl.textContent = safeJson(existing);
+            }
+          } catch {
+            /* ignore */
+          }
+        }
+      }
+
+      // Important:
+      // We intentionally *don't* rely on iframe messaging for answers here.
+      // In practice, @REVISIT_COMMS/ANSWERS isn’t reliably delivered to this page.
+
+      // ------------------------------
+  // Firebase Storage (single source of truth)
+      // ------------------------------
+      // To keep the study functional without modifying src/, we read the saved
+      // participantData JSON from Firebase Storage and compute the score from that.
+      //
+      // Limitation:
+      // Without participantId being sent to this iframe, we select the latest
+      // *_participantData object in the dev/prod participants folder.
+      // This is reliable for local single-user testing. For multi-user deployments,
+      // the robust fix is to pass participantId into the iframe (requires src/).
+
+      async function fetchJson(url) {
+        var r = await fetchWithRetry(url, { attempts: 3, baseDelayMs: 250 });
+        if (!r.ok) throw new Error('HTTP ' + r.status + ' for ' + url);
+        return r.json();
+      }
+
+      function friendlyLoadErrorMessage(err) {
+        var msg = (err && err.message) ? String(err.message) : String(err);
+        if (/\b429\b/.test(msg)) {
+          return 'Results are saved, but the server is rate-limiting requests right now. Please wait a few seconds and refresh.';
+        }
+        if (/\b404\b/.test(msg)) {
+          return 'We couldn\'t find your saved results yet. If you just finished the study, wait a moment and refresh.';
+        }
+        if (/permission|unauthori|forbidden/i.test(msg)) {
+          return 'We couldn\'t access saved results due to permissions. This usually means Firebase rules/App Check aren\'t configured for this environment.';
+        }
+        return 'We couldn\'t retrieve your saved results yet. Please wait a moment and refresh.';
+      }
+
+      var inFlightLoad = null;
+
+      async function loadResultsWithLimitedRetry() {
+        // Ensure a single in-flight load attempt at a time.
+        if (inFlightLoad) return inFlightLoad;
+
+        inFlightLoad = (async function () {
+          var attempts = 4;
+          var delayMs = 600;
+          for (var i = 0; i < attempts; i++) {
+            try {
+              await loadResultsFromFirebaseStorage();
+              return;
+            } catch (e) {
+              // If we already rendered, stop.
+              if (didRender) return;
+
+              // Last attempt: surface a friendly message.
+              if (i >= attempts - 1) {
+                writeDebug({
+                  status: 'error',
+                  error: String(e && e.message ? e.message : e),
+                });
+                if (elLoading) {
+                  elLoading.textContent = friendlyLoadErrorMessage(e);
+                  elLoading.style.display = '';
+                }
+                return;
+              }
+
+              // Backoff before next attempt.
+              await sleep(delayMs * Math.pow(2, i));
+            }
+          }
+        })();
+
+        return inFlightLoad;
+      }
+
+      function guessEnvPrefix() {
+        // If you host a "prod" build on GH pages, this will generally be prod.
+        // On localhost (vite dev), use dev.
+        try {
+          var host = location.hostname;
+          if (host === 'localhost' || host === '127.0.0.1') return 'dev';
+        } catch { /* ignore */ }
+        return 'prod';
+      }
+
+      function writeDebug(obj) {
+        if (!debugEl) return;
+        debugEl.textContent = safeJson(obj);
+      }
+
+      function normalizeParticipantDataToRows(participantData) {
+        // participantData.answers is typically an object keyed by identifier.
+        if (participantData && typeof participantData === 'object') {
+          var answers = participantData.answers;
+          if (answers) return normalizeToRows(answers);
+        }
+        return [];
+      }
+
+      async function loadResultsFromFirebaseStorage() {
+        if (didRender) return;
+
+        try {
+          if (elLoading) elLoading.style.display = '';
+
+          writeDebug({
+            status: 'loading',
+            hint: 'Fetching latest saved participantData from Firebase Storage…',
+          });
+
+          // Load firebase config shipped alongside this file.
+          var firebaseConfig = await fetchJson('firebase-config.json');
+
+          // Dynamically import Firebase modules from gstatic (no bundler required).
+          var appMod = await import('https://www.gstatic.com/firebasejs/11.2.0/firebase-app.js');
+          var storageMod = await import('https://www.gstatic.com/firebasejs/11.2.0/firebase-storage.js');
+
+          var app = appMod.initializeApp(firebaseConfig);
+          var storage = storageMod.getStorage(app);
+
+          var envPrefix = guessEnvPrefix();
+          // Study id is the folder name used by the app.
+          var studyId = 'phishing-ai-questionnaire';
+          // e.g., dev-phishing-ai-questionnaire/participants/<id>_participantData
+          var baseDir = envPrefix + '-' + studyId + '/participants';
+          var dirRef = storageMod.ref(storage, baseDir);
+
+          // List candidate participantData objects.
+          var listed = await storageMod.listAll(dirRef);
+          var candidates = (listed.items || []).filter(function (item) {
+            return typeof item.fullPath === 'string' && /_participantData$/.test(item.fullPath);
+          });
+
+          if (!candidates.length) {
+            writeDebug({
+              status: 'no-candidates',
+              hint: 'No *_participantData files found in ' + baseDir,
+            });
+            return;
+          }
+
+          // Pick latest by metadata.updated.
+          var best = null;
+          var bestUpdated = 0;
+          for (var i = 0; i < candidates.length; i++) {
+            var itemRef = candidates[i];
+            try {
+              // eslint-disable-next-line no-await-in-loop
+              var md = await storageMod.getMetadata(itemRef);
+              var updated = 0;
+              if (md && md.updated) {
+                var t = Date.parse(md.updated);
+                updated = isFinite(t) ? t : 0;
+              }
+              if (!best || updated >= bestUpdated) {
+                best = itemRef;
+                bestUpdated = updated;
+              }
+            } catch {
+              // ignore metadata failures for individual files
+            }
+          }
+
+          if (!best) {
+            writeDebug({
+              status: 'no-best',
+              hint: 'Could not choose a latest participantData file',
+            });
+            return;
+          }
+
+          var url = await storageMod.getDownloadURL(best);
+          var resp = await fetch(url, { cache: 'no-store' });
+          if (!resp.ok) throw new Error('Download failed: HTTP ' + resp.status);
+          var participantData = await resp.json();
+
+          var rows = normalizeParticipantDataToRows(participantData);
+          if (!rows.length) {
+            writeDebug({
+              status: 'downloaded-but-no-rows',
+              picked: best.fullPath,
+              updatedMs: bestUpdated,
+              keys: participantData && typeof participantData === 'object' ? Object.keys(participantData) : null,
+            });
+            return;
+          }
+
+          // Show debug info but keep it compact.
+          writeDebug({
+            status: 'ok',
+            source: 'firebase-storage',
+            picked: best.fullPath,
+            updatedMs: bestUpdated,
+            rowCount: rows.length,
+          });
+
+          renderFromRows(rows);
+        } catch (err) {
+          writeDebug({
+            status: 'error',
+            source: 'firebase-storage',
+            error: String(err && err.message ? err.message : err),
+          });
+        }
+      }
+
+  loadResultsWithLimitedRetry();
+    </script>
+  </body>
+</html>

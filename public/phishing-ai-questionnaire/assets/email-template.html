@@ -197,6 +197,7 @@
         hdrVisibleStart: null,
         hdrVisibleMs: 0,
         gotData: false,
+  hasRendered: false,
       };
       const now = () => Math.round(performance.now() - state.t0);
       const log = (e) => state.events.push({ t: now(), ...e });
@@ -226,6 +227,7 @@
       }
 
       function renderEmail(p) {
+  state.hasRendered = true;
         // Accept synonyms
         const fromName = p.fromName ?? p.senderName ?? "";
         const from = p.from ?? p.fromEmail ?? "";
@@ -393,6 +395,10 @@
 
       // Data intake (ReVISit or query params)
       Revisit.onDataReceive(async (payload) => {
+  // Mark ASAP so the standalone fallback timeout doesn't fire a false
+  // "No email provided" while we're still awaiting fetch/JSON.
+  state.gotData = true;
+
         const params =
           payload && typeof payload === "object" && "parameters" in payload
             ? payload.parameters
@@ -433,8 +439,7 @@
           throw err;
         }
 
-        state.t0 = performance.now();
-        state.gotData = true;
+  state.t0 = performance.now();
         if (spec && typeof spec === "object") {
           renderEmail(spec);
           const linkCount = document
@@ -457,7 +462,7 @@
 
         // Standalone/Pages fallback: allow both ?email=URL and ?emailDataPath=URL
         setTimeout(async () => {
-          if (state.gotData) return; // ReVISit delivered
+          if (state.gotData || state.hasRendered) return; // ReVISit delivered / already rendered
 
           const sp = new URLSearchParams(location.search);
           const candidate = sp.get("email") || sp.get("emailDataPath");
@@ -495,7 +500,7 @@
           const hint =
             "Pass parameters.email / emailDataPath (from ReVISit) or use ?email=URL / ?emailDataPath=URL in the address bar.";
           renderError(`No email provided. ${hint}`);
-        }, 300);
+  }, 1500);
       });
     </script>
   </head>
