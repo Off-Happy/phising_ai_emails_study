@@ -34,9 +34,7 @@
     },
     "personal-information": {
       "type": "questionnaire",
-      "instructionLocation": "sidebar",
-      "instruction": "### How to answer\n\n- For **dropdowns**, pick the option that fits you best.\n- For **sliders (1–7)**: **1 = low / disagree / never**, **7 = high / agree / very often**.",
-      "withSidebar": true,
+  "withSidebar": false,
       "response": [
         {
           "id": "age",
@@ -133,15 +131,13 @@
           "location": "aboveStimulus",
           "type": "slider",
           "options": [
-            { "label": "1", "value": 1 },
-            { "label": "2", "value": 2 },
-            { "label": "3", "value": 3 },
-            { "label": "4", "value": 4 },
-            { "label": "5", "value": 5 },
-            { "label": "6", "value": 6 },
-            { "label": "7", "value": 7 }
+            { "label": "Strongly disagree", "value": 1 },
+            { "label": "Disagree", "value": 2 },
+            { "label": "Neutral", "value": 3 },
+            { "label": "Agree", "value": 4 },
+            { "label": "Strongly agree", "value": 5 }
           ],
-          "startingValue": 4,
+          "startingValue": 3,
           "spacing": 1,
           "snap": true,
           "withBar": true
@@ -155,42 +151,40 @@
         "emailDataPath": "phishing-ai-questionnaire/assets/phishing-human-finance.json"
       },
       "withSidebar": true,
+  "instructionLocation": "sidebar",
+  "instruction": "Please read the email shown on the right carefully. Imagine you received this email in your own inbox. Based on your impression, answer the questions below. There are no right or wrong answers—please respond based on your judgment.\n\nAfter reading the email, please indicate how much you agree or disagree with the following statements about this email.",
       "responseOrder": "fixed",
       "response": [
         {
           "id": "phish-judgment",
-          "prompt": "How likely is it that this email is a scam? (1=Very unlikely, 7=Very likely)",
-          "location": "sidebar",
+          "prompt": "This email raises concerns about its legitimacy.",
+          "location": "belowStimulus",
           "type": "slider",
           "options": [
-            { "label": "1", "value": 1 },
-            { "label": "2", "value": 2 },
-            { "label": "3", "value": 3 },
-            { "label": "4", "value": 4 },
-            { "label": "5", "value": 5 },
-            { "label": "6", "value": 6 },
-            { "label": "7", "value": 7 }
+            { "label": "Strongly disagree", "value": 1 },
+            { "label": "Disagree", "value": 2 },
+            { "label": "Neutral", "value": 3 },
+            { "label": "Agree", "value": 4 },
+            { "label": "Strongly agree", "value": 5 }
           ],
-          "startingValue": 4,
+          "startingValue": 3,
           "spacing": 1,
           "snap": true,
           "withBar": true
         },
         {
           "id": "ai-judgment",
-          "prompt": "How likely is it that AI tools were used to write or edit this email? (1=Very unlikely, 7=Very likely)",
-          "location": "sidebar",
+          "prompt": "This email appears to have been written or edited using AI-based tools.",
+          "location": "belowStimulus",
           "type": "slider",
           "options": [
-            { "label": "1", "value": 1 },
-            { "label": "2", "value": 2 },
-            { "label": "3", "value": 3 },
-            { "label": "4", "value": 4 },
-            { "label": "5", "value": 5 },
-            { "label": "6", "value": 6 },
-            { "label": "7", "value": 7 }
+            { "label": "Strongly disagree", "value": 1 },
+            { "label": "Disagree", "value": 2 },
+            { "label": "Neutral", "value": 3 },
+            { "label": "Agree", "value": 4 },
+            { "label": "Strongly agree", "value": 5 }
           ],
-          "startingValue": 4,
+          "startingValue": 3,
           "spacing": 1,
           "snap": true,
           "withBar": true
@@ -199,7 +193,7 @@
           "id": "reasoning",
           "prompt": "Optional: Briefly explain your reasoning.",
           "required": false,
-          "location": "sidebar",
+          "location": "belowStimulus",
           "type": "longText",
           "placeholder": "Your reasoning (optional)"
         },
@@ -219,42 +213,40 @@
         "emailDataPath": "phishing-ai-questionnaire/assets/phishing-llm-generated-finance.json"
       },
       "withSidebar": true,
+  "instructionLocation": "sidebar",
+  "instruction": "Please read the email shown on the right carefully. Imagine you received this email in your own inbox. Based on your impression, answer the questions below. There are no right or wrong answers—please respond based on your judgment.\n\nAfter reading the email, please indicate how much you agree or disagree with the following statements about this email.",
       "responseOrder": "fixed",
       "response": [
         {
           "id": "phish-judgment",
-          "prompt": "How likely is it that this email is a scam? (1=Very unlikely, 7=Very likely)",
-          "location": "sidebar",
+          "prompt": "This email raises concerns about its legitimacy.",
+          "location": "belowStimulus",
           "type": "slider",
           "options": [
-            { "label": "1", "value": 1 },
-            { "label": "2", "value": 2 },
-            { "label": "3", "value": 3 },
-            { "label": "4", "value": 4 },
-            { "label": "5", "value": 5 },
-            { "label": "6", "value": 6 },
-            { "label": "7", "value": 7 }
+            { "label": "Strongly disagree", "value": 1 },
+            { "label": "Disagree", "value": 2 },
+            { "label": "Neutral", "value": 3 },
+            { "label": "Agree", "value": 4 },
+            { "label": "Strongly agree", "value": 5 }
           ],
-          "startingValue": 4,
+          "startingValue": 3,
           "spacing": 1,
           "snap": true,
           "withBar": true
         },
         {
           "id": "ai-judgment",
-          "prompt": "How likely is it that AI tools were used to write or edit this email? (1=Very unlikely, 7=Very likely)",
-          "location": "sidebar",
+          "prompt": "This email appears to have been written or edited using AI-based tools.",
+          "location": "belowStimulus",
           "type": "slider",
           "options": [
-            { "label": "1", "value": 1 },
-            { "label": "2", "value": 2 },
-            { "label": "3", "value": 3 },
-            { "label": "4", "value": 4 },
-            { "label": "5", "value": 5 },
-            { "label": "6", "value": 6 },
-            { "label": "7", "value": 7 }
+            { "label": "Strongly disagree", "value": 1 },
+            { "label": "Disagree", "value": 2 },
+            { "label": "Neutral", "value": 3 },
+            { "label": "Agree", "value": 4 },
+            { "label": "Strongly agree", "value": 5 }
           ],
-          "startingValue": 4,
+          "startingValue": 3,
           "spacing": 1,
           "snap": true,
           "withBar": true
@@ -263,7 +255,7 @@
           "id": "reasoning",
           "prompt": "Optional: Briefly explain your reasoning.",
           "required": false,
-          "location": "sidebar",
+          "location": "belowStimulus",
           "type": "longText",
           "placeholder": "Your reasoning (optional)"
         },
@@ -283,42 +275,40 @@
         "emailDataPath": "phishing-ai-questionnaire/assets/phishing-human-shipping.json"
       },
       "withSidebar": true,
+  "instructionLocation": "sidebar",
+  "instruction": "Please read the email shown on the right carefully. Imagine you received this email in your own inbox. Based on your impression, answer the questions below. There are no right or wrong answers—please respond based on your judgment.\n\nAfter reading the email, please indicate how much you agree or disagree with the following statements about this email.",
       "responseOrder": "fixed",
       "response": [
         {
           "id": "phish-judgment",
-          "prompt": "How likely is it that this email is a scam? (1=Very unlikely, 7=Very likely)",
-          "location": "sidebar",
+          "prompt": "This email raises concerns about its legitimacy.",
+          "location": "belowStimulus",
           "type": "slider",
           "options": [
-            { "label": "1", "value": 1 },
-            { "label": "2", "value": 2 },
-            { "label": "3", "value": 3 },
-            { "label": "4", "value": 4 },
-            { "label": "5", "value": 5 },
-            { "label": "6", "value": 6 },
-            { "label": "7", "value": 7 }
+            { "label": "Strongly disagree", "value": 1 },
+            { "label": "Disagree", "value": 2 },
+            { "label": "Neutral", "value": 3 },
+            { "label": "Agree", "value": 4 },
+            { "label": "Strongly agree", "value": 5 }
           ],
-          "startingValue": 4,
+          "startingValue": 3,
           "spacing": 1,
           "snap": true,
           "withBar": true
         },
         {
           "id": "ai-judgment",
-          "prompt": "How likely is it that AI tools were used to write or edit this email? (1=Very unlikely, 7=Very likely)",
-          "location": "sidebar",
+          "prompt": "This email appears to have been written or edited using AI-based tools.",
+          "location": "belowStimulus",
           "type": "slider",
           "options": [
-            { "label": "1", "value": 1 },
-            { "label": "2", "value": 2 },
-            { "label": "3", "value": 3 },
-            { "label": "4", "value": 4 },
-            { "label": "5", "value": 5 },
-            { "label": "6", "value": 6 },
-            { "label": "7", "value": 7 }
+            { "label": "Strongly disagree", "value": 1 },
+            { "label": "Disagree", "value": 2 },
+            { "label": "Neutral", "value": 3 },
+            { "label": "Agree", "value": 4 },
+            { "label": "Strongly agree", "value": 5 }
           ],
-          "startingValue": 4,
+          "startingValue": 3,
           "spacing": 1,
           "snap": true,
           "withBar": true
@@ -327,7 +317,7 @@
           "id": "reasoning",
           "prompt": "Optional: Briefly explain your reasoning.",
           "required": false,
-          "location": "sidebar",
+          "location": "belowStimulus",
           "type": "longText",
           "placeholder": "Your reasoning (optional)"
         },
@@ -347,42 +337,40 @@
         "emailDataPath": "phishing-ai-questionnaire/assets/phishing-llm-generated-shipping.json"
       },
       "withSidebar": true,
+  "instructionLocation": "sidebar",
+  "instruction": "Please read the email shown on the right carefully. Imagine you received this email in your own inbox. Based on your impression, answer the questions below. There are no right or wrong answers—please respond based on your judgment.\n\nAfter reading the email, please indicate how much you agree or disagree with the following statements about this email.",
       "responseOrder": "fixed",
       "response": [
         {
           "id": "phish-judgment",
-          "prompt": "How likely is it that this email is a scam? (1=Very unlikely, 7=Very likely)",
-          "location": "sidebar",
+          "prompt": "This email raises concerns about its legitimacy.",
+          "location": "belowStimulus",
           "type": "slider",
           "options": [
-            { "label": "1", "value": 1 },
-            { "label": "2", "value": 2 },
-            { "label": "3", "value": 3 },
-            { "label": "4", "value": 4 },
-            { "label": "5", "value": 5 },
-            { "label": "6", "value": 6 },
-            { "label": "7", "value": 7 }
+            { "label": "Strongly disagree", "value": 1 },
+            { "label": "Disagree", "value": 2 },
+            { "label": "Neutral", "value": 3 },
+            { "label": "Agree", "value": 4 },
+            { "label": "Strongly agree", "value": 5 }
           ],
-          "startingValue": 4,
+          "startingValue": 3,
           "spacing": 1,
           "snap": true,
           "withBar": true
         },
         {
           "id": "ai-judgment",
-          "prompt": "How likely is it that AI tools were used to write or edit this email? (1=Very unlikely, 7=Very likely)",
-          "location": "sidebar",
+          "prompt": "This email appears to have been written or edited using AI-based tools.",
+          "location": "belowStimulus",
           "type": "slider",
           "options": [
-            { "label": "1", "value": 1 },
-            { "label": "2", "value": 2 },
-            { "label": "3", "value": 3 },
-            { "label": "4", "value": 4 },
-            { "label": "5", "value": 5 },
-            { "label": "6", "value": 6 },
-            { "label": "7", "value": 7 }
+            { "label": "Strongly disagree", "value": 1 },
+            { "label": "Disagree", "value": 2 },
+            { "label": "Neutral", "value": 3 },
+            { "label": "Agree", "value": 4 },
+            { "label": "Strongly agree", "value": 5 }
           ],
-          "startingValue": 4,
+          "startingValue": 3,
           "spacing": 1,
           "snap": true,
           "withBar": true
@@ -391,7 +379,7 @@
           "id": "reasoning",
           "prompt": "Optional: Briefly explain your reasoning.",
           "required": false,
-          "location": "sidebar",
+          "location": "belowStimulus",
           "type": "longText",
           "placeholder": "Your reasoning (optional)"
         },
@@ -411,42 +399,40 @@
         "emailDataPath": "phishing-ai-questionnaire/assets/phishing-human-prizes.json"
       },
       "withSidebar": true,
+  "instructionLocation": "sidebar",
+  "instruction": "Please read the email shown on the right carefully. Imagine you received this email in your own inbox. Based on your impression, answer the questions below. There are no right or wrong answers—please respond based on your judgment.\n\nAfter reading the email, please indicate how much you agree or disagree with the following statements about this email.",
       "responseOrder": "fixed",
       "response": [
         {
           "id": "phish-judgment",
-          "prompt": "How likely is it that this email is a scam? (1=Very unlikely, 7=Very likely)",
-          "location": "sidebar",
+          "prompt": "This email raises concerns about its legitimacy.",
+          "location": "belowStimulus",
           "type": "slider",
           "options": [
-            { "label": "1", "value": 1 },
-            { "label": "2", "value": 2 },
-            { "label": "3", "value": 3 },
-            { "label": "4", "value": 4 },
-            { "label": "5", "value": 5 },
-            { "label": "6", "value": 6 },
-            { "label": "7", "value": 7 }
+            { "label": "Strongly disagree", "value": 1 },
+            { "label": "Disagree", "value": 2 },
+            { "label": "Neutral", "value": 3 },
+            { "label": "Agree", "value": 4 },
+            { "label": "Strongly agree", "value": 5 }
           ],
-          "startingValue": 4,
+          "startingValue": 3,
           "spacing": 1,
           "snap": true,
           "withBar": true
         },
         {
           "id": "ai-judgment",
-          "prompt": "How likely is it that AI tools were used to write or edit this email? (1=Very unlikely, 7=Very likely)",
-          "location": "sidebar",
+          "prompt": "This email appears to have been written or edited using AI-based tools.",
+          "location": "belowStimulus",
           "type": "slider",
           "options": [
-            { "label": "1", "value": 1 },
-            { "label": "2", "value": 2 },
-            { "label": "3", "value": 3 },
-            { "label": "4", "value": 4 },
-            { "label": "5", "value": 5 },
-            { "label": "6", "value": 6 },
-            { "label": "7", "value": 7 }
+            { "label": "Strongly disagree", "value": 1 },
+            { "label": "Disagree", "value": 2 },
+            { "label": "Neutral", "value": 3 },
+            { "label": "Agree", "value": 4 },
+            { "label": "Strongly agree", "value": 5 }
           ],
-          "startingValue": 4,
+          "startingValue": 3,
           "spacing": 1,
           "snap": true,
           "withBar": true
@@ -455,7 +441,7 @@
           "id": "reasoning",
           "prompt": "Optional: Briefly explain your reasoning.",
           "required": false,
-          "location": "sidebar",
+          "location": "belowStimulus",
           "type": "longText",
           "placeholder": "Your reasoning (optional)"
         },
@@ -475,42 +461,40 @@
         "emailDataPath": "phishing-ai-questionnaire/assets/phishing-llm-generated-prizes.json"
       },
       "withSidebar": true,
+  "instructionLocation": "sidebar",
+  "instruction": "Please read the email shown on the right carefully. Imagine you received this email in your own inbox. Based on your impression, answer the questions below. There are no right or wrong answers—please respond based on your judgment.\n\nAfter reading the email, please indicate how much you agree or disagree with the following statements about this email.",
       "responseOrder": "fixed",
       "response": [
         {
           "id": "phish-judgment",
-          "prompt": "How likely is it that this email is a scam? (1=Very unlikely, 7=Very likely)",
-          "location": "sidebar",
+          "prompt": "This email raises concerns about its legitimacy.",
+          "location": "belowStimulus",
           "type": "slider",
           "options": [
-            { "label": "1", "value": 1 },
-            { "label": "2", "value": 2 },
-            { "label": "3", "value": 3 },
-            { "label": "4", "value": 4 },
-            { "label": "5", "value": 5 },
-            { "label": "6", "value": 6 },
-            { "label": "7", "value": 7 }
+            { "label": "Strongly disagree", "value": 1 },
+            { "label": "Disagree", "value": 2 },
+            { "label": "Neutral", "value": 3 },
+            { "label": "Agree", "value": 4 },
+            { "label": "Strongly agree", "value": 5 }
           ],
-          "startingValue": 4,
+          "startingValue": 3,
           "spacing": 1,
           "snap": true,
           "withBar": true
         },
         {
           "id": "ai-judgment",
-          "prompt": "How likely is it that AI tools were used to write or edit this email? (1=Very unlikely, 7=Very likely)",
-          "location": "sidebar",
+          "prompt": "This email appears to have been written or edited using AI-based tools.",
+          "location": "belowStimulus",
           "type": "slider",
           "options": [
-            { "label": "1", "value": 1 },
-            { "label": "2", "value": 2 },
-            { "label": "3", "value": 3 },
-            { "label": "4", "value": 4 },
-            { "label": "5", "value": 5 },
-            { "label": "6", "value": 6 },
-            { "label": "7", "value": 7 }
+            { "label": "Strongly disagree", "value": 1 },
+            { "label": "Disagree", "value": 2 },
+            { "label": "Neutral", "value": 3 },
+            { "label": "Agree", "value": 4 },
+            { "label": "Strongly agree", "value": 5 }
           ],
-          "startingValue": 4,
+          "startingValue": 3,
           "spacing": 1,
           "snap": true,
           "withBar": true
@@ -519,7 +503,7 @@
           "id": "reasoning",
           "prompt": "Optional: Briefly explain your reasoning.",
           "required": false,
-          "location": "sidebar",
+          "location": "belowStimulus",
           "type": "longText",
           "placeholder": "Your reasoning (optional)"
         },
@@ -539,42 +523,40 @@
         "emailDataPath": "phishing-ai-questionnaire/assets/benign-finance.json"
       },
       "withSidebar": true,
+  "instructionLocation": "sidebar",
+  "instruction": "Please read the email shown on the right carefully. Imagine you received this email in your own inbox. Based on your impression, answer the questions below. There are no right or wrong answers—please respond based on your judgment.\n\nAfter reading the email, please indicate how much you agree or disagree with the following statements about this email.",
       "responseOrder": "fixed",
       "response": [
         {
           "id": "phish-judgment",
-          "prompt": "How likely is it that this email is a scam? (1=Very unlikely, 7=Very likely)",
-          "location": "sidebar",
+          "prompt": "This email raises concerns about its legitimacy.",
+          "location": "belowStimulus",
           "type": "slider",
           "options": [
-            { "label": "1", "value": 1 },
-            { "label": "2", "value": 2 },
-            { "label": "3", "value": 3 },
-            { "label": "4", "value": 4 },
-            { "label": "5", "value": 5 },
-            { "label": "6", "value": 6 },
-            { "label": "7", "value": 7 }
+            { "label": "Strongly disagree", "value": 1 },
+            { "label": "Disagree", "value": 2 },
+            { "label": "Neutral", "value": 3 },
+            { "label": "Agree", "value": 4 },
+            { "label": "Strongly agree", "value": 5 }
           ],
-          "startingValue": 4,
+          "startingValue": 3,
           "spacing": 1,
           "snap": true,
           "withBar": true
         },
         {
           "id": "ai-judgment",
-          "prompt": "How likely is it that AI tools were used to write or edit this email? (1=Very unlikely, 7=Very likely)",
-          "location": "sidebar",
+          "prompt": "This email appears to have been written or edited using AI-based tools.",
+          "location": "belowStimulus",
           "type": "slider",
           "options": [
-            { "label": "1", "value": 1 },
-            { "label": "2", "value": 2 },
-            { "label": "3", "value": 3 },
-            { "label": "4", "value": 4 },
-            { "label": "5", "value": 5 },
-            { "label": "6", "value": 6 },
-            { "label": "7", "value": 7 }
+            { "label": "Strongly disagree", "value": 1 },
+            { "label": "Disagree", "value": 2 },
+            { "label": "Neutral", "value": 3 },
+            { "label": "Agree", "value": 4 },
+            { "label": "Strongly agree", "value": 5 }
           ],
-          "startingValue": 4,
+          "startingValue": 3,
           "spacing": 1,
           "snap": true,
           "withBar": true
@@ -583,7 +565,7 @@
           "id": "reasoning",
           "prompt": "Optional: Briefly explain your reasoning.",
           "required": false,
-          "location": "sidebar",
+          "location": "belowStimulus",
           "type": "longText",
           "placeholder": "Your reasoning (optional)"
         },
@@ -603,42 +585,40 @@
         "emailDataPath": "phishing-ai-questionnaire/assets/benign-prizes.json"
       },
       "withSidebar": true,
+  "instructionLocation": "sidebar",
+  "instruction": "Please read the email shown on the right carefully. Imagine you received this email in your own inbox. Based on your impression, answer the questions below. There are no right or wrong answers—please respond based on your judgment.\n\nAfter reading the email, please indicate how much you agree or disagree with the following statements about this email.",
       "responseOrder": "fixed",
       "response": [
         {
           "id": "phish-judgment",
-          "prompt": "How likely is it that this email is a scam? (1=Very unlikely, 7=Very likely)",
-          "location": "sidebar",
+          "prompt": "This email raises concerns about its legitimacy.",
+          "location": "belowStimulus",
           "type": "slider",
           "options": [
-            { "label": "1", "value": 1 },
-            { "label": "2", "value": 2 },
-            { "label": "3", "value": 3 },
-            { "label": "4", "value": 4 },
-            { "label": "5", "value": 5 },
-            { "label": "6", "value": 6 },
-            { "label": "7", "value": 7 }
+            { "label": "Strongly disagree", "value": 1 },
+            { "label": "Disagree", "value": 2 },
+            { "label": "Neutral", "value": 3 },
+            { "label": "Agree", "value": 4 },
+            { "label": "Strongly agree", "value": 5 }
           ],
-          "startingValue": 4,
+          "startingValue": 3,
           "spacing": 1,
           "snap": true,
           "withBar": true
         },
         {
           "id": "ai-judgment",
-          "prompt": "How likely is it that AI tools were used to write or edit this email? (1=Very unlikely, 7=Very likely)",
-          "location": "sidebar",
+          "prompt": "This email appears to have been written or edited using AI-based tools.",
+          "location": "belowStimulus",
           "type": "slider",
           "options": [
-            { "label": "1", "value": 1 },
-            { "label": "2", "value": 2 },
-            { "label": "3", "value": 3 },
-            { "label": "4", "value": 4 },
-            { "label": "5", "value": 5 },
-            { "label": "6", "value": 6 },
-            { "label": "7", "value": 7 }
+            { "label": "Strongly disagree", "value": 1 },
+            { "label": "Disagree", "value": 2 },
+            { "label": "Neutral", "value": 3 },
+            { "label": "Agree", "value": 4 },
+            { "label": "Strongly agree", "value": 5 }
           ],
-          "startingValue": 4,
+          "startingValue": 3,
           "spacing": 1,
           "snap": true,
           "withBar": true
@@ -647,7 +627,7 @@
           "id": "reasoning",
           "prompt": "Optional: Briefly explain your reasoning.",
           "required": false,
-          "location": "sidebar",
+          "location": "belowStimulus",
           "type": "longText",
           "placeholder": "Your reasoning (optional)"
         },
@@ -667,42 +647,40 @@
         "emailDataPath": "phishing-ai-questionnaire/assets/benign-shipping.json"
       },
       "withSidebar": true,
+  "instructionLocation": "sidebar",
+  "instruction": "Please read the email shown on the right carefully. Imagine you received this email in your own inbox. Based on your impression, answer the questions below. There are no right or wrong answers—please respond based on your judgment.\n\nAfter reading the email, please indicate how much you agree or disagree with the following statements about this email.",
       "responseOrder": "fixed",
       "response": [
         {
           "id": "phish-judgment",
-          "prompt": "How likely is it that this email is a scam? (1=Very unlikely, 7=Very likely)",
-          "location": "sidebar",
+          "prompt": "This email raises concerns about its legitimacy.",
+          "location": "belowStimulus",
           "type": "slider",
           "options": [
-            { "label": "1", "value": 1 },
-            { "label": "2", "value": 2 },
-            { "label": "3", "value": 3 },
-            { "label": "4", "value": 4 },
-            { "label": "5", "value": 5 },
-            { "label": "6", "value": 6 },
-            { "label": "7", "value": 7 }
+            { "label": "Strongly disagree", "value": 1 },
+            { "label": "Disagree", "value": 2 },
+            { "label": "Neutral", "value": 3 },
+            { "label": "Agree", "value": 4 },
+            { "label": "Strongly agree", "value": 5 }
           ],
-          "startingValue": 4,
+          "startingValue": 3,
           "spacing": 1,
           "snap": true,
           "withBar": true
         },
         {
           "id": "ai-judgment",
-          "prompt": "How likely is it that AI tools were used to write or edit this email? (1=Very unlikely, 7=Very likely)",
-          "location": "sidebar",
+          "prompt": "This email appears to have been written or edited using AI-based tools.",
+          "location": "belowStimulus",
           "type": "slider",
           "options": [
-            { "label": "1", "value": 1 },
-            { "label": "2", "value": 2 },
-            { "label": "3", "value": 3 },
-            { "label": "4", "value": 4 },
-            { "label": "5", "value": 5 },
-            { "label": "6", "value": 6 },
-            { "label": "7", "value": 7 }
+            { "label": "Strongly disagree", "value": 1 },
+            { "label": "Disagree", "value": 2 },
+            { "label": "Neutral", "value": 3 },
+            { "label": "Agree", "value": 4 },
+            { "label": "Strongly agree", "value": 5 }
           ],
-          "startingValue": 4,
+          "startingValue": 3,
           "spacing": 1,
           "snap": true,
           "withBar": true
@@ -711,7 +689,7 @@
           "id": "reasoning",
           "prompt": "Optional: Briefly explain your reasoning.",
           "required": false,
-          "location": "sidebar",
+          "location": "belowStimulus",
           "type": "longText",
           "placeholder": "Your reasoning (optional)"
         },
@@ -729,20 +707,28 @@
       "response": [
         {
           "id": "email-aspects-response",
-          "prompt": "Please indicate which aspects of the email influenced your judgments (select all that apply):",
+          "prompt": "Thinking back across all the emails you have seen, which aspects generally influenced your judgments? (Select all that apply)",
           "location": "aboveStimulus",
           "type": "checkbox",
           "options": [
-            { "label": "Sender's email address", "value": "sender-email" },
-            { "label": "Subject line", "value": "subject-line" },
-            { "label": "Email body content", "value": "email-body" },
-            { "label": "Links within the email", "value": "email-links" },
-            { "label": "Attachments", "value": "email-attachments" },
+            { "label": "The sender’s email address", "value": "sender-email" },
+            { "label": "The subject line", "value": "subject-line" },
+            { "label": "The content of the email message", "value": "email-body" },
+            { "label": "The presence or nature of links", "value": "email-links" },
+            { "label": "The presence or nature of attachments", "value": "email-attachments" },
             {
-              "label": "Overall design and formatting",
+              "label": "The overall design, layout, or formatting",
               "value": "design-formatting"
             }
           ]
+        },
+        {
+          "id": "email-aspects-other",
+          "prompt": "Other",
+          "required": false,
+          "location": "aboveStimulus",
+          "type": "shortText",
+          "placeholder": "Other (optional)"
         }
       ]
     },
@@ -750,64 +736,58 @@
       "type": "questionnaire",
       "withSidebar": true,
       "instructionLocation": "sidebar",
-      "instruction": "### How to answer\n\nUse the full 1–7 scale:\n\n- **1** = Strongly disagree / Never\n- **4** = Neutral\n- **7** = Strongly agree / Very often\n\nPlease answer based on your usual behaviour (not just today).",
+  "instruction": "The following statements ask about your general email-related habits and attitudes. Please indicate how much you agree or disagree with each statement based on your usual behaviour, not just what you did during this study.\n\nPlease indicate how much you agree or disagree with the following statements:",
       "response": [
         {
           "id": "email-sender",
-          "prompt": "I always verify the sender's email address before interacting with an email.",
+      "prompt": "I verify the sender’s email address before interacting with an email.",
           "required": true,
           "location": "aboveStimulus",
           "type": "slider",
           "options": [
-            { "label": "1", "value": 1 },
-            { "label": "2", "value": 2 },
-            { "label": "3", "value": 3 },
-            { "label": "4", "value": 4 },
-            { "label": "5", "value": 5 },
-            { "label": "6", "value": 6 },
-            { "label": "7", "value": 7 }
+            { "label": "Strongly disagree", "value": 1 },
+            { "label": "Disagree", "value": 2 },
+            { "label": "Neutral", "value": 3 },
+            { "label": "Agree", "value": 4 },
+            { "label": "Strongly agree", "value": 5 }
           ],
-          "startingValue": 4,
+          "startingValue": 3,
           "spacing": 1,
           "snap": true,
           "withBar": true
         },
         {
           "id": "email-links",
-          "prompt": "I always verify links in an email before clicking on them.",
+          "prompt": "I verify links in an email before clicking on them.",
           "required": true,
           "location": "aboveStimulus",
           "type": "slider",
           "options": [
-            { "label": "1", "value": 1 },
-            { "label": "2", "value": 2 },
-            { "label": "3", "value": 3 },
-            { "label": "4", "value": 4 },
-            { "label": "5", "value": 5 },
-            { "label": "6", "value": 6 },
-            { "label": "7", "value": 7 }
+            { "label": "Strongly disagree", "value": 1 },
+            { "label": "Disagree", "value": 2 },
+            { "label": "Neutral", "value": 3 },
+            { "label": "Agree", "value": 4 },
+            { "label": "Strongly agree", "value": 5 }
           ],
-          "startingValue": 4,
+          "startingValue": 3,
           "spacing": 1,
           "snap": true,
           "withBar": true
         },
         {
           "id": "email-attachments",
-          "prompt": "I always verify email attachments before opening them.",
+          "prompt": "I verify email attachments before opening them.",
           "required": true,
           "location": "aboveStimulus",
           "type": "slider",
           "options": [
-            { "label": "1", "value": 1 },
-            { "label": "2", "value": 2 },
-            { "label": "3", "value": 3 },
-            { "label": "4", "value": 4 },
-            { "label": "5", "value": 5 },
-            { "label": "6", "value": 6 },
-            { "label": "7", "value": 7 }
+            { "label": "Strongly disagree", "value": 1 },
+            { "label": "Disagree", "value": 2 },
+            { "label": "Neutral", "value": 3 },
+            { "label": "Agree", "value": 4 },
+            { "label": "Strongly agree", "value": 5 }
           ],
-          "startingValue": 4,
+          "startingValue": 3,
           "spacing": 1,
           "snap": true,
           "withBar": true
@@ -819,35 +799,31 @@
           "location": "aboveStimulus",
           "type": "slider",
           "options": [
-            { "label": "1", "value": 1 },
-            { "label": "2", "value": 2 },
-            { "label": "3", "value": 3 },
-            { "label": "4", "value": 4 },
-            { "label": "5", "value": 5 },
-            { "label": "6", "value": 6 },
-            { "label": "7", "value": 7 }
+            { "label": "Strongly disagree", "value": 1 },
+            { "label": "Disagree", "value": 2 },
+            { "label": "Neutral", "value": 3 },
+            { "label": "Agree", "value": 4 },
+            { "label": "Strongly agree", "value": 5 }
           ],
-          "startingValue": 4,
+          "startingValue": 3,
           "spacing": 1,
           "snap": true,
           "withBar": true
         },
         {
           "id": "verification-tools",
-          "prompt": "I use verification tools (e.g., link checkers, email verifiers) to assess the legitimacy of emails.",
+          "prompt": "I use verification tools (e.g., link checkers or email verification services) to assess the legitimacy of emails.",
           "required": true,
           "location": "aboveStimulus",
           "type": "slider",
           "options": [
-            { "label": "1", "value": 1 },
-            { "label": "2", "value": 2 },
-            { "label": "3", "value": 3 },
-            { "label": "4", "value": 4 },
-            { "label": "5", "value": 5 },
-            { "label": "6", "value": 6 },
-            { "label": "7", "value": 7 }
+            { "label": "Strongly disagree", "value": 1 },
+            { "label": "Disagree", "value": 2 },
+            { "label": "Neutral", "value": 3 },
+            { "label": "Agree", "value": 4 },
+            { "label": "Strongly agree", "value": 5 }
           ],
-          "startingValue": 4,
+          "startingValue": 3,
           "spacing": 1,
           "snap": true,
           "withBar": true
@@ -856,19 +832,17 @@
     },
     "feedback": {
       "type": "questionnaire",
-      "instructionLocation": "sidebar",
-      "instruction": "### Optional feedback\n\nThis step is **optional**. You can leave it blank and click **Next**.\n\n**Next step:** you will see a short summary of your results.",
       "response": [
         {
           "id": "feedback-text",
-          "prompt": "Optional: If you have any feedback or comments about this study, you can share them below:",
+          "prompt": "Feedback (optional): If you have any comments about the study or the tasks, you may share them below.\n\nPlease click **Next** to proceed. The next page will show your score summary, and the study is not finished until you complete that final step.",
           "required": false,
           "location": "aboveStimulus",
           "type": "longText",
           "placeholder": "Your feedback..."
         }
       ],
-      "withSidebar": true
+    "withSidebar": false
     },
     "results-summary": {
       "type": "website",

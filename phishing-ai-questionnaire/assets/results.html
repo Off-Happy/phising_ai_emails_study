@@ -219,7 +219,7 @@
             <div style="text-align:right">
               <div class="label">What this means</div>
               <div class="fine" style="max-width: 300px">
-                Higher is better. You get partial credit when your 1–7 rating is closer to the correct end of the scale.
+                Higher is better. You get partial credit when your 1–5 rating is closer to the correct end of the scale.
               </div>
             </div>
           </div>
@@ -229,7 +229,7 @@
           </div>
 
           <div style="margin-top: 12px" class="fine">
-            Scoring: benign emails are treated as “1”, phishing emails as “7”. Your score reflects how close your ratings were.
+            Scoring: benign emails are treated as “1”, phishing emails as “5”. Your score reflects how close your ratings were.
           </div>
 
           <details class="debug">
@@ -448,13 +448,14 @@
           var j = toNumberMaybe(getPhishJudgment(ans));
           if (j === null) continue;
 
-          // Clamp to [1,7] just in case.
+          // Clamp to [1,5] just in case.
           if (j < 1) j = 1;
-          if (j > 7) j = 7;
+          if (j > 5) j = 5;
 
           var truth = GROUND_TRUTH[name];
-          var target = truth ? 7 : 1;
-          var score = 1 - (Math.abs(j - target) / 6);
+          var target = truth ? 5 : 1;
+          // 1–5 scale => max possible distance is 4
+          var score = 1 - (Math.abs(j - target) / 4);
           score = Math.max(0, Math.min(1, score));
 
           total.answered++;
