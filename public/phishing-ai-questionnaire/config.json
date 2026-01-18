@@ -131,11 +131,11 @@
           "location": "aboveStimulus",
           "type": "slider",
           "options": [
-            { "label": "Strongly disagree", "value": 1 },
-            { "label": "Disagree", "value": 2 },
-            { "label": "Neutral", "value": 3 },
-            { "label": "Agree", "value": 4 },
-            { "label": "Strongly agree", "value": 5 }
+            { "label": "Never", "value": 1 },
+            { "label": "Rarely", "value": 2 },
+            { "label": "Sometimes", "value": 3 },
+            { "label": "Often", "value": 4 },
+            { "label": "Very often", "value": 5 }
           ],
           "startingValue": 3,
           "spacing": 1,
