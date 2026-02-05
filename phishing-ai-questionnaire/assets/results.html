@@ -8,14 +8,15 @@
     <style>
       :root {
         --bg: #0b1220;
-        --card: rgba(255, 255, 255, 0.06);
-        --card2: rgba(255, 255, 255, 0.08);
+  --card: rgba(255, 255, 255, 0.06);
+  --card2: rgba(255, 255, 255, 0.08);
         --text: #e8eefc;
         --muted: rgba(232, 238, 252, 0.75);
         --line: rgba(232, 238, 252, 0.16);
         --accent: #7c5cff;
         --accent2: #3dd6d0;
         --good: #49d17a;
+  --danger: #ff6b6b;
       }
 
       html, body {
@@ -25,7 +26,7 @@
       body {
         font-family: -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
         margin: 0;
-        padding: 20px;
+  padding: 18px;
         color: var(--text);
         background:
           radial-gradient(1200px 600px at 20% 0%, rgba(124, 92, 255, 0.35), transparent 45%),
@@ -40,17 +41,40 @@
       }
 
       h1 {
-        margin: 0 0 10px;
+        margin: 0;
         font-size: 18px;
         letter-spacing: 0.2px;
+      }
+
+      .sub {
+        margin: 6px 0 0;
+        color: var(--muted);
         font-size: 13px;
+        line-height: 1.35;
+      }
+
+      @media (max-width: 480px) {
+        body { padding: 14px; }
+        .big { font-size: 36px; }
+      }
+
+      .top {
+        display: flex;
+        gap: 12px;
+        align-items: flex-end;
+        justify-content: space-between;
+        margin-bottom: 12px;
+      }
+
+      .top .left {
+        min-width: 0;
       }
 
       .card {
         background: var(--card);
         border: 1px solid var(--line);
         border-radius: 14px;
-        padding: 16px;
+  padding: 18px;
         box-shadow: 0 10px 30px rgba(0,0,0,0.25);
         backdrop-filter: blur(8px);
       }
@@ -61,18 +85,23 @@
         gap: 12px;
       }
 
-      @media (min-width: 760px) {
-        .grid {
-          grid-template-columns: 1.2fr 0.8fr;
-          align-items: start;
-        }
-      }
-
       .big {
         font-size: 40px;
         font-weight: 750;
         line-height: 1;
         margin: 6px 0;
+      }
+
+      .scoreWrap {
+        display: grid;
+  gap: 12px;
+      }
+
+      .scoreLine {
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+        gap: 12px;
       }
 
       .label {
@@ -137,11 +166,47 @@
         line-height: 1.45;
       }
 
+      .fine strong {
+        color: rgba(232, 238, 252, 0.92);
+        font-weight: 650;
+      }
+
+      .callout {
+        margin-top: 10px;
+        padding: 12px;
+        border-radius: 12px;
+        background: rgba(255,255,255,0.04);
+        border: 1px solid var(--line);
+      }
+
+      .divider {
+        height: 1px;
+        background: var(--line);
+        border: 0;
+        margin: 4px 0;
+      }
+
+      .helperGrid {
+        display: grid;
+        gap: 10px;
+        margin-top: 10px;
+      }
+
+      @media (min-width: 760px) {
+        .helperGrid {
+          grid-template-columns: 1fr 1fr;
+          align-items: start;
+        }
+      }
+
       .error {
         color: rgba(255,255,255,0.92);
       }
 
       .banner {
+  position: sticky;
+  top: 10px;
+  z-index: 5;
         display: flex;
         align-items: center;
         justify-content: space-between;
@@ -151,6 +216,7 @@
         background: linear-gradient(90deg, rgba(124, 92, 255, 0.22), rgba(61, 214, 208, 0.14));
         border: 1px solid var(--line);
         margin: 12px 0 14px;
+  backdrop-filter: blur(10px);
       }
 
       .banner strong {
@@ -167,6 +233,14 @@
         color: var(--muted);
         font-size: 12px;
         white-space: nowrap;
+      }
+
+      @media (max-width: 560px) {
+        .banner {
+          flex-direction: column;
+          align-items: flex-start;
+        }
+        .banner .hint { white-space: normal; }
       }
 
       details.debug {
@@ -195,8 +269,12 @@
   </head>
   <body>
     <div class="wrap">
-      <h1>Results</h1>
-  <p class="sub">Summary of your responses.</p>
+      <div class="top">
+        <div class="left">
+          <h1>Your results</h1>
+          <p class="sub">A brief summary of how closely your ratings matched the correct end of the 1–5 scale.</p>
+        </div>
+      </div>
 
       <div class="banner" role="note" aria-label="Finish the study">
         <div class="msg">
@@ -207,40 +285,60 @@
 
       <div class="grid">
         <div class="card">
-          <div class="row">
-            <div>
-              <div class="label">Accuracy score</div>
-              <div id="score" class="big">--</div>
-              <div class="pill"><span id="answered">--</span> emails answered</div>
-              <div id="loadingNote" class="fine" style="margin-top:10px">
-                Retrieving your saved answers… this can take a few seconds.
+          <div class="scoreWrap">
+            <div class="scoreLine">
+              <div>
+                <div class="label">Rating alignment score</div>
+                <div id="score" class="big">--</div>
+              </div>
+              <div style="text-align:right">
+                <div class="pill"><span id="answered">--</span> emails scored</div>
               </div>
             </div>
-            <div style="text-align:right">
-              <div class="label">What this means</div>
-              <div class="fine" style="max-width: 300px">
-                Higher is better. You get partial credit when your 1–5 rating is closer to the correct end of the scale.
+
+            <div class="bar" aria-label="Overall accuracy">
+              <i id="barOverall"></i>
+            </div>
+
+            <div id="loadingNote" class="fine">
+              Retrieving your saved answers… this can take a few seconds.
+            </div>
+
+            <div class="callout">
+              <div class="fine">
+                <strong>What this score means:</strong> This is not a simple “percent correct.”
+                It reflects how close your 1–5 ratings were to the correct end of the scale for each email.
+                Benign emails correspond to <strong>1</strong> and phishing emails correspond to <strong>5</strong>.
+              </div>
+              <div class="fine" style="margin-top:10px">
+                <strong>How to interpret it:</strong>
+                A <strong>higher</strong> score means your ratings were usually closer to the correct end of the scale
+                (benign closer to 1, phishing closer to 5).
+                A <strong>lower</strong> score means your ratings were often closer to the wrong end of the scale
+                (e.g., rating benign emails as phishing, or rating phishing emails—whether human-written or AI-generated—as benign).
+              </div>
+              <div class="helperGrid">
+                <div class="fine">
+                  <strong>Example (benign):</strong> Selecting 1 gets full credit; selecting 3 gets partial credit; selecting 5 gets no credit.
+                </div>
+                <div class="fine">
+                  <strong>Example (phishing — human-written or AI-generated):</strong> Selecting 5 gets full credit; selecting 3 gets partial credit; selecting 1 gets no credit.
+                </div>
               </div>
             </div>
+
+            <details class="debug" style="margin-top:12px">
+              <summary>More details</summary>
+
+              <div style="margin-top:10px" class="label">Breakdown (shown only)</div>
+              <div class="list" id="breakdown" style="margin-top:10px"></div>
+
+              <details class="debug" style="margin-top:12px">
+                <summary>Troubleshooting info</summary>
+                <pre id="debugOut" class="debug"></pre>
+              </details>
+            </details>
           </div>
-
-          <div style="margin-top: 14px" class="bar" aria-label="Overall accuracy">
-            <i id="barOverall"></i>
-          </div>
-
-          <div style="margin-top: 12px" class="fine">
-            Scoring: benign emails are treated as “1”, phishing emails as “5”. Your score reflects how close your ratings were.
-          </div>
-
-          <details class="debug">
-            <summary>Debug: show received answers payload (for troubleshooting)</summary>
-            <pre id="debugOut" class="debug"></pre>
-          </details>
-        </div>
-
-        <div class="card">
-          <div class="label" style="margin-bottom: 10px">Breakdown</div>
-          <div class="list" id="breakdown"></div>
         </div>
       </div>
 
