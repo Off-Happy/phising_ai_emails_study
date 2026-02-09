@@ -2,7 +2,7 @@
 
 **Recommendation (mobile):** If you’re on a phone, rotating to **landscape** can make the email easier to read.
 
-On the next pages, you’ll be shown a series of **6 emails**.
+On the next pages, you’ll be shown a series of emails (6).
 
 ### What to do
 
