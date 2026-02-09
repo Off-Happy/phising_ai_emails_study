@@ -32,6 +32,18 @@
         }
       ]
     },
+    "information-email": {
+      "type": "markdown",
+      "path": "phishing-ai-questionnaire/assets/information-email.md",
+      "withSidebar": false,
+      "response": []
+    },
+    "information-security-privacy": {
+      "type": "markdown",
+      "path": "phishing-ai-questionnaire/assets/information-security-privacy.md",
+      "withSidebar": false,
+      "response": []
+    },
     "personal-information": {
       "type": "questionnaire",
       "withSidebar": false,
@@ -150,9 +162,7 @@
       "parameters": {
         "emailDataPath": "phishing-ai-questionnaire/assets/phishing-human-finance.json"
       },
-      "withSidebar": true,
-      "instructionLocation": "sidebar",
-      "instruction": "Please read the email shown on the right carefully. Imagine you received this email in your own inbox. Based on your impressions, reading and interaction with the email, indicate how much you agree or disagree with the statements below.\n\nIf the email is not fully visible, please scroll down to view the entire message.",
+      "withSidebar": false,
       "responseOrder": "fixed",
       "response": [
         {
@@ -212,9 +222,7 @@
       "parameters": {
         "emailDataPath": "phishing-ai-questionnaire/assets/phishing-llm-generated-finance.json"
       },
-      "withSidebar": true,
-      "instructionLocation": "sidebar",
-      "instruction": "Please read the email shown on the right carefully. Imagine you received this email in your own inbox. Based on your impressions, reading and interaction with the email, indicate how much you agree or disagree with the statements below.\n\nIf the email is not fully visible, please scroll down to view the entire message.",
+      "withSidebar": false,
       "responseOrder": "fixed",
       "response": [
         {
@@ -274,9 +282,7 @@
       "parameters": {
         "emailDataPath": "phishing-ai-questionnaire/assets/phishing-human-shipping.json"
       },
-      "withSidebar": true,
-      "instructionLocation": "sidebar",
-      "instruction": "Please read the email shown on the right carefully. Imagine you received this email in your own inbox. Based on your impressions, reading and interaction with the email, indicate how much you agree or disagree with the statements below.\n\nIf the email is not fully visible, please scroll down to view the entire message.",
+      "withSidebar": false,
       "responseOrder": "fixed",
       "response": [
         {
@@ -336,9 +342,7 @@
       "parameters": {
         "emailDataPath": "phishing-ai-questionnaire/assets/phishing-llm-generated-shipping.json"
       },
-      "withSidebar": true,
-      "instructionLocation": "sidebar",
-      "instruction": "Please read the email shown on the right carefully. Imagine you received this email in your own inbox. Based on your impressions, reading and interaction with the email, indicate how much you agree or disagree with the statements below.\n\nIf the email is not fully visible, please scroll down to view the entire message.",
+      "withSidebar": false,
       "responseOrder": "fixed",
       "response": [
         {
@@ -398,9 +402,7 @@
       "parameters": {
         "emailDataPath": "phishing-ai-questionnaire/assets/phishing-human-prizes.json"
       },
-      "withSidebar": true,
-      "instructionLocation": "sidebar",
-      "instruction": "Please read the email shown on the right carefully. Imagine you received this email in your own inbox. Based on your impressions, reading and interaction with the email, indicate how much you agree or disagree with the statements below.\n\nIf the email is not fully visible, please scroll down to view the entire message.",
+      "withSidebar": false,
       "responseOrder": "fixed",
       "response": [
         {
@@ -460,9 +462,7 @@
       "parameters": {
         "emailDataPath": "phishing-ai-questionnaire/assets/phishing-llm-generated-prizes.json"
       },
-      "withSidebar": true,
-      "instructionLocation": "sidebar",
-      "instruction": "Please read the email shown on the right carefully. Imagine you received this email in your own inbox. Based on your impressions, reading and interaction with the email, indicate how much you agree or disagree with the statements below.\n\nIf the email is not fully visible, please scroll down to view the entire message.",
+      "withSidebar": false,
       "responseOrder": "fixed",
       "response": [
         {
@@ -522,9 +522,7 @@
       "parameters": {
         "emailDataPath": "phishing-ai-questionnaire/assets/benign-finance.json"
       },
-      "withSidebar": true,
-      "instructionLocation": "sidebar",
-      "instruction": "Please read the email shown on the right carefully. Imagine you received this email in your own inbox. Based on your impressions, reading and interaction with the email, indicate how much you agree or disagree with the statements below.\n\nIf the email is not fully visible, please scroll down to view the entire message.",
+      "withSidebar": false,
       "responseOrder": "fixed",
       "response": [
         {
@@ -584,9 +582,7 @@
       "parameters": {
         "emailDataPath": "phishing-ai-questionnaire/assets/benign-prizes.json"
       },
-      "withSidebar": true,
-      "instructionLocation": "sidebar",
-      "instruction": "Please read the email shown on the right carefully. Imagine you received this email in your own inbox. Based on your impressions, reading and interaction with the email, indicate how much you agree or disagree with the statements below.\n\nIf the email is not fully visible, please scroll down to view the entire message.",
+      "withSidebar": false,
       "responseOrder": "fixed",
       "response": [
         {
@@ -646,9 +642,7 @@
       "parameters": {
         "emailDataPath": "phishing-ai-questionnaire/assets/benign-shipping.json"
       },
-      "withSidebar": true,
-      "instructionLocation": "sidebar",
-      "instruction": "Please read the email shown on the right carefully. Imagine you received this email in your own inbox. Based on your impressions, reading and interaction with the email, indicate how much you agree or disagree with the statements below.\n\nIf the email is not fully visible, please scroll down to view the entire message.",
+      "withSidebar": false,
       "responseOrder": "fixed",
       "response": [
         {
@@ -743,9 +737,7 @@
     },
     "security-privacy": {
       "type": "questionnaire",
-      "withSidebar": true,
-      "instructionLocation": "sidebar",
-      "instruction": "The following statements ask about your general email-related habits and attitudes. Please indicate how much you agree or disagree with each statement based on your usual behaviour, not just what you did during this study.\n\nPlease indicate how much you agree or disagree with the following statements:",
+      "withSidebar": false,
       "response": [
         {
           "id": "email-sender",
@@ -877,6 +869,7 @@
     "components": [
       "introduction",
       "personal-information",
+      "information-email",
       {
         "order": "random",
         "components": [
@@ -910,6 +903,7 @@
         ]
       },
       "email-aspects",
+      "information-security-privacy",
       "security-privacy",
       "feedback",
       "results-summary"
